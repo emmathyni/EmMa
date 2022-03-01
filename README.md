@@ -1,0 +1,2 @@
+# FTIR.
+Ftir project
