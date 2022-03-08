@@ -2,6 +2,7 @@
 import re
 import math
 from calculations import*
+import matplotlib.pyplot as plt
 
 def format(name):
     """Opens and turns csv-file into usable format, returns two numpyarrays (just use lists instead, is already included)"""
@@ -77,6 +78,10 @@ def user_interaction():
     """Takes in the arguments wanted from the user and returns these"""
     file = input("Please enter file name: ")
     pass
+def plot(abso,wave):
+    plt.plot(wave,abso)
+    plt.show()
+
 
 def main():
     [wave, transm] = format("PVCfiber.CSV")
@@ -88,12 +93,21 @@ def main():
     transm2 = absorbance_converter(transm2, transmittance, percentage)
     transm3 = absorbance_converter(transm3, transmittance, percentage)
 
+
     Carbonyl_Index=Index(wave, transm, 2)
     Carbonyl_Index2 = Index(wave2, transm2, 2)
     Carbonyl_Index3 = Index(wave3, transm3, 2)
     print(Carbonyl_Index.CI)
     print(Carbonyl_Index2.CI)
     print(Carbonyl_Index3.CI)
+    plt.plot(wave, transm, label="fiber")
+    plt.plot(wave2, transm2, label="accu")
+    plt.plot(wave3, transm3, label="t0")
+    ax = plt.gca()
+    ax.invert_xaxis()
+
+    plt.legend()
+    plt.show()
 
 if  __name__ == "__main__":
     main()
