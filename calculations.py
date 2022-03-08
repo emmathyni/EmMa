@@ -5,7 +5,8 @@ class Index():
         self.abso = abso_list
         self.mode = mode
         self.step = self.wave[1]-self.wave[0]
-        self.modedict = {1: [1650, 1850, 1420, 1500]}
+        self.modedict = {1: [1650, 1850, 1420, 1500],
+                         2: [2800, 3000, 1420, 1500]}
         areas = self.integrator(mode)
         self.CI = areas[0]/areas[1]
 
@@ -15,18 +16,18 @@ class Index():
         num_result = 0
         for i in range(indexes[0], indexes[1]+1):
             if i == indexes[0] or i == indexes[1]:
-                num_result += self.wave[i]
+                num_result += self.abso[i]
             else:
-                num_result += 2 * self.wave[i]
+                num_result += 2 * self.abso[i]
         num_result = 0.5*self.step*num_result
 
         denom_result = 0
         for i in range(indexes[2], indexes[3]+1):
             if i == indexes[2] or i == indexes[3]:
-                denom_result += self.wave[i]
+                denom_result += self.abso[i]
             else:
-                denom_result += 2*self.wave[i]
-        denom_result = 0.5*self.step*num_result
+                denom_result += 2*self.abso[i]
+        denom_result = 0.5*self.step*denom_result
 
         return [num_result, denom_result]
 
