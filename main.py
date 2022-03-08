@@ -53,7 +53,7 @@ def absorbance_converter(values, transmittance, percentage):
         return values
 
 
-def find_index(wavenr_list,abso_list,mode):
+def find_carbonyl_index(wavenr_list, abso_list, mode):
     """Start calculation of indexes. Mode indicates which index wanted(?). Prints wanted indices"""
     pass
 
