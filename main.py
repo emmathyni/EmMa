@@ -1,6 +1,7 @@
 """"Main kör hela skiten"""
 import re
 import math
+from calculations import*
 
 def format(name):
     """Opens and turns csv-file into usable format, returns two numpyarrays (just use lists instead, is already included)"""
@@ -63,11 +64,12 @@ def user_interaction():
     pass
 
 def main():
-    [wave,transm]=format("PVC-t0.CSV")
-    transmittance=True
-    percentage=True
-    transm=absorbance_converter(transm,transmittance,percentage)
-
+    [wave, transm] = format("PVC-t0.CSV")
+    transmittance = True
+    percentage = True
+    transm = absorbance_converter(transm, transmittance, percentage)
+    Carbonyl_Index=Index(wave, transm, 1)
+    print(Carbonyl_Index.CI)
 
 if  __name__ == "__main__":
     main()

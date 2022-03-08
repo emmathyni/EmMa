@@ -4,16 +4,29 @@ class Index():
         self.wave = wave_list
         self.abso = abso_list
         self.mode = mode
-        self.step = 0
+        self.step = self.wave[1]-self.wave[0]
+        self.modedict = {1: [1650, 1850, 1420, 1500]}
+        areas = self.integrator(mode)
+        self.CI = areas[0]/areas[1]
 
-    def _find_stepsize(self):
-        """Finds difference in wavenumber between to datapoints, sets self.step to this"""
-
-    def integrator(self,mode):
+    def integrator(self, mode):
         """Integrates two peaks using trapezoidal integration depending on mode, returns list with two areas"""
+        indexes = self._find_index(mode)
+        num_result = 0
+        for i in range(indexes[0], indexes[1]+1):
+            if i == indexes[0] or i == indexes[1]:
+                num_result += self.wave[i]
+            else:
+                num_result += 2 * self.wave[i]
+        num_result = 0.5*self.step*num_result
 
-    def _integrator_step(self):
-        """Integrates one step, called by integrator, returns one int"""
+        denom_result = 0
+        for i in range(indexes[2], indexes[3]+1):
+            if i == indexes[2] or i == indexes[3]:
+                denom_result += self.wave[i]
+            else:
+                denom_result += 2*self.wave[i]
+        denom_result = 0.5*self.step*num_result
 
         return [num_result, denom_result]
 
