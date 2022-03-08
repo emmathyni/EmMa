@@ -14,13 +14,18 @@ def format():
         x=x[0][:-1]
         y=y[0][1:]
         x = re.sub(",", ".", x)
-        y=re.sub(",",".",y)
-        list.append(line)
-        list2.append(x)
-        list3.append(y)
-    print(list[0])
-    print(list2[0])
-    print(list3[0])
+        y = re.sub(",", ".", y)
+        x_n=int(x[-1])
+        y_n=int(y[-1])
+        resx=re.search("e",x)
+        resy=re.search("e",y)
+        x_e=resx.start()
+        y_e=resy.start()
+        x=float(x[:x_e])*10**x_n
+        y=float(y[:y_e])*10**y_n
+        wave.append(x)
+        values.append(y)
+    return wave, values
 
 
 def absorbance_converter(wavenr_list,transm_list):
@@ -32,9 +37,11 @@ def find_index(wavenr_list,abso_list,mode):
     pass
 
 def main():
-    [wave,transm]=format()
-    [wave,transm]=absorbance_converter(wave,transm)
-    find_index(wave,transm,1)
+    [wave,transm]=format("PVC-t0.CSV")
+    transmittance=True
+    percentage=True
+    transm=absorbance_converter(transm,transmittance,percentage)
+
 
 if  __name__ == "__main__":
     main()
