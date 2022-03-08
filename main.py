@@ -6,13 +6,21 @@ def format():
     file=open("PVC-t0.CSV")
     list=[]
     list2=[]
+    list3=[]
     for line in file:
         line.strip()
         x=re.findall("^\d,.*?,",line)
+        y=re.findall(",\d,.*?$",line)
+        x=x[0][:-1]
+        y=y[0][1:]
+        x = re.sub(",", ".", x)
+        y=re.sub(",",".",y)
         list.append(line)
         list2.append(x)
-    print(list)
-    print(list2)
+        list3.append(y)
+    print(list[0])
+    print(list2[0])
+    print(list3[0])
 
 
 def absorbance_converter(wavenr_list,transm_list):
