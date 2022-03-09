@@ -1,4 +1,4 @@
-
+import math
 class Index():
     def __init__(self, wave_list, abso_list, mode):
         self.wave = wave_list
@@ -6,8 +6,10 @@ class Index():
         self.mode = mode
         self.step = self.wave[1]-self.wave[0]
         self.modedict = {1: [1550, 1850, 2700, 2750],
-                         2: [1650, 1850, 1420, 1500]}
-        areas = self.integrator(mode)
+                         2: [1510, 1746, 1286, 1398],
+                         3: [1650, 1850, 1420, 1500],
+                         4: [0, math.pi, math.pi, 2*math.pi]}
+        areas = self.uneven_integrator(mode)
         self.CI = areas[0]/areas[1]
 
     def integrator(self, mode):
@@ -30,6 +32,19 @@ class Index():
         denom_result = 0.5*self.step*denom_result
 
         return [num_result, denom_result]
+
+    def uneven_integrator(self, mode):
+        """Integration using trapezoidal method with inconsistent step length"""
+        indexes = self._find_index(mode)
+        num_result = 0
+        for i in range(indexes[0], indexes[1]):
+            num_result += 0.5*(self.abso[i]+self.abso[i+1])*(self.wave[i+1]-self.wave[i])
+        denom_result = 0
+        for i in range(indexes[2], indexes[3]):
+            denom_result += 0.5*(self.abso[i]+self.abso[i+1])*(self.wave[i+1]-self.wave[i])
+
+        return [num_result, denom_result]
+
 
 
     def _find_index(self, mode):
