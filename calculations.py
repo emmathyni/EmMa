@@ -13,7 +13,8 @@ class Index():
         self.CI = areas[0]/areas[1]
 
     def integrator(self, mode):
-        """Integrates two peaks using trapezoidal integration depending on mode, returns list with two areas"""
+        """Integrates two peaks using trapezoidal integration depending on mode,
+         returns list with two areas"""
         indexes = self._find_index(mode)
         num_result = 0
         for i in range(indexes[0], indexes[1]+1):
@@ -59,7 +60,7 @@ class Index():
 
 
 def binsearch(number, list, high, low):
-    """Binary search of number in list. Returns index of element """
+    """Binary search of number in list. Returns index of element. Cannot find end points in list """
     mid = (high + low) // 2
     if number < list[mid+1] and number > list[mid-1]:
         return mid
