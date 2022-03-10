@@ -1,6 +1,5 @@
 """"Main kör hela skiten"""
 import re
-import math
 from calculations import*
 import matplotlib.pyplot as plt
 import math
@@ -96,6 +95,7 @@ def user_interaction():
     """Takes in the arguments wanted from the user and returns these"""
     file = input("Please enter file name: ")
     pass
+
 def plot(abso,wave):
     plt.plot(wave,abso)
     plt.show()
@@ -165,15 +165,18 @@ def test_data_from_article(mode):
 
 
 def main():
-
     # try to integrate sin(x) from
     #test_function()
+
     # finds carbonyl index using our data and intervals from GIVEN article
     #test_our_data(2)
+
     # finds carbonyl index using our data and intervals from FOUND article
     #test_our_data(3)
+
     # finds carbonyl index using data from article and intervals from GIVEN article
     #test_data_from_article(2)
+
     # finds carbonyl index using data from article and intervals from FOUND article
     #test_data_from_article(3)
 if  __name__ == "__main__":
