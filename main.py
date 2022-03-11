@@ -166,7 +166,7 @@ def test_data_from_article(mode):
 
 def main():
     # try to integrate sin(x) from
-    #test_function()
+    test_integration()
 
     # finds carbonyl index using our data and intervals from GIVEN article
     #test_our_data(2)
