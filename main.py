@@ -75,7 +75,7 @@ def absorbance_converter(values, transmittance, percentage):
     # check to determine type of data in values
     if transmittance and percentage:
         for i in range(len(values)):
-            values[i] = 2 - math.log10(values[i])
+            values[i] = 2-math.log10(values[i])
         return values
 
     if transmittance and not percentage:
@@ -96,17 +96,17 @@ def user_interaction():
     file = input("Please enter file name: ")
     pass
 
-def plot(abso,wave):
-    plt.plot(wave,abso)
+def plot(abso, wave):
+    plt.plot(wave, abso)
     plt.show()
 
 def test_integration():
-    """Try to integrate sin(x) from 0 to pi and then from pi to 2*pi and divide those areas.
-    If result is close to minus one integration method works"""
+    """Try to integrate sin(x)^2 from 0 to pi and then from pi to 2*pi and divide those areas.
+    If result is close to one integration method works"""
     x = [0.002*math.pi*i for i in range(-10, 1050)]
-    y = [math.sin(elem) for elem in x]
-    Carb = Index(x, y, 4)
-    print(Carb.CI)
+    y = [(math.sin(elem))**2 for elem in x]
+    Carb = Index(x, y, 5)
+    print(Carb.CI, "carb")
 
 def test_our_data(mode):
     [wave, transm] = format("PVCfiber.CSV")
@@ -123,6 +123,7 @@ def test_our_data(mode):
     print(Carbonyl_Index.CI)
     print(Carbonyl_Index2.CI)
     print(Carbonyl_Index3.CI)
+    plt.figure()
     plt.plot(wave, transm, label="fiber CI=" + str(round(Carbonyl_Index.CI, 5)))
     plt.plot(wave2, transm2, label="accumulated CI=" + str(round(Carbonyl_Index2.CI, 5)))
     plt.plot(wave3, transm3, label="as received CI=" + str(round(Carbonyl_Index3.CI, 5)))
@@ -151,6 +152,7 @@ def test_data_from_article(mode):
     Carbonyl_Index3 = Index(wave3, transm3, mode)
     print(str(Carbonyl_Index3.CI) + " 7 days")
     print(round(Carbonyl_Index3.CI, 5))
+    plt.figure()
     plt.plot(wave, transm, label="as received CI=" + str(round(Carbonyl_Index.CI, 5)))
     plt.plot(wave3, transm3, label="7 days CI=" + str(round(Carbonyl_Index3.CI, 5)))
     plt.plot(wave2, transm2, label="16 days CI=" + str(round(Carbonyl_Index2.CI, 5)))
@@ -166,18 +168,18 @@ def test_data_from_article(mode):
 
 def main():
     # try to integrate sin(x) from
-    test_integration()
+    # test_integration()
 
     # finds carbonyl index using our data and intervals from GIVEN article
-    #test_our_data(2)
+    test_our_data(2)
 
     # finds carbonyl index using our data and intervals from FOUND article
-    #test_our_data(3)
+    # test_our_data(4)
 
     # finds carbonyl index using data from article and intervals from GIVEN article
-    #test_data_from_article(2)
+    # test_data_from_article(2)
 
     # finds carbonyl index using data from article and intervals from FOUND article
-    #test_data_from_article(3)
+    # test_data_from_article(4)
 if  __name__ == "__main__":
     main()
