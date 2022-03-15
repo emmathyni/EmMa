@@ -1,6 +1,7 @@
 import math
 import matplotlib.pyplot as plt
 from dict import*
+import numpy as np
 class Index():
     def __init__(self, wave_list, abso_list, mode, plastic):
         self.wave = wave_list
@@ -8,8 +9,8 @@ class Index():
         self.mode = mode
         self.plastic = plastic
         self.step = self.wave[1]-self.wave[0]
-        areas = self.uneven_integrator()
-        self.CI = areas[0]/areas[1]
+        #areas = self.uneven_integrator()
+        #self.CI = areas[0]/areas[1]
 
     def integrator(self):
         """Integrates two peaks using trapezoidal integration depending on mode, returns list with two areas"""
@@ -43,6 +44,32 @@ class Index():
         for i in range(len(new_abso2)-1):
             denom_result += 0.5 * (new_abso2[i] + new_abso2[i + 1]) * (new_wave2[i + 1] - new_wave2[i])
         return [num_result, denom_result]
+
+    def try_FWHM(self):
+        """Function to try FWHM"""
+        self.FWHM(self.wave, self.abso)
+
+    def FWHM(self, corrected_x, corrected_y):
+        """Returns full width at half maximum as float"""
+
+        half_max = max(corrected_y)/2
+        print(half_max)
+        #print(np.add(corrected_y, -half_max))
+        signs = np.sign(np.add(corrected_y, -half_max))
+        intersect = []
+        for i in range(len(signs)-1):
+            if signs[i] == 0:
+                intersect.append(corrected_x[i])
+            elif np.sign(signs[i-1]) != np.sign(signs[i]):
+                intersect.append(corrected_x[i])
+        print(intersect)
+        kommafem = [0.5 for i in range(len(intersect))]
+        plt.plot(corrected_x, corrected_y)
+        plt.plot(intersect, kommafem, '*')
+        plt.show()
+        FWHM = max(intersect)-min(intersect)
+        print(FWHM)
+
 
     def _correct_baseline(self, index):
         """Returns four lists with absorbance with corrected baseline (line), if negative sets it as zero"""

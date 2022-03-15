@@ -109,6 +109,12 @@ def test_integration():
     Carb = Index(x, y, 5)
     print(Carb.CI, "carb")
 
+def test_FWHM():
+    x = [0.002 * math.pi * i for i in range(-10, 1050)]
+    y = [(math.sin(elem)) for elem in x]
+    test = Index(x, y, "sin", "test")
+    test.try_FWHM()
+
 def test_our_data(plastic, mode):
     [wave, transm] = format("PVCfiber.CSV")
     [wave2, transm2] = format("pvc-acc.CSV")
@@ -171,8 +177,10 @@ def main():
     # try to integrate sin(x) from
     # test_integration()
 
+    test_FWHM()
+
     # finds carbonyl index using our data and intervals from GIVEN article
-    test_our_data("PVC_carboxyl", "PVC_1718_1330")
+    #test_our_data("PVC_carboxyl", "PVC_1718_1330")
 
     # finds carbonyl index using our data and intervals from FOUND article
     # test_our_data(4)
