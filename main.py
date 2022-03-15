@@ -3,6 +3,7 @@ import re
 from calculations import*
 import matplotlib.pyplot as plt
 import math
+from dict import*
 
 def new_format(name):
     """Converts from format given by automeris.io"""
@@ -104,11 +105,11 @@ def test_integration():
     """Try to integrate sin(x)^2 from 0 to pi and then from pi to 2*pi and divide those areas.
     If result is close to one integration method works"""
     x = [0.002*math.pi*i for i in range(-10, 1050)]
-    y = [(math.sin(elem))**2 for elem in x]
+    y = [(math.sin(elem))**2+2 for elem in x]
     Carb = Index(x, y, 5)
     print(Carb.CI, "carb")
 
-def test_our_data(mode):
+def test_our_data(plastic, mode):
     [wave, transm] = format("PVCfiber.CSV")
     [wave2, transm2] = format("pvc-acc.CSV")
     [wave3, transm3] = format("pvc-t0-5th.CSV")
@@ -117,9 +118,9 @@ def test_our_data(mode):
     transm = absorbance_converter(transm, transmittance, percentage)
     transm2 = absorbance_converter(transm2, transmittance, percentage)
     transm3 = absorbance_converter(transm3, transmittance, percentage)
-    Carbonyl_Index = Index(wave, transm, mode)
-    Carbonyl_Index2 = Index(wave2, transm2, mode)
-    Carbonyl_Index3 = Index(wave3, transm3, mode)
+    Carbonyl_Index = Index(wave, transm, mode, plastic)
+    Carbonyl_Index2 = Index(wave2, transm2, mode, plastic)
+    Carbonyl_Index3 = Index(wave3, transm3, mode, plastic)
     print(Carbonyl_Index.CI)
     print(Carbonyl_Index2.CI)
     print(Carbonyl_Index3.CI)
@@ -132,24 +133,24 @@ def test_our_data(mode):
     plt.legend()
     plt.show()
 
-def test_data_from_article(mode):
+def test_data_from_article(plastic, mode):
     [wave, transm] = new_format("PVC-as-received-test(2).csv")
     transmittance = False
     percentage = True
     transm = absorbance_converter(transm, transmittance, percentage)
-    Carbonyl_Index = Index(wave, transm, mode)
+    Carbonyl_Index = Index(wave, transm, mode, plastic)
     print(str(Carbonyl_Index.CI) + " as received")
     [wave2, transm2] = new_format("PVC-16-days-test.csv")
     transmittance = False
     percentage = True
     transm2 = absorbance_converter(transm2, transmittance, percentage)
-    Carbonyl_Index2 = Index(wave2, transm2, mode)
+    Carbonyl_Index2 = Index(wave2, transm2, mode, plastic)
     print(str(Carbonyl_Index2.CI) + " 16 days")
     [wave3, transm3] = new_format("PVC-7-days-test.csv")
     transmittance = False
     percentage = True
     transm3 = absorbance_converter(transm3, transmittance, percentage)
-    Carbonyl_Index3 = Index(wave3, transm3, mode)
+    Carbonyl_Index3 = Index(wave3, transm3, mode, plastic)
     print(str(Carbonyl_Index3.CI) + " 7 days")
     print(round(Carbonyl_Index3.CI, 5))
     plt.figure()
@@ -171,15 +172,15 @@ def main():
     # test_integration()
 
     # finds carbonyl index using our data and intervals from GIVEN article
-    test_our_data(2)
+    test_our_data("PVC_carboxyl", "PVC_1718_1330")
 
     # finds carbonyl index using our data and intervals from FOUND article
     # test_our_data(4)
 
     # finds carbonyl index using data from article and intervals from GIVEN article
-    # test_data_from_article(2)
+    # test_data_from_article(4)
 
     # finds carbonyl index using data from article and intervals from FOUND article
-    # test_data_from_article(4)
+    #test_data_from_article(4)
 if  __name__ == "__main__":
     main()
