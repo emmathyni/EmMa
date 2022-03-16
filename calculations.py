@@ -9,8 +9,8 @@ class Index():
         self.mode = mode
         self.plastic = plastic
         self.step = self.wave[1]-self.wave[0]
-        #areas = self.uneven_integrator()
-        #self.CI = areas[0]/areas[1]
+        areas = self.uneven_integrator()
+        self.CI = areas[0]/areas[1]
 
     def integrator(self):
         """Integrates two peaks using trapezoidal integration depending on mode, returns list with two areas"""

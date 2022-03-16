@@ -4,6 +4,49 @@ from calculations import*
 import matplotlib.pyplot as plt
 import math
 from dict import*
+from tkinter import*
+from tkinter import ttk, filedialog
+
+def user_format(file):
+    wave = []
+    values = []
+    for line in file:
+        line.strip()
+        x = re.findall("^\d,.*?,", line)
+        y = re.findall(",\d,.*?$", line)
+        x = x[0][:-1]
+        y = y[0][1:]
+        x = re.sub(",", ".", x)
+        y = re.sub(",", ".", y)
+        x_n = int(x[-1])
+        y_n = int(y[-1])
+        resx = re.search("e", x)
+        resy = re.search("e", y)
+        x_e = resx.start()
+        y_e = resy.start()
+        x = float(x[:x_e]) * 10 ** x_n
+        y = float(y[:y_e]) * 10 ** y_n
+        wave.append(x)
+        values.append(y)
+    # Check for zeroes
+    counter = 0
+    for i in range(len(values)):
+        if values[i] == float(0):
+            counter += 1
+        else:
+            break
+    counter_high = len(values)
+    for i in range(len(values) - 1, 0, -1):
+        if values[i] == float(0):
+            counter_high -= 1
+        else:
+            break
+    wave = wave[counter:counter_high]
+    values = values[counter:counter_high]
+    print("hej")
+
+    return wave, values
+
 
 def new_format(name):
     """Converts from format given by automeris.io"""
@@ -72,7 +115,6 @@ def absorbance_converter(values, transmittance, percentage):
     # relation between transmittance and absorbance is A = -log_10(T) when T is between 0 and 1
     # when T is percentage relation is A = log_10(100) - log_10(T)
     # taken from https://www.edinst.com/blog/the-beer-lambert-law/
-
     # check to determine type of data in values
     if transmittance and percentage:
         for i in range(len(values)):
@@ -94,8 +136,16 @@ def find_carbonyl_index(wavenr_list, abso_list, mode):
 
 def user_interaction():
     """Takes in the arguments wanted from the user and returns these"""
-    file = input("Please enter file name: ")
-    pass
+    window = Tk()
+    window.update()
+    window.geometry("400x350")
+    label = Label(text="Welcome to EmMa, choose a csv-file to calculate carbonyl-index", bg="#acf7f8", fg="black")
+    label.pack()
+    label = Label(window, text="Click the Button to browse the Files", font='Georgia 13')
+    label.pack(pady=10)
+    ttk.Button(window, text="Browse", command=test_user_interface).pack(pady=20)
+    window.mainloop()
+
 
 def plot(abso, wave):
     plt.plot(wave, abso)
@@ -115,12 +165,24 @@ def test_FWHM():
     test = Index(x, y, "sin", "test")
     test.try_FWHM()
 
-    [wave, transm] = format("PVCfiber.CSV")
+    [wave, transm] = format("pvc-t0-5th.CSV")
     transmittance = True
     percentage = True
     transm = absorbance_converter(transm, transmittance, percentage)
     Carbonyl_Index = Index(wave, transm, "PVC_1718_1330", "PVC_carbonyl")
     Carbonyl_Index.try_FWHM()
+
+def test_user_interface():
+    file = filedialog.askopenfile(mode='r', filetypes=[('CSV files', '*.csv')])
+    [wave, transm] = user_format(file)
+    transmittance = True
+    percentage = True
+    transm = absorbance_converter(transm, transmittance, percentage)
+    Carbonyl_Index = Index(wave, transm, "PVC_1718_1330", "PVC_carbonyl")
+    print(Carbonyl_Index.CI)
+    Carbonyl_Index.try_FWHM()
+
+
 
 def test_our_data(plastic, mode):
     [wave, transm] = format("PVCfiber.CSV")
@@ -181,10 +243,11 @@ def test_data_from_article(plastic, mode):
 
 
 def main():
+    user_interaction()
     # try to integrate sin(x) from
     # test_integration()
 
-    test_FWHM()
+    #test_FWHM()
 
     # finds carbonyl index using our data and intervals from GIVEN article
     #test_our_data("PVC_carbonyl", "PVC_1718_1330")
