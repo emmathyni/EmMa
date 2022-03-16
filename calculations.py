@@ -47,7 +47,9 @@ class Index():
 
     def try_FWHM(self):
         """Function to try FWHM"""
-        self.FWHM(self.wave, self.abso)
+        indexes = self._find_index()
+        [new_wave1, new_abso1, new_wave2, new_abso2] = self._correct_baseline(indexes)
+        self.FWHM(new_wave1, new_abso1)
 
     def FWHM(self, corrected_x, corrected_y):
         """Returns full width at half maximum as float"""
@@ -56,25 +58,32 @@ class Index():
         print(half_max)
         #print(np.add(corrected_y, -half_max))
         signs = np.sign(np.add(corrected_y, -half_max))
-        intersect = []
+        intersect_x = []
+        intersect_y = []
         for i in range(len(signs)-1):
             if signs[i] == 0:
-                intersect.append(corrected_x[i])
+                intersect_x.append(corrected_x[i])
+                intersect_y.append(corrected_y[i])
             elif np.sign(signs[i-1]) != np.sign(signs[i]):
-                intersect.append(corrected_x[i])
-        print(intersect)
-        kommafem = [0.5 for i in range(len(intersect))]
+                if abs(corrected_y[i-1]-half_max) < abs(corrected_y[i]-half_max):
+                    intersect_x.append(corrected_x[i-1])
+                    intersect_y.append(corrected_y[i-1])
+                else:
+                    intersect_x.append(corrected_x[i])
+                    intersect_y.append(corrected_y[i])
+        half_vect = [half_max for i in range(len(intersect_x))]
         plt.plot(corrected_x, corrected_y)
-        plt.plot(intersect, kommafem, '*')
+        plt.plot(intersect_x, half_vect, 'r*')
+        plt.plot(intersect_x, intersect_y, 'g*')
         plt.show()
-        FWHM = max(intersect)-min(intersect)
+        FWHM = max(intersect_x)-min(intersect_x)
         print(FWHM)
 
 
     def _correct_baseline(self, index):
         """Returns four lists with absorbance with corrected baseline (line), if negative sets it as zero"""
-        plt.figure()
-        plt.plot(self.wave, self.abso, label="whole")
+        #plt.figure()
+        #plt.plot(self.wave, self.abso, label="whole")
         k1 = (self.abso[index[1]]-self.abso[index[0]])/(self.wave[index[1]]-self.wave[index[0]])
         m1 = self.abso[index[0]]-k1*self.wave[index[0]]
         new_abso1 = []
@@ -85,7 +94,7 @@ class Index():
             else:
                 new_abso1.append(0)
             new_wave1.append(self.wave[i])
-        plt.plot(new_wave1, new_abso1, label="num")
+        #plt.plot(new_wave1, new_abso1, label="num")
         k2 = (self.abso[index[3]] - self.abso[index[2]]) / (self.wave[index[3]] - self.wave[index[2]])
         m2 = self.abso[index[2]] - k2 * self.wave[index[2]]
         new_abso2 = []
@@ -98,9 +107,9 @@ class Index():
                 new_abso2.append(0)
             new_wave2.append(self.wave[i])
             list.append(self.abso[i])
-        plt.plot(new_wave2, new_abso2, label="denom")
-        plt.title("ref")
-        plt.legend()
+        #plt.plot(new_wave2, new_abso2, label="denom")
+        #plt.title("ref")
+        #plt.legend()
         return new_wave1, new_abso1, new_wave2, new_abso2
 
 

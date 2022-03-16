@@ -4,7 +4,7 @@ test_integration_dict = {"sin": [0, math.pi, math.pi, 2 * math.pi]}
 correctness_dict = {"correct_960": [1286, 1398, 900, 1000],
                     "correct_2721": [1286, 1398, 2700, 2750]}
 
-PVC_carboxyl_dict = {"PVC_1620_960": [1510, 1746, 900, 1000],
+PVC_carbonyl_dict = {"PVC_1620_960": [1510, 1746, 900, 1000],
                      "PVC_1620_1330": [1510, 1746, 1286, 1398],
                      "PVC_1620_2721": [1510, 1746, 2700, 2750],
                      "PVC_1718_960": [1650, 1850, 900, 1000],
@@ -20,5 +20,5 @@ PVC_vinyl_dict = {"PVC_600_960": [550, 650, 900, 1000],
 
 plastic_dict = {"test": test_integration_dict,
                 "correctness": correctness_dict,
-                "PVC_carboxyl": PVC_carboxyl_dict,
+                "PVC_carbonyl": PVC_carbonyl_dict,
                 "PVC_vinyl": PVC_vinyl_dict}

@@ -111,9 +111,16 @@ def test_integration():
 
 def test_FWHM():
     x = [0.002 * math.pi * i for i in range(-10, 1050)]
-    y = [(math.sin(elem)) for elem in x]
+    y = [(math.sin(elem))**2 for elem in x]
     test = Index(x, y, "sin", "test")
     test.try_FWHM()
+
+    [wave, transm] = format("PVCfiber.CSV")
+    transmittance = True
+    percentage = True
+    transm = absorbance_converter(transm, transmittance, percentage)
+    Carbonyl_Index = Index(wave, transm, "PVC_1718_1330", "PVC_carbonyl")
+    Carbonyl_Index.try_FWHM()
 
 def test_our_data(plastic, mode):
     [wave, transm] = format("PVCfiber.CSV")
@@ -180,7 +187,7 @@ def main():
     test_FWHM()
 
     # finds carbonyl index using our data and intervals from GIVEN article
-    #test_our_data("PVC_carboxyl", "PVC_1718_1330")
+    #test_our_data("PVC_carbonyl", "PVC_1718_1330")
 
     # finds carbonyl index using our data and intervals from FOUND article
     # test_our_data(4)
