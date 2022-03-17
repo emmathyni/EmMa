@@ -11,6 +11,7 @@ def user_format(file):
     wave = []
     values = []
     for line in file:
+        print(line)
         line.strip()
         x = re.findall("^\d,.*?,", line)
         y = re.findall(",\d,.*?$", line)
@@ -29,6 +30,7 @@ def user_format(file):
         wave.append(x)
         values.append(y)
     # Check for zeroes
+    file.close()
     counter = 0
     for i in range(len(values)):
         if values[i] == float(0):
@@ -107,8 +109,6 @@ def format(name):
     return wave, values
 
 
-
-
 def absorbance_converter(values, transmittance, percentage):
     """Converts values to absorbance if needed. Takes three arguments, the list values to be converted,
     a boolean value for transmittance and percentage. Returns a list with absorbance values"""
@@ -137,7 +137,6 @@ def find_carbonyl_index(wavenr_list, abso_list, mode):
 def user_interaction():
     """Takes in the arguments wanted from the user and returns these"""
     window = Tk()
-    window.update()
     window.geometry("400x350")
     label = Label(text="Welcome to EmMa, choose a csv-file to calculate carbonyl-index", bg="#acf7f8", fg="black")
     label.pack()
@@ -145,7 +144,6 @@ def user_interaction():
     label.pack(pady=10)
     ttk.Button(window, text="Browse", command=test_user_interface).pack(pady=20)
     window.mainloop()
-
 
 def plot(abso, wave):
     plt.plot(wave, abso)
@@ -173,15 +171,15 @@ def test_FWHM():
     Carbonyl_Index.try_FWHM()
 
 def test_user_interface():
-    file = filedialog.askopenfile(mode='r', filetypes=[('CSV files', '*.csv')])
-    [wave, transm] = user_format(file)
-    transmittance = True
-    percentage = True
-    transm = absorbance_converter(transm, transmittance, percentage)
-    Carbonyl_Index = Index(wave, transm, "PVC_1718_1330", "PVC_carbonyl")
-    print(Carbonyl_Index.CI)
-    Carbonyl_Index.try_FWHM()
-
+    # do not plot things using matplotlib in this function!
+    file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
+    if file:
+        [wave, transm] = user_format(file)
+        transmittance = True
+        percentage = True
+        transm = absorbance_converter(transm, transmittance, percentage)
+        Carbonyl_Index = Index(wave, transm, "PVC_1718_1330", "PVC_carbonyl")
+        print(Carbonyl_Index.CI)
 
 
 def test_our_data(plastic, mode):
