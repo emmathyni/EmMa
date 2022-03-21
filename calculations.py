@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from dict import*
 import numpy as np
 class Index():
-    def __init__(self, wave_list, abso_list, mode, plastic):
+    def __init__(self, wave_list, abso_list, plastic, interval):
         self.wave = wave_list
         self.abso = abso_list
         self.interval = interval
@@ -113,7 +113,8 @@ class Index():
 
 
 def binsearch(number, list, high, low):
-    """Binary search of number in list. Returns index of element closest to number"""
+    """Binary search of number in list. Returns index of element closest to number. Cannot find first
+    and last element in list, returns None in that case"""
     mid = (high + low) // 2
     if number < list[mid+1] and number > list[mid-1]:
         minimum_dist = min(abs(list[mid-1]-number), abs(list[mid]-number), abs(list[mid+1]-number))
