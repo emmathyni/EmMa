@@ -6,37 +6,24 @@ class Index():
     def __init__(self, wave_list, abso_list, mode, plastic):
         self.wave = wave_list
         self.abso = abso_list
-        self.mode = mode
+        self.interval = interval
         self.plastic = plastic
         self.step = self.wave[1]-self.wave[0]
         areas = self.uneven_integrator()
         self.CI = areas[0]/areas[1]
 
-    def integrator(self):
-        """Integrates two peaks using trapezoidal integration depending on mode, returns list with two areas"""
+    def integrate(self):
         indexes = self._find_index()
-        num_result = 0
-        for i in range(indexes[0], indexes[1]+1):
-            if i == indexes[0] or i == indexes[1]:
-                num_result += self.abso[i]
-            else:
-                num_result += 2 * self.abso[i]
-        num_result = 0.5*self.step*num_result
+        corrected_data = self._correct_baseline(indexes)
+        self._uneven_integrator(self, corrected_data)
 
-        denom_result = 0
-        for i in range(indexes[2], indexes[3]+1):
-            if i == indexes[2] or i == indexes[3]:
-                denom_result += self.abso[i]
-            else:
-                denom_result += 2*self.abso[i]
-        denom_result = 0.5*self.step*denom_result
-
-        return [num_result, denom_result]
-
-    def uneven_integrator(self):
+    def uneven_integrator(self, corrected_data):
         """Integration using trapezoidal method with inconsistent step length"""
-        indexes = self._find_index()
-        [new_wave1, new_abso1, new_wave2, new_abso2] = self._correct_baseline(indexes)
+        new_wave1 = corrected_data[0]
+        new_abso1 = corrected_data[1]
+        new_wave2 = corrected_data[2]
+        new_abso2 = corrected_data[3]
+
         num_result = 0
         for i in range(len(new_abso1)-1):
             num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * (new_wave1[i + 1] - new_wave1[i])
@@ -116,7 +103,7 @@ class Index():
     def _find_index(self):
         """Finds the index in the list of number using binary search. Returns the index of the n"""
         dictionary = plastic_dict[self.plastic]
-        numbers = dictionary[self.mode]
+        numbers = dictionary[self.interval]
         num_first = binsearch(numbers[0], self.wave, len(self.wave), 0)
         num_last = binsearch(numbers[1], self.wave, len(self.wave), 0)
         denom_first = binsearch(numbers[2], self.wave, len(self.wave), 0)
