@@ -2,6 +2,7 @@
 
 from calculations import *
 import numpy as np
+import matplotlib.pyplot as plt
 
 def t_binsearch():
     """Test cases for binary search algorithm. Returns False if any testcases fail and True otherwise"""
@@ -33,9 +34,35 @@ def test_integration():
         return False
 
     y2 = [math.exp(elem) for elem in x]
-    C2 = Index(x, y2, "test", "exp")
-    if not C2.CI-(np.e-1)/((np.e)**3-(np.e)**2) < 0.0001:
+    C2 = PlasticIndex(x, y2, "test", "exp")
+    index2 = C2._find_index()
+    corr_data2 = [x[index2[0]:index2[1] + 1], y2[index2[0]:index2[1] + 1], x[index2[2]:index2[3] + 1], y2[index2[2]:index2[3] + 1]]
+    a, b = C2.uneven_integrator(corr_data2)
+    if not a/b -(np.e-1)/((np.e)**3-(np.e)**2) < 0.001: # error smaller than 0.001 but bigger than 0.0001
         return False
+    else:
+        return True
+
+
+def t_fwhm():
+    """Test case for fwhm, returns true if all cases are passed"""
+    x = [0.1*i for i in range(-100, 150+1)]
+    y = []
+    for i in range(len(x)):
+        if x[i] < 5:
+            y.append(x[i])
+        else:
+            y.append(10-x[i])
+    expected_fw = 7.5-2.5
+    C =PlasticIndex(x, y, "test", "FWHM")
+    if C.FWHM(x, y) == expected_fw:
+        return True
+    else:
+        return False
+
+
+
+
 
 
 
@@ -48,6 +75,7 @@ def test_integration():
 def main():
     assert t_binsearch() == True
     assert test_integration() == True
+    assert t_fwhm() == True
 
 
 

@@ -2,7 +2,7 @@ import math
 import matplotlib.pyplot as plt
 from dict import*
 import numpy as np
-class Index():
+class PlasticIndex():
     def __init__(self, wave_list, abso_list, plastic, interval):
         self.wave = wave_list
         self.abso = abso_list
@@ -13,7 +13,8 @@ class Index():
         self.index = 0
 
 
-    def integrate(self):
+    def calculate_index(self):
+        """Calculates the index and sets self.index to this"""
         indexes = self._find_index()
         corrected_data = self._correct_baseline(indexes)
         num, denom = self.uneven_integrator(self, corrected_data)
@@ -35,7 +36,7 @@ class Index():
             denom_result += 0.5 * (new_abso2[i] + new_abso2[i + 1]) * (new_wave2[i + 1] - new_wave2[i])
         return [num_result, denom_result]
 
-    def try_FWHM(self):
+    def calculate_FWHM(self):
         """Function to try FWHM"""
         indexes = self._find_index()
         [new_wave1, new_abso1, new_wave2, new_abso2] = self._correct_baseline(indexes)
@@ -45,7 +46,7 @@ class Index():
         """Returns full width at half maximum as float"""
 
         half_max = max(corrected_y)/2
-        print(half_max)
+        # print(half_max)
         #print(np.add(corrected_y, -half_max))
         signs = np.sign(np.add(corrected_y, -half_max))
         intersect_x = []
