@@ -87,14 +87,6 @@ def main():
     test_our_data("test", "manual_peaks_CI")
     # test_data_from_article("PVC_carbonyl", "PVC_1718_1330")
 
-    # finds carbonyl index using our data and intervals from FOUND article
-    # test_our_data(4)
-
-    # finds carbonyl index using data from article and intervals from GIVEN article
-    # test_data_from_article(4)
-
-    # finds carbonyl index using data from article and intervals from FOUND article
-    # test_data_from_article(4)
 
 if __name__ == "__main__":
     main()

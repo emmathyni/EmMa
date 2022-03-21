@@ -46,7 +46,6 @@ def user_format(file):
             break
     wave = wave[counter:counter_high]
     values = values[counter:counter_high]
-    print("hej")
 
     return wave, values
 
@@ -70,7 +69,7 @@ def new_format(name):
     return wave, values
 
 def format(name):
-    """Opens and turns csv-file into usable format, returns two numpyarrays (just use lists instead, is already included)"""
+    """Converts data from csv file from nicolet iS10. Returns wave and value lists"""
     file = open(name)
     wave = []
     values = []
