@@ -16,8 +16,8 @@ class PlasticIndex():
     def calculate_index(self):
         """Calculates the index and sets self.index to this"""
         indexes = self._find_index()
-        corrected_data = self._correct_baseline(indexes)
-        num, denom = self.uneven_integrator(self, corrected_data)
+        corrected_data = self.correct_two_peaks(indexes)
+        num, denom = self.uneven_integrator(corrected_data)
         self.index = num/denom
 
 
@@ -46,10 +46,7 @@ class PlasticIndex():
 
     def FWHM(self, corrected_x, corrected_y):
         """Returns full width at half maximum as float"""
-
         half_max = max(corrected_y)/2
-        # print(half_max)
-        #print(np.add(corrected_y, -half_max))
         signs = np.sign(np.add(corrected_y, -half_max))
         intersect_x = []
         intersect_y = []
@@ -64,7 +61,7 @@ class PlasticIndex():
                 else:
                     intersect_x.append(corrected_x[i])
                     intersect_y.append(corrected_y[i])
-        half_vect = [half_max for i in range(len(intersect_x))]
+        # half_vect = [half_max for i in range(len(intersect_x))]
         # plt.plot(corrected_x, corrected_y)
         # plt.plot(intersect_x, half_vect, 'r*')
         # plt.plot(intersect_x, intersect_y, 'g*')
