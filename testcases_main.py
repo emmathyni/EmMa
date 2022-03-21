@@ -50,16 +50,19 @@ def test_our_data(plastic, interval):
     transm = absorbance_converter(transm, transmittance, percentage)
     transm2 = absorbance_converter(transm2, transmittance, percentage)
     transm3 = absorbance_converter(transm3, transmittance, percentage)
-    Carbonyl_Index = Index(wave, transm, plastic, interval)
-    Carbonyl_Index2 = Index(wave2, transm2, plastic, interval)
-    Carbonyl_Index3 = Index(wave3, transm3, plastic, interval)
-    print(Carbonyl_Index.CI)
-    print(Carbonyl_Index2.CI)
-    print(Carbonyl_Index3.CI)
+    CI = PlasticIndex(wave, transm, plastic, interval)
+    CI2 = PlasticIndex(wave2, transm2, plastic, interval)
+    CI3 = PlasticIndex(wave3, transm3, plastic, interval)
+    CI.calculate_index()
+    CI2.calculate_index()
+    CI3.calculate_index()
+    print(CI.index)
+    print(CI2.index)
+    print(CI3.index)
     plt.figure()
-    plt.plot(wave, transm, label="fiber CI=" + str(round(Carbonyl_Index.CI, 5)))
-    plt.plot(wave2, transm2, label="accumulated CI=" + str(round(Carbonyl_Index2.CI, 5)))
-    plt.plot(wave3, transm3, label="as received CI=" + str(round(Carbonyl_Index3.CI, 5)))
+    plt.plot(wave, transm, label="fiber CI=" + str(round(CI.index, 5)))
+    plt.plot(wave2, transm2, label="accumulated CI=" + str(round(CI2.index, 5)))
+    plt.plot(wave3, transm3, label="as received CI=" + str(round(CI3.index, 5)))
     ax = plt.gca()
     ax.invert_xaxis()
     plt.legend()
@@ -96,15 +99,10 @@ def test_data_from_article(plastic, mode):
     plt.show()
 
 def main():
-    print("hej")
     #[wave, transm] = user_interaction()
-    # try to integrate sin(x) from
-    # test_integration()
-
-    # test_FWHM()
-
+    
     # finds carbonyl index using our data and intervals from GIVEN article
-    test_our_data("PVC_carbonyl", "PVC_1718_1330")
+    test_our_data("test", "manual_peaks_CI")
     # test_data_from_article("PVC_carbonyl", "PVC_1718_1330")
 
     # finds carbonyl index using our data and intervals from FOUND article

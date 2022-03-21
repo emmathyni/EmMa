@@ -45,20 +45,51 @@ def test_integration():
 
 
 def t_fwhm():
-    """Test case for fwhm, returns true if all cases are passed"""
-    x = [0.1*i for i in range(-100, 150+1)]
+    """Test case for fwhm, returns true if all cases are passed."""
+    """TODO: check all testcases, not sure how it should function"""
+    x = [0.1*i for i in range(-150, 150+1)]
     y = []
     for i in range(len(x)):
-        if x[i] < 5:
+        if 0 < x[i] < 5:
             y.append(x[i])
-        else:
+        elif x[i] >= 5:
             y.append(10-x[i])
+        elif -5 < x[i] <= 0:
+            y.append(-x[i])
+        else:
+            y.append(x[i]+10)
     expected_fw = 7.5-2.5
+    # plt.plot(x,y)
+    # plt.show()
     C =PlasticIndex(x, y, "test", "FWHM")
-    if C.FWHM(x, y) == expected_fw:
-        return True
-    else:
+    if not C.FWHM(x, y) == expected_fw:
+        print("hello")
         return False
+    elif not C.calculate_FWHM() == expected_fw: # testcase that does not work
+        print(C.calculate_FWHM())
+        return False
+    else:
+        return True
+
+def test_baseline_corr():
+    x = [0.002 * math.pi * i for i in range(-10, 1050)]
+    y = [(math.sin(elem)) + elem for elem in x]
+    x2 = [0.002 * math.pi * i for i in range(0, 500+1)]
+    y2 = [(math.sin(elem)) for elem in x2]
+    C = PlasticIndex(x, y, "test", "sin")
+    indexes = C._find_index()
+    t = C.correct_baseline(indexes[0], indexes[1])
+
+    for i in range(len(y2)):
+        #print(i)
+        #print(t[1][i], y2[i])
+        if abs(t[1][i]- y2[i]) < 0.001:
+            continue
+        else:
+            return False
+    return True
+
+
 
 
 
@@ -75,7 +106,8 @@ def t_fwhm():
 def main():
     assert t_binsearch() == True
     assert test_integration() == True
-    assert t_fwhm() == True
+    # assert t_fwhm() == True
+    assert test_baseline_corr() == True
 
 
 

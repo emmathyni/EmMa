@@ -39,8 +39,10 @@ class PlasticIndex():
     def calculate_FWHM(self):
         """Function to try FWHM"""
         indexes = self._find_index()
-        [new_wave1, new_abso1, new_wave2, new_abso2] = self._correct_baseline(indexes)
-        self.FWHM(new_wave1, new_abso1)
+        [new_wave1, new_abso1, new_wave2, new_abso2] = self.correct_two_peaks(indexes)
+        fwhm1 = self.FWHM(new_wave1, new_abso1)
+        fwhm2 = self.FWHM(new_wave2, new_abso2)
+        return fwhm1, fwhm2
 
     def FWHM(self, corrected_x, corrected_y):
         """Returns full width at half maximum as float"""
@@ -71,36 +73,28 @@ class PlasticIndex():
         return FWHM
 
 
-    def _correct_baseline(self, index):
-        """Returns four lists with absorbance with corrected baseline (line), if negative sets it as zero"""
+    def correct_baseline(self, index1, index2):
+        """Returns list with corrected baseline abso from index1 to index2"""
         #plt.figure()
         #plt.plot(self.wave, self.abso, label="whole")
-        k1 = (self.abso[index[1]]-self.abso[index[0]])/(self.wave[index[1]]-self.wave[index[0]])
-        m1 = self.abso[index[0]]-k1*self.wave[index[0]]
-        new_abso1 = []
-        new_wave1 = []
-        for i in range(index[0], index[1]+1):
+        k1 = (self.abso[index1]-self.abso[index2])/(self.wave[index1]-self.wave[index2])
+        m1 = self.abso[index1]-k1*self.wave[index1]
+        new_abso = []
+        for i in range(index1, index2+1):
             if self.abso[i]-k1*self.wave[i]-m1>0:
-                new_abso1.append(self.abso[i]-k1*self.wave[i]-m1)
+                new_abso.append(self.abso[i]-k1*self.wave[i]-m1)
             else:
-                new_abso1.append(0)
-            new_wave1.append(self.wave[i])
-        #plt.plot(new_wave1, new_abso1, label="num")
-        k2 = (self.abso[index[3]] - self.abso[index[2]]) / (self.wave[index[3]] - self.wave[index[2]])
-        m2 = self.abso[index[2]] - k2 * self.wave[index[2]]
-        new_abso2 = []
-        list = []
-        new_wave2 = []
-        for i in range(index[2], index[3]+1):
-            if self.abso[i] - k2 * self.wave[i] - m2 > 0:
-                new_abso2.append(self.abso[i] - k2 * self.wave[i] - m2)
-            else:
-                new_abso2.append(0)
-            new_wave2.append(self.wave[i])
-            list.append(self.abso[i])
-        #plt.plot(new_wave2, new_abso2, label="denom")
-        #plt.title("ref")
-        #plt.legend()
+                new_abso.append(0)
+        # plt.plot(self.wave[index1:index2+1], new_abso)
+        # plt.show()
+
+        return self.wave[index1:index2+1], new_abso
+
+    def correct_two_peaks(self, index):
+        """Returns four lists with absorbance with corrected baseline (line), if negative sets it as zero"""
+        new_wave1, new_abso1 = self.correct_baseline(index[0], index[1])
+        new_wave2, new_abso2 = self.correct_baseline(index[2], index[3])
+
         return new_wave1, new_abso1, new_wave2, new_abso2
 
 
