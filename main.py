@@ -142,7 +142,8 @@ def user_interaction():
     label.pack()
     label = Label(window, text="Click the Button to browse the Files", font='Georgia 13')
     label.pack(pady=10)
-    ttk.Button(window, text="Browse", command=test_user_interface).pack(pady=20)
+    [wave,transm] = ttk.Button(window, text="Browse", command=test_user_interface).pack(pady=20)
+    print("hej", wave)
     window.mainloop()
 
 def plot(abso, wave):
@@ -180,6 +181,7 @@ def test_user_interface():
         transm = absorbance_converter(transm, transmittance, percentage)
         Carbonyl_Index = Index(wave, transm, "PVC_1718_1330", "PVC_carbonyl")
         print(Carbonyl_Index.CI)
+        return wave, transm
 
 
 def test_our_data(plastic, mode):
@@ -241,7 +243,7 @@ def test_data_from_article(plastic, mode):
 
 
 def main():
-    user_interaction()
+    [wave,transm] = user_interaction()
     # try to integrate sin(x) from
     # test_integration()
 
