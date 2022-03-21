@@ -8,14 +8,17 @@ class Index():
         self.abso = abso_list
         self.interval = interval
         self.plastic = plastic
-        self.step = self.wave[1]-self.wave[0]
-        areas = self.uneven_integrator()
-        self.CI = areas[0]/areas[1]
+        # self.step = self.wave[1]-self.wave[0]
+        # areas = self.uneven_integrator()
+        self.index = 0
+
 
     def integrate(self):
         indexes = self._find_index()
         corrected_data = self._correct_baseline(indexes)
-        self._uneven_integrator(self, corrected_data)
+        num, denom = self.uneven_integrator(self, corrected_data)
+        self.index = num/denom
+
 
     def uneven_integrator(self, corrected_data):
         """Integration using trapezoidal method with inconsistent step length"""
@@ -59,12 +62,12 @@ class Index():
                     intersect_x.append(corrected_x[i])
                     intersect_y.append(corrected_y[i])
         half_vect = [half_max for i in range(len(intersect_x))]
-        plt.plot(corrected_x, corrected_y)
-        plt.plot(intersect_x, half_vect, 'r*')
-        plt.plot(intersect_x, intersect_y, 'g*')
-        plt.show()
+        # plt.plot(corrected_x, corrected_y)
+        # plt.plot(intersect_x, half_vect, 'r*')
+        # plt.plot(intersect_x, intersect_y, 'g*')
+        # plt.show()
         FWHM = max(intersect_x)-min(intersect_x)
-        print(FWHM)
+        return FWHM
 
 
     def _correct_baseline(self, index):

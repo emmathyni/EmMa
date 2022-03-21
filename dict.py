@@ -1,6 +1,7 @@
 import math
 test_integration_dict = {"sin": [0, math.pi, math.pi, 2 * math.pi],
-                         "exp": [0, 1, 2, 3]}
+                         "exp": [0, 1, 2, 3],
+                         "FWHM": [0, 5, 5, 10]}
 
 correctness_dict = {"correct_960": [1286, 1398, 900, 1000],
                     "correct_2721": [1286, 1398, 2700, 2750]}

@@ -25,8 +25,11 @@ def test_integration():
     If result is close to one integration method works"""
     x = [0.002*math.pi*i for i in range(-10, 1050)]
     y = [(math.sin(elem))**2 for elem in x]
-    Carb = Index(x, y, "test", "sin")
-    if not Carb.CI-1 < 0.0001:  # error is smaller than 0.0001
+    Carb = PlasticIndex(x, y, "test", "sin")
+    index = Carb._find_index()
+    corr_data = [x[index[0]:index[1]+1], y[index[0]:index[1]+1], x[index[2]:index[3]+1], y[index[2]:index[3]+1]]
+    c, d= Carb.uneven_integrator(corr_data)
+    if not c/d-1 < 0.0001:  # error is smaller than 0.0001
         return False
 
     y2 = [math.exp(elem) for elem in x]
