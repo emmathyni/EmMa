@@ -76,10 +76,14 @@ def test_data_from_article(plastic, mode):
     plt.title("Absorbance spectra for PVC from article")
     plt.show()
 
+
+
+
 def main():
+
+
+    exit()
     #[wave, transm] = user_interaction()
-    
-    # finds carbonyl index using our data and intervals from GIVEN article
     test_our_data("test", "manual_peaks_CI")
     # test_data_from_article("PVC_carbonyl", "PVC_1718_1330")
 

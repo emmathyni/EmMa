@@ -8,6 +8,7 @@ from tkinter import*
 from tkinter import ttk, filedialog
 
 def user_format(file):
+    """Used for GUI, takes a csv file as argument. Returns wave and value list"""
     wave = []
     values = []
     for line in file:
@@ -51,7 +52,8 @@ def user_format(file):
 
 
 def new_format(name):
-    """Converts from format given by automeris.io"""
+    """Converts from format given by automeris.io, used for data taken from article. Use if not given
+    data with scientific notation. Takes a name as argument, returns wave and value lists"""
     file = open(name)
     wave = []
     values = []
@@ -114,7 +116,7 @@ def absorbance_converter(values, transmittance, percentage):
     a boolean value for transmittance and percentage. Returns a list with absorbance values"""
     # relation between transmittance and absorbance is A = -log_10(T) when T is between 0 and 1
     # when T is percentage relation is A = log_10(100) - log_10(T)
-    # taken from https://www.edinst.com/blog/the-beer-lambert-law/
+    # taken from https://mmrc.caltech.edu/FTIR/Nicolet/Nicolet%20manuals/Omnic%20Users%20Manual%207.3.pdf page 253
     # check to determine type of data in values
     if transmittance and percentage:
         for i in range(len(values)):
@@ -130,10 +132,6 @@ def absorbance_converter(values, transmittance, percentage):
         return values
 
 
-def find_carbonyl_index(wavenr_list, abso_list, mode):
-    """Start calculation of indexes. Mode indicates which index wanted(?). Prints wanted indices"""
-    pass
-
 def user_interaction():
     """Takes in the arguments wanted from the user and returns these"""
     window = Tk()
@@ -145,12 +143,6 @@ def user_interaction():
     [wave,transm] = ttk.Button(window, text="Browse", command=test_user_interface).pack(pady=20)
     print("hej", wave)
     window.mainloop()
-
-def plot(abso, wave):
-    plt.plot(wave, abso)
-    plt.show()
-
-
 
 
 def main():
