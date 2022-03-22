@@ -41,9 +41,16 @@ def test_our_data(plastic, interval):
     plt.plot(wave, transm, label="fiber CI=" + str(round(CI.index, 5)))
     plt.plot(wave2, transm2, label="accumulated CI=" + str(round(CI2.index, 5)))
     plt.plot(wave3, transm3, label="as received CI=" + str(round(CI3.index, 5)))
+    plt.axvline(x=940, color="red")
+    plt.axvline(x=980, color="red")
+    plt.axvline(x=1286, color="black")
+    plt.axvline(x=1398, color="black")
     ax = plt.gca()
     ax.invert_xaxis()
     plt.legend()
+    plt.ylabel('Absorbance')
+    plt.xlabel('Wavenumber [cm-1]')
+    plt.title('Absorbance spectra from our data with peaks from article')
     plt.show()
 
 def test_data_from_article(plastic, mode):
@@ -82,7 +89,7 @@ def test_data_from_article(plastic, mode):
 def main():
 
 
-    exit()
+
     #[wave, transm] = user_interaction()
     test_our_data("test", "manual_peaks_CI")
     # test_data_from_article("PVC_carbonyl", "PVC_1718_1330")
