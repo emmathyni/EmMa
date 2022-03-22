@@ -91,7 +91,7 @@ def main():
 
 
     #[wave, transm] = user_interaction()
-    test_our_data("test", "manual_peaks_CI")
+    test_our_data("correctness", "correct_960")
     # test_data_from_article("PVC_carbonyl", "PVC_1718_1330")
 
 

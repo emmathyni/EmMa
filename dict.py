@@ -3,11 +3,12 @@ test_integration_dict = {"sin": [0, math.pi, math.pi, 2 * math.pi],
                          "exp": [0, 1, 2, 3],
                          "FWHM": [-10, 0, 0, 10],
                          "manual_peaks_ref": [940, 980, 1290, 1340],
-                         "manual_peaks_CI": [1525, 1700, 1290, 1340]}
+                         "manual_peaks_CI": [1525, 1700, 1290, 1340],
+                         "manual_peaks_CI2": [1525, 1700, 940, 980]}
 
 
 
-correctness_dict = {"correct_960": [1286, 1398, 900, 1000],
+correctness_dict = {"correct_960": [1286, 1398, 940, 980],
                     "correct_2721": [1286, 1398, 2700, 2750]}
 
 PVC_carbonyl_dict = {"PVC_1620_960": [1510, 1746, 900, 1000],
