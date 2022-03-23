@@ -6,13 +6,15 @@ import math
 from dict import*
 from tkinter import*
 from tkinter import ttk, filedialog
+from testcases_main import*
+from App import*
 
 def user_format(file):
     """Used for GUI, takes a csv file as argument. Returns wave and value list"""
     wave = []
     values = []
     for line in file:
-        print(line)
+        #print(line)
         line.strip()
         x = re.findall("^\d,.*?,", line)
         y = re.findall(",\d,.*?$", line)
@@ -117,7 +119,9 @@ def absorbance_converter(values, transmittance, percentage):
     # when T is percentage relation is A = log_10(100) - log_10(T)
     # taken from https://mmrc.caltech.edu/FTIR/Nicolet/Nicolet%20manuals/Omnic%20Users%20Manual%207.3.pdf page 253
     # check to determine type of data in values
+    print(values, "hej")
     if transmittance and percentage:
+        print("hej")
         for i in range(len(values)):
             values[i] = 2-math.log10(values[i])
         return values
@@ -131,6 +135,14 @@ def absorbance_converter(values, transmittance, percentage):
         return values
 
 
+def get_file(trans, perc):
+    file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
+    [wave, values] = user_format(file)
+    values = absorbance_converter(values, trans, perc)
+    CI = PlasticIndex(wave, values, "correctness", "correct_960")
+    CI.calculate_index()
+    print(CI.index)
+
 def user_interaction():
     """Takes in the arguments wanted from the user and returns these"""
     window = Tk()
@@ -139,15 +151,33 @@ def user_interaction():
     label.pack()
     label = Label(window, text="Click the Button to browse the Files", font='Georgia 13')
     label.pack(pady=10)
-    [wave,transm] = ttk.Button(window, text="Browse", command=test_user_interface).pack(pady=20)
-    print("hej", wave)
+    clickedtrans = StringVar()
+    clickedperc = StringVar()
+    #browse = ttk.Button(window, text="Browse", command=get_file).pack()
+    transmenu = OptionMenu(window, clickedtrans, "Absorbance", "Transmittance", command=change_transmittance)
+    transmenu.pack()
+    percentmenu = OptionMenu(window, clickedperc, "Percent", "Not percent")
+    percentmenu.pack()
+    transmittance = True
+    percent = True
+    print(clickedtrans.get())
+    if clickedtrans.get() == "Absorbance":
+        print("Jag ändrar transmittance")
+        transmittance = False
+    if clickedperc.get() == "Not percent":
+        percent = False
+    print(transmittance)
+    browse = ttk.Button(window, text="Browse", command=lambda: get_file(transmittance,percent)).pack(side= LEFT)
+    #absorbance_converter(lists, True, True)
     window.mainloop()
 
 
 def main():
-    [wave,transm] = user_interaction()
+    #user_interaction()
     # try to integrate sin(x) from
     # test_integration()
+    app = App()
+    app.mainloop()
 
     #test_FWHM()
 
