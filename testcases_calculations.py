@@ -90,19 +90,6 @@ def test_baseline_corr():
     return True
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 def main():
     assert t_binsearch() == True
     assert test_integration() == True
