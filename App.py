@@ -18,8 +18,11 @@ class App(Tk):
         self.geometry("400x350")
         self.clickedtrans = StringVar()
         self.clickedperc = StringVar()
-        self.clickedplastic = StringVar()
-        self.clickedinterval = StringVar()
+        self.clickedplastic = StringVar(self)
+        self.clickedplastic.trace('w', self._set_plastic)
+        #self.clickedplastic.set('test')
+        self.clickedinterval = StringVar(self)
+        self.clickedplastic.trace('w', self._set_plastic)
         self.transmittance = True
         self.percent = True
         self.wave = []
@@ -33,10 +36,10 @@ class App(Tk):
         label.pack()
 
         frame2 = Frame(self)
-        frame2.pack(fill=X)
-        label = Label (frame2,text="Click the Button to browse the Files", font='Georgia 13')
-        label.pack()
-        browse = ttk.Button(self, text="Browse", command=self._get_lists).pack(side=LEFT)
+        frame2.pack(padx=5)
+        label = Label(frame2, text="Click the Button to browse the Files", font='Georgia 13')
+        label.pack(side=LEFT, padx=8, pady=4)
+        browse = ttk.Button(frame2, text="Browse", command=self._get_lists).pack(side=LEFT, padx=8, pady=4)
         absopt = ["Absorbance", "Transmittance"]
 
         frame3 = Frame(self)
@@ -45,9 +48,10 @@ class App(Tk):
         transmenu.pack(side=LEFT, fill=BOTH)
         percentmenu = OptionMenu(frame3, self.clickedperc, "Percent", "Not percent", command=self._set_percent)
         percentmenu.pack(side=LEFT, fill=BOTH)
-        #plasticmenu = OptionMenu(self, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
-
-        #plasticmenu.pack()
+        plasticmenu = OptionMenu(self, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
+        plasticmenu.pack()
+        self.intervalmenu = OptionMenu(self, self.clickedinterval, '')
+        self.intervalmenu.pack()
 
     def _get_lists(self, *args):
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
@@ -71,7 +75,16 @@ class App(Tk):
 
     def _set_plastic(self, *args):
         self.plastic = self.clickedplastic.get()
-        print(self.plastic)
+        new_dict = plastic_dict.get(self.plastic)
+        interval = []
+        for key in new_dict:
+            interval.append(key)
+        #self.clickedinterval.set(interval[0])
+        menu = self.intervalmenu['menu']
+        menu.delete(0, 'end')
+        for elem in interval:
+            menu.add_command(label=elem, command=lambda intervals=elem: self.clickedinterval.set(intervals))
+        print(self.clickedinterval.get())
 
     def _user_format(self, file):
         wave = []
