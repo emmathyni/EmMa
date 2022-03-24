@@ -60,6 +60,7 @@ class App(Tk):
         frame45.pack()
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Not percent", command=self._set_percent)
         percentmenu.pack(side=LEFT, expand=True, padx=40)
+        # comment to commit ?
 
         plotbutton = ttk.Button(frame45, text="Plot spectra")
         plotbutton.pack(side=RIGHT, expand=True, padx=30)
