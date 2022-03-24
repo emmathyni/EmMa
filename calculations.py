@@ -3,11 +3,13 @@ import matplotlib.pyplot as plt
 from dict import*
 import numpy as np
 class PlasticIndex():
-    def __init__(self, wave_list, abso_list, plastic, interval):
+    def __init__(self, wave_list, abso_list, plastic, interval, lowermanual, uppermanual):
         self.wave = wave_list
         self.abso = abso_list
         self.interval = interval
         self.plastic = plastic
+        self.lowermanual = lowermanual
+        self.uppermanual = uppermanual
         # self.step = self.wave[1]-self.wave[0]
         # areas = self.uneven_integrator()
         self.index = 0
