@@ -22,7 +22,9 @@ class App(Tk):
         self.clickedplastic.trace('w', self._set_plastic)
         #self.clickedplastic.set('test')
         self.clickedinterval = StringVar(self)
-        self.clickedplastic.trace('w', self._set_plastic)
+        self.clickedinterval.trace('w', self._set_interval)
+        self.manuallower = StringVar()
+        self.manualupper = StringVar()
         self.transmittance = True
         self.percent = True
         self.wave = []
@@ -101,15 +103,34 @@ class App(Tk):
     def _set_plastic(self, *args):
         self.plastic = self.clickedplastic.get()
         new_dict = plastic_dict.get(self.plastic)
-        interval = []
+        intervals = []
         for key in new_dict:
-            interval.append(key)
-        #self.clickedinterval.set(interval[0])
+            intervals.append(key)
+        intervals.append("Other")
         menu = self.intervalmenu['menu']
         menu.delete(0, 'end')
-        for elem in interval:
-            menu.add_command(label=elem, command=lambda intervals=elem: self.clickedinterval.set(intervals))
-        print(self.clickedinterval.get())
+        for elem in intervals:
+            menu.add_command(label=elem, command=lambda interval=elem: self.clickedinterval.set(interval))
+
+    def _set_interval(self, *args):
+        if self.clickedinterval.get() == "Other":
+            self.lower = Entry(self, textvariable=self.manuallower)
+            self.lower.pack()
+            self.upper = Entry(self, textvariable=self.manualupper)
+            self.upper.pack()
+            ok_button = ttk.Button(self, text="OK", command=self._manual_interval)
+            ok_button.pack()
+
+    def _manual_interval(self):
+        self.manuallower = self.lower.get()
+        self.manualupper = self.upper.get()
+        print(self.manuallower)
+        print(self.manualupper)
+
+    def _calculate_index(self):
+        Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval, self.lowermanual, self.uppermanual)
+        Ind.calculate_index()
+        print(Ind.index)
 
     def _user_format(self, file):
         wave = []
