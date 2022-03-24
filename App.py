@@ -15,7 +15,7 @@ class App(Tk):
     def __init__(self):
         super().__init__()
         self.title('EmMa')
-        self.geometry("400x350")
+        #self.geometry("400x350")
         self.clickedtrans = StringVar()
         self.clickedperc = StringVar()
         self.clickedplastic = StringVar()
@@ -27,27 +27,35 @@ class App(Tk):
         self.create_widgets()
 
     def create_widgets(self):
-        frame1 = Frame(self)
-        frame1.pack(fill=X)
-        label = Label(frame1,text="Welcome to EmMa, choose a csv-file to calculate carbonyl-index", bg="#acf7f8", fg="black")
-        label.pack()
+        #frame1 = Frame(self, relief =RAISED, borderwidth=1)
+        #frame1.pack(fill=BOTH)
+        label = Label(self, text="Welcome to EmMa, choose a csv-file to calculate carbonyl-index", bg="#acf7f8", fg="black", font='Georgia 13')
+        label.pack(fill=X)
 
-        frame2 = Frame(self)
-        frame2.pack(fill=X)
-        label = Label (frame2,text="Click the Button to browse the Files", font='Georgia 13')
-        label.pack()
-        browse = ttk.Button(self, text="Browse", command=self._get_lists).pack(side=LEFT)
-        absopt = ["Absorbance", "Transmittance"]
+        #frame2 = Frame(self, relief=RAISED, borderwidth=1)
+        #frame2.pack(fill=BOTH)
+        label = Label(self, text="Click the Button to browse the Files", font='Georgia 13')
+        label.pack(fill=X)
 
-        frame3 = Frame(self)
-        frame3.pack(fill=BOTH)
-        transmenu = OptionMenu(frame3, self.clickedtrans, "Absorbance", "Transmittance", command=self._set_transmittance)
-        transmenu.pack(side=LEFT, fill=BOTH)
-        percentmenu = OptionMenu(frame3, self.clickedperc, "Percent", "Not percent", command=self._set_percent)
-        percentmenu.pack(side=LEFT, fill=BOTH)
-        #plasticmenu = OptionMenu(self, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
+        frame3 = Frame(self, relief =RAISED, borderwidth=1)
+        frame3.pack(fill=BOTH, expand=False)
+        browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=40, expand=True)
+        label3 = Label(frame3, text="Chosen File")
+        label3.pack(fill=X, padx=40, side=LEFT, expand=True)
 
-        #plasticmenu.pack()
+        frame4 = Frame(self, relief=RAISED, borderwidth=1)
+        frame4.pack(fill=BOTH)
+        label4 = Label(frame4, text="Please choose the data types")
+        label4.pack(side=TOP, fill=Y)
+        transmenu = OptionMenu(frame4, self.clickedtrans, "Absorbance", "Transmittance", command=self._set_transmittance)
+        transmenu.pack(side=LEFT, expand=True, fill=Y)
+        percentmenu = OptionMenu(frame4, self.clickedperc, "Percent", "Not percent", command=self._set_percent)
+        percentmenu.pack(side=LEFT, expand=True)
+
+        frame5 = Frame(self, relief=RAISED, borderwidth=1)
+        frame5.pack()
+        plasticmenu = OptionMenu(frame5, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
+        plasticmenu.pack()
 
     def _get_lists(self, *args):
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
