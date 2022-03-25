@@ -27,7 +27,7 @@ class App(Tk):
         self.manualupper = StringVar()
         self.transmittance = True
         self.percent = True
-        self.chosenfilename = 'tihi'
+        self.chosenfilename_widget = 0
         self.px = 50
         self.py = 5
         self.wave = []
@@ -56,8 +56,8 @@ class App(Tk):
         frame3 = Frame(self, relief=RAISED, borderwidth=1)
         frame3.pack(fill=BOTH, expand=False, pady=py, side=TOP)
         browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=px)
-        #label3 = Label(frame3, text=self.chosenfilename)
-        #label3.pack(padx=2*px, side=RIGHT)
+        label3 = Label(frame3, text="")
+        self.chosenfilename_widget = label3
 
         frame4 = Frame(self, relief=RAISED, borderwidth=1)
         frame4.pack(fill=BOTH, pady=py)
@@ -94,12 +94,12 @@ class App(Tk):
 
     def _get_lists(self, *args):
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
-        self.chosenfilename= ntpath.basename(file.name)
         [wave, values] = self._user_format(file)
         self.wave = wave
         self.values = values
-        label3 = Label(self, text=self.chosenfilename)
-        label3.pack(side=TOP, padx=self.px)
+        self.chosenfilename_widget['text'] = ntpath.basename(file.name)
+        self.chosenfilename_widget.pack(side=RIGHT, padx=2*self.px)
+
 
     def _set_transmittance(self, *args):
         if self.clickedtrans.get() == "Absorbance":
