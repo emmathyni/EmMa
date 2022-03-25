@@ -45,18 +45,16 @@ class App(Tk):
         #frame1 = Frame(self, relief =RAISED, borderwidth=1)
         #frame1.pack(fill=BOTH)
         label = Label(self, text="Welcome to EmMa, choose a csv-file to calculate carbonyl-index", bg="#acf7f8", fg="black", font='Georgia 13')
-        label.pack(fill=X)
+        label.pack(fill=X, side=TOP)
 
         #frame2 = Frame(self)
         #frame2.pack(pady=10)
 
         label2 = Label(self, text="Click the Button to browse the Files")
-        label2.pack(anchor='w', padx=px, pady=py)
+        label2.pack(anchor='w', padx=px, pady=py, side=TOP)
 
         frame3 = Frame(self, relief=RAISED, borderwidth=1)
-        frame3.pack(fill=BOTH, expand=False, pady=py)
-        label3 = Label(frame3, text=self.chosenfilename)
-        label3.pack(padx=2 * px, side=RIGHT)
+        frame3.pack(fill=BOTH, expand=False, pady=py, side=TOP)
         browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=px)
         #label3 = Label(frame3, text=self.chosenfilename)
         #label3.pack(padx=2*px, side=RIGHT)
@@ -100,7 +98,8 @@ class App(Tk):
         [wave, values] = self._user_format(file)
         self.wave = wave
         self.values = values
-        # self.label3['text'] = self.chosenfilename
+        label3 = Label(self, text=self.chosenfilename)
+        label3.pack(side=TOP, padx=self.px)
 
     def _set_transmittance(self, *args):
         if self.clickedtrans.get() == "Absorbance":
