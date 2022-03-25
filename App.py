@@ -8,6 +8,10 @@ from tkinter import ttk, filedialog, Frame
 from testcases_main import*
 #from main import*
 import ntpath
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
 
 class App(Tk):
 
@@ -71,7 +75,7 @@ class App(Tk):
         frame45.pack(pady=5, fill=X)
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Not percent", command=self._set_percent)
         percentmenu.pack(side=LEFT, padx=px)
-        plotbutton = ttk.Button(frame45, text="Plot spectra")
+        plotbutton = ttk.Button(frame45, text="Plot spectra", command=self._open_plot)
         plotbutton.pack(side=RIGHT, padx=2*px)
 
         frame5 = Frame(self, relief=RAISED, borderwidth=1)
@@ -92,6 +96,30 @@ class App(Tk):
         okButton.pack(side=LEFT, padx=px)
         label6 = Label(frame6, text="Calculated index")
         label6.pack(side=RIGHT, padx=2*px)
+
+    def _open_plot(self):
+        """Opens a new window with a plot of the spectra"""
+        newWindow = Toplevel(self)
+        newWindow.title('Plot')
+        #newWindow.geometry('300x200')
+
+        #label = Label(newWindow, text='hej')
+        #label.pack
+        # hej
+
+        f = Figure(figsize=(10, 5), dpi=100)
+        a = f.add_subplot(111)
+        a.plot(self.wave, self.values)
+
+        canvas = FigureCanvasTkAgg(f, newWindow)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=BOTTOM, fill=BOTH, expand=True)
+
+        toolbar = NavigationToolbar2Tk(canvas, newWindow, pack_toolbar=False)
+        toolbar.update()
+        toolbar.pack(side=BOTTOM, fill=X)
+        canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=True)
+
 
     def _get_lists(self, *args):
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
