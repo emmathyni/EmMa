@@ -96,6 +96,8 @@ class App(Tk):
         okButton.pack(side=LEFT, padx=px)
         label6 = Label(frame6, text="Calculated index")
         label6.pack(side=RIGHT, padx=2*px)
+        convert_button = ttk.Button(self, text="Convert spectra", command=self._convert_spectra)
+        convert_button.pack()
 
     def _open_plot(self):
         """Opens a new window with a plot of the spectra"""
@@ -188,6 +190,9 @@ class App(Tk):
         Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
         Ind.calculate_index()
         print(Ind.index)
+
+    def _convert_spectra(self):
+        self.values = self._absorbance_converter(self.values, self.transmittance, self.percent)
 
     def _user_format(self, file):
         wave = []
