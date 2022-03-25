@@ -32,54 +32,58 @@ class App(Tk):
         self.create_widgets()
 
     def create_widgets(self):
+        px = 50
+        py = 5
+
         #frame1 = Frame(self, relief =RAISED, borderwidth=1)
         #frame1.pack(fill=BOTH)
         label = Label(self, text="Welcome to EmMa, choose a csv-file to calculate carbonyl-index", bg="#acf7f8", fg="black", font='Georgia 13')
         label.pack(fill=X)
 
-        frame2 = Frame(self)
-        frame2.pack(pady=10)
+        #frame2 = Frame(self)
+        #frame2.pack(pady=10)
 
-        label2 = Label(frame2, text="Click the Button to browse the Files")
-        label2.pack(side=RIGHT, anchor=S)
+        label2 = Label(self, text="Click the Button to browse the Files")
+        label2.pack(anchor='w', padx=px, pady=py)
 
         frame3 = Frame(self, relief =RAISED, borderwidth=1)
-        frame3.pack(fill=BOTH, expand=False)
-        browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=40, expand=True)
+        frame3.pack(fill=BOTH, expand=False, pady=py)
+        browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=px)
         label3 = Label(frame3, text="Chosen File")
-        label3.pack(fill=X, padx=50, side=LEFT, expand=True)
+        label3.pack(padx=2*px, side=RIGHT)
 
         frame4 = Frame(self, relief=RAISED, borderwidth=1)
-        frame4.pack(fill=BOTH)
+        frame4.pack(fill=BOTH, pady=py)
         label4 = Label(frame4, text="Please choose the data types")
-        label4.pack(padx=40)
+        label4.pack(padx=px, anchor='w', pady=5)
         transmenu = OptionMenu(frame4, self.clickedtrans, "Absorbance", "Transmittance", command=self._set_transmittance)
-        transmenu.pack(side=LEFT, expand=True, padx=40)
+        transmenu.pack(anchor='w', expand=True, padx=px, pady=5)
 
-        frame45 = Frame(self)
-        frame45.pack()
+        frame45 = Frame(self, relief=RAISED, borderwidth=1)
+        frame45.pack(pady=5, fill=X)
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Not percent", command=self._set_percent)
-        percentmenu.pack(side=LEFT, expand=True, padx=40)
-        # comment to commit ?
-
+        percentmenu.pack(side=LEFT, padx=px)
         plotbutton = ttk.Button(frame45, text="Plot spectra")
-        plotbutton.pack(side=RIGHT, expand=True, padx=30)
+        plotbutton.pack(side=RIGHT, padx=2*px)
 
         frame5 = Frame(self, relief=RAISED, borderwidth=1)
-        frame5.pack(fill=BOTH)
-        label5 = Label(frame5, text="Please choose plastic type and desired peaks", font='Georgia 11')
-        label5.pack(side=TOP)
-        plasticmenu = OptionMenu(frame5, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
-        plasticmenu.pack(side=LEFT, expand=True)
-        self.intervalmenu = OptionMenu(frame5, self.clickedinterval, '')
-        self.intervalmenu.pack(side=LEFT, expand=True)
+        frame5.pack(fill=BOTH, pady=py)
+        label5 = Label(frame5, text="Please choose plastic type and desired peaks")
+        label5.pack(anchor='w', padx=px)
+
+        frame55 = Frame(self, relief=RAISED, borderwidth=1)
+        frame55.pack(fill=BOTH, expand=True)
+        plasticmenu = OptionMenu(frame55, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
+        plasticmenu.pack(anchor = 'w', padx=px, pady=5, expand=True)
+        self.intervalmenu = OptionMenu(frame55, self.clickedinterval, '')
+        self.intervalmenu.pack(anchor='w', padx=px, expand=True)
 
         frame6 = Frame(self, relief=RAISED, borderwidth=1)
-        frame6.pack(side=BOTTOM)
-        okButton = ttk.Button(self, text="Calculate index")
-        okButton.pack(side=LEFT, padx=50)
+        frame6.pack(side=BOTTOM, fill=X, expand=False)
+        okButton = ttk.Button(frame6, text="Calculate index")
+        okButton.pack(side=LEFT, padx=px)
         label6 = Label(frame6, text="Calculated index")
-        label6.pack()
+        label6.pack(side=RIGHT, padx=2*px)
 
     def _get_lists(self, *args):
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
