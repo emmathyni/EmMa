@@ -4,18 +4,17 @@ import matplotlib.pyplot as plt
 import math
 from dict import*
 from tkinter import*
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, Frame
 from testcases_main import*
-from main import*
+#from main import*
 import ntpath
-from tkinter.ttk import Frame
 
 class App(Tk):
 
     def __init__(self):
         super().__init__()
         self.title('EmMa')
-        self.geometry("500x500")
+        #self.geometry("500x500")
         self.clickedtrans = StringVar()
         self.clickedperc = StringVar()
         self.clickedplastic = StringVar(self)
@@ -23,8 +22,10 @@ class App(Tk):
         #self.clickedplastic.set('test')
         self.clickedinterval = StringVar(self)
         self.clickedinterval.trace('w', self._set_interval)
-        self.manuallower = StringVar()
-        self.manualupper = StringVar()
+        self.manuallowerref = StringVar()
+        self.manualupperref = StringVar()
+        self.manuallowerplast = StringVar()
+        self.manualupperplast = StringVar()
         self.transmittance = True
         self.percent = True
         self.chosenfilename_widget = 0
@@ -87,7 +88,7 @@ class App(Tk):
 
         frame6 = Frame(self, relief=RAISED, borderwidth=1)
         frame6.pack(side=BOTTOM, fill=X, expand=False)
-        okButton = ttk.Button(frame6, text="Calculate index")
+        okButton = ttk.Button(frame6, text="Calculate index", command=self._calculate_index)
         okButton.pack(side=LEFT, padx=px)
         label6 = Label(frame6, text="Calculated index")
         label6.pack(side=RIGHT, padx=2*px)
@@ -127,21 +128,36 @@ class App(Tk):
 
     def _set_interval(self, *args):
         if self.clickedinterval.get() == "Other":
-            self.lower = Entry(self, textvariable=self.manuallower)
-            self.lower.pack()
-            self.upper = Entry(self, textvariable=self.manualupper)
-            self.upper.pack()
+            self.reference_label = Label(text="Reference peak")
+            self.reference_label.pack()
+            self.reflower = Entry(self, textvariable=self.manuallowerref)
+            self.reflower.pack()
+            self.refupper = Entry(self, textvariable=self.manualupperref)
+            self.refupper.pack()
+            self.peak_label = Label(text="Plastic peak")
+            self.peak_label.pack()
+            self.plastlower = Entry(self, textvariable=self.manuallowerplast)
+            self.plastlower.pack()
+            self.plastupper = Entry(self, textvariable=self.manualupperplast)
+            self.plastupper.pack()
+
             ok_button = ttk.Button(self, text="OK", command=self._manual_interval)
             ok_button.pack()
+        else:
+            new_dict = plastic_dict.get(self.plastic)
+            self.interval = new_dict.get(self.clickedinterval.get())
+            print(self.interval)
 
     def _manual_interval(self):
-        self.manuallower = self.lower.get()
-        self.manualupper = self.upper.get()
-        print(self.manuallower)
-        print(self.manualupper)
+        self.manuallowerref = self.reflower.get()
+        self.manualupperref = self.refupper.get()
+        self.manuallowerplast = self.plastlower.get()
+        self.manualupperplast = self.plastupper.get()
+        self.interval = [float(self.manuallowerplast), float(self.manualupperplast), float(self.manuallowerref), float(self.manualupperref)]
+        print(self.interval)
 
     def _calculate_index(self):
-        Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval, self.lowermanual, self.uppermanual)
+        Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
         Ind.calculate_index()
         print(Ind.index)
 
@@ -204,5 +220,6 @@ class App(Tk):
         if not transmittance:
             return values
 
-
+app = App()
+app.mainloop()
 

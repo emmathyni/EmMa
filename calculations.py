@@ -18,6 +18,7 @@ class PlasticIndex():
         indexes = self._find_index()
         corrected_data = self.correct_two_peaks(indexes)
         num, denom = self.uneven_integrator(corrected_data)
+        print(num,denom)
         self.index = num/denom
 
 
@@ -27,12 +28,16 @@ class PlasticIndex():
         new_abso1 = corrected_data[1]
         new_wave2 = corrected_data[2]
         new_abso2 = corrected_data[3]
+        #print(new_abso1)
+        #print(new_abso2)
+        #print(new_wave2)
 
         num_result = 0
         for i in range(len(new_abso1)-1):
             num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * (new_wave1[i + 1] - new_wave1[i])
         denom_result = 0
         for i in range(len(new_abso2)-1):
+            #print(denom_result)
             denom_result += 0.5 * (new_abso2[i] + new_abso2[i + 1]) * (new_wave2[i + 1] - new_wave2[i])
         return [num_result, denom_result]
 
@@ -84,7 +89,7 @@ class PlasticIndex():
                 new_abso.append(0)
         # plt.plot(self.wave[index1:index2+1], new_abso)
         # plt.show()
-
+        print(new_abso)
         return self.wave[index1:index2+1], new_abso
 
     def correct_two_peaks(self, index):
@@ -97,13 +102,14 @@ class PlasticIndex():
 
     def _find_index(self):
         """Finds the index in the list of number using binary search. Returns the index of the n"""
-        dictionary = plastic_dict[self.plastic]
-        numbers = dictionary[self.interval]
+        #dictionary = plastic_dict[self.plastic]
+        numbers = self.interval
         num_first = binsearch(numbers[0], self.wave, len(self.wave), 0)
         num_last = binsearch(numbers[1], self.wave, len(self.wave), 0)
         denom_first = binsearch(numbers[2], self.wave, len(self.wave), 0)
         denom_last = binsearch(numbers[3], self.wave, len(self.wave), 0)
         indexes = [num_first, num_last, denom_first, denom_last]
+        print(indexes)
         return indexes
 
 

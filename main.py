@@ -176,13 +176,13 @@ def main():
     #user_interaction()
     # try to integrate sin(x) from
     # test_integration()
-    app = App()
-    app.mainloop()
+    #app = App()
+    #app.mainloop()
 
     #test_FWHM()
 
     # finds carbonyl index using our data and intervals from GIVEN article
-    #test_our_data("PVC_carbonyl", "PVC_1718_1330")
+    test_our_data("PVC_carbonyl", "PVC_1718_1330")
 
     # finds carbonyl index using our data and intervals from FOUND article
     # test_our_data(4)
