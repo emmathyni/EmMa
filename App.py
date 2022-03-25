@@ -102,7 +102,8 @@ class App(Tk):
         #newWindow.geometry('300x200')
 
         #label = Label(newWindow, text='hej')
-        #label.pack()
+        #label.pack
+        # hej
 
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
