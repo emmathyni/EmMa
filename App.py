@@ -27,9 +27,16 @@ class App(Tk):
         self.manualupper = StringVar()
         self.transmittance = True
         self.percent = True
+        self.chosenfilename = 'tihi'
+        self.px = 50
+        self.py = 5
         self.wave = []
         self.values = []
         self.create_widgets()
+        # self.widgets = tkinter.winfo_children()
+
+
+
 
     def create_widgets(self):
         px = 50
@@ -46,11 +53,13 @@ class App(Tk):
         label2 = Label(self, text="Click the Button to browse the Files")
         label2.pack(anchor='w', padx=px, pady=py)
 
-        frame3 = Frame(self, relief =RAISED, borderwidth=1)
+        frame3 = Frame(self, relief=RAISED, borderwidth=1)
         frame3.pack(fill=BOTH, expand=False, pady=py)
+        label3 = Label(frame3, text=self.chosenfilename)
+        label3.pack(padx=2 * px, side=RIGHT)
         browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=px)
-        label3 = Label(frame3, text="Chosen File")
-        label3.pack(padx=2*px, side=RIGHT)
+        #label3 = Label(frame3, text=self.chosenfilename)
+        #label3.pack(padx=2*px, side=RIGHT)
 
         frame4 = Frame(self, relief=RAISED, borderwidth=1)
         frame4.pack(fill=BOTH, pady=py)
@@ -74,7 +83,7 @@ class App(Tk):
         frame55 = Frame(self, relief=RAISED, borderwidth=1)
         frame55.pack(fill=BOTH, expand=True)
         plasticmenu = OptionMenu(frame55, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
-        plasticmenu.pack(anchor = 'w', padx=px, pady=5, expand=True)
+        plasticmenu.pack(anchor='w', padx=px, pady=5, expand=True)
         self.intervalmenu = OptionMenu(frame55, self.clickedinterval, '')
         self.intervalmenu.pack(anchor='w', padx=px, expand=True)
 
@@ -87,11 +96,11 @@ class App(Tk):
 
     def _get_lists(self, *args):
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
-        print(ntpath.basename(file.name))
+        self.chosenfilename= ntpath.basename(file.name)
         [wave, values] = self._user_format(file)
         self.wave = wave
         self.values = values
-
+        # self.label3['text'] = self.chosenfilename
 
     def _set_transmittance(self, *args):
         if self.clickedtrans.get() == "Absorbance":
