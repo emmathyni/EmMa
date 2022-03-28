@@ -73,7 +73,7 @@ class App(Tk):
 
         frame45 = Frame(self, relief=RAISED, borderwidth=1)
         frame45.pack(pady=5, fill=X)
-        percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Not percent", command=self._set_percent)
+        percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Arbitrary Units", command=self._set_percent)
         percentmenu.pack(side=LEFT, padx=px)
         plotbutton = ttk.Button(frame45, text="Plot spectra", command=self._open_plot)
         plotbutton.pack(side=RIGHT, padx=2*px)
@@ -149,7 +149,7 @@ class App(Tk):
             self.transmittance = True
 
     def _set_percent(self, *args):
-        if self.clickedperc.get() == "Not percent":
+        if self.clickedperc.get() == "Arbitrary Units":
             self.percent = False
         elif self.clickedperc.get() == "Percent":
             self.percent = True
@@ -203,6 +203,8 @@ class App(Tk):
 
     def _convert_spectra(self):
         self.values = self._absorbance_converter(self.values, self.transmittance, self.percent)
+        self.transmittance = False
+        self.percent = False
 
     def _user_format(self, file):
         wave = []
@@ -263,6 +265,6 @@ class App(Tk):
         if not transmittance:
             return values
 
-app = App()
-app.mainloop()
+#app = App()
+#app.mainloop()
 

@@ -176,8 +176,8 @@ def main():
     #user_interaction()
     # try to integrate sin(x) from
     # test_integration()
-    #app = App()
-    #app.mainloop()
+    app = App()
+    app.mainloop()
 
     #test_FWHM()
 
