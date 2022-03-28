@@ -55,7 +55,7 @@ class App(Tk):
         #frame2 = Frame(self)
         #frame2.pack(pady=10)
 
-        label2 = Label(self, text="Click the Button to browse the Files")
+        label2 = Label(self, text="Click the Button to browse the Files. Current data format accepted: (\d,\d*e(\+|-)\d*),(\d,\d*e(\+|-)\d*)")
         label2.pack(anchor='w', padx=px, pady=py, side=TOP)
 
         frame3 = Frame(self, relief=RAISED, borderwidth=1)
@@ -105,13 +105,23 @@ class App(Tk):
         newWindow.title('Plot')
         #newWindow.geometry('300x200')
 
-        #label = Label(newWindow, text='hej')
-        #label.pack
-        # hej
+        if self.transmittance and self.percent:
+            y_label = 'Transmittance %'
+        elif self.transmittance and not self.percent:
+            y_label = 'Transmittance [a.u.]'
+        else:
+            y_label = 'Absorbance [a.u.]'
+        x_label = 'Wavenumber [cm-1]'
 
+        """TO ADD: reverse xaxis, add labels depending on datatype and perhaps show peaks used?"""
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
         a.plot(self.wave, self.values)
+        a.set_ylabel(y_label)
+        a.set_xlabel(x_label)
+        a.set_title('Spectra')
+        a.invert_xaxis()
+
 
         canvas = FigureCanvasTkAgg(f, newWindow)
         canvas.draw()
@@ -128,7 +138,7 @@ class App(Tk):
         [wave, values] = self._user_format(file)
         self.wave = wave
         self.values = values
-        self.chosenfilename_widget['text'] = ntpath.basename(file.name)
+        self.chosenfilename_widget['text'] = 'Chosen file: ' + ntpath.basename(file.name)
         self.chosenfilename_widget.pack(side=RIGHT, padx=2*self.px)
 
 
