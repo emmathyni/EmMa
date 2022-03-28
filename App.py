@@ -75,7 +75,7 @@ class App(Tk):
         frame45.pack(pady=5, fill=X)
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Arbitrary Units", command=self._set_percent)
         percentmenu.pack(side=LEFT, padx=px)
-        plotbutton = ttk.Button(frame45, text="Plot spectra", command=self._open_plot)
+        plotbutton = ttk.Button(frame45, text="Plot spectrum", command=self._open_plot)
         plotbutton.pack(side=RIGHT, padx=2*px)
 
         frame5 = Frame(self, relief=RAISED, borderwidth=1)
@@ -96,11 +96,11 @@ class App(Tk):
         okButton.pack(side=LEFT, padx=px)
         label6 = Label(frame6, text="Calculated index")
         label6.pack(side=RIGHT, padx=2*px)
-        convert_button = ttk.Button(self, text="Convert spectra", command=self._convert_spectra)
+        convert_button = ttk.Button(self, text="Convert spectrum", command=self._convert_spectra)
         convert_button.pack()
 
     def _open_plot(self):
-        """Opens a new window with a plot of the spectra"""
+        """Opens a new window with a plot of the spectrum"""
         newWindow = Toplevel(self)
         newWindow.title('Plot')
         #newWindow.geometry('300x200')
@@ -119,7 +119,7 @@ class App(Tk):
         a.plot(self.wave, self.values)
         a.set_ylabel(y_label)
         a.set_xlabel(x_label)
-        a.set_title('Spectra')
+        a.set_title('Spectrum')
         a.invert_xaxis()
 
 
