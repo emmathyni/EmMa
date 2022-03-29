@@ -197,6 +197,7 @@ class App(Tk):
         print(self.interval)
 
     def _calculate_index(self):
+        self._convert_spectra()
         Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
         Ind.calculate_index()
         print(Ind.index)
