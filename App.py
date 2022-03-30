@@ -188,7 +188,6 @@ class App(Tk):
         else:
             new_dict = plastic_dict.get(self.plastic)
             self.interval = new_dict.get(self.clickedinterval.get())
-            print(self.interval)
 
     def _manual_interval(self):
         self.manuallowerref = self.reflower.get()
@@ -196,7 +195,6 @@ class App(Tk):
         self.manuallowerplast = self.plastlower.get()
         self.manualupperplast = self.plastupper.get()
         self.interval = [float(self.manuallowerplast), float(self.manualupperplast), float(self.manuallowerref), float(self.manualupperref)]
-        print(self.interval)
 
     def _calculate_index(self):
         self._convert_spectra()
@@ -215,8 +213,8 @@ class App(Tk):
         values = []
         for line in file:
             line.strip()
-            x = re.findall("^\d,.*?,", line)
-            y = re.findall(",\d,.*?$", line)
+            x = re.findall("^\d*,.*?,", line)
+            y = re.findall(",\d{1,2},.*?$", line)
             x = x[0][:-1]
             y = y[0][1:]
             x = re.sub(",", ".", x)
@@ -225,12 +223,16 @@ class App(Tk):
             y_n = int(y[-1])
             resx = re.search("e", x)
             resy = re.search("e", y)
-            x_e = resx.start()
-            y_e = resy.start()
-            x = float(x[:x_e]) * 10 ** x_n
-            y = float(y[:y_e]) * 10 ** y_n
-            wave.append(x)
-            values.append(y)
+            if resx is None and resy is None:
+                wave.append(float(x))
+                values.append(float(y))
+            else:
+                x_e = resx.start()
+                y_e = resy.start()
+                x = float(x[:x_e]) * 10 ** x_n
+                y = float(y[:y_e]) * 10 ** y_n
+                wave.append(x)
+                values.append(y)
         # Check for zeroes
         file.close()
         counter = 0
