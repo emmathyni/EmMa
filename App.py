@@ -59,46 +59,47 @@ class App(Tk):
         label2 = Label(self, text="Click the Button to browse the Files. Current data format accepted: (\d,\d*e(\+|-)\d*),(\d,\d*e(\+|-)\d*)")
         label2.pack(anchor='w', padx=px, pady=py, side=TOP)
 
-        frame3 = Frame(self, relief=RAISED, borderwidth=1)
+        frame3 = Frame(self)
         frame3.pack(fill=BOTH, expand=False, pady=py, side=TOP)
         browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=px)
         label3 = Label(frame3, text="")
         self.chosenfilename_widget = label3
 
-        frame4 = Frame(self, relief=RAISED, borderwidth=1)
-        frame4.pack(fill=BOTH, pady=py)
-        label4 = Label(frame4, text="Please choose the data types")
+        frame4 = Frame(self)
+        frame4.pack(fill=X, pady=py)
+        label4 = Label(frame4, text="Please choose the data types in your file")
         label4.pack(padx=px, anchor='w', pady=5)
         transmenu = OptionMenu(frame4, self.clickedtrans, "Absorbance", "Transmittance", command=self._set_transmittance)
-        transmenu.pack(anchor='w', expand=True, padx=px, pady=5)
+        transmenu.pack(side=LEFT, padx=px)
+        convert_button = ttk.Button(frame4, text="Convert spectrum to absorbance", command=self._convert_spectra)
+        convert_button.pack(side=RIGHT, padx=2*px)
 
-        frame45 = Frame(self, relief=RAISED, borderwidth=1)
+        frame45 = Frame(self)
         frame45.pack(pady=5, fill=X)
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Arbitrary Units", command=self._set_percent)
         percentmenu.pack(side=LEFT, padx=px)
         plotbutton = ttk.Button(frame45, text="Plot spectrum", command=self._open_plot)
         plotbutton.pack(side=RIGHT, padx=2*px)
 
-        frame5 = Frame(self, relief=RAISED, borderwidth=1)
+        frame5 = Frame(self)
         frame5.pack(fill=BOTH, pady=py)
         label5 = Label(frame5, text="Please choose plastic type and desired peaks")
         label5.pack(anchor='w', padx=px)
 
-        frame55 = Frame(self, relief=RAISED, borderwidth=1)
+        frame55 = Frame(self)
         frame55.pack(fill=BOTH, expand=True)
         plasticmenu = OptionMenu(frame55, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
         plasticmenu.pack(anchor='w', padx=px, pady=5, expand=True)
         self.intervalmenu = OptionMenu(frame55, self.clickedinterval, '')
         self.intervalmenu.pack(anchor='w', padx=px, expand=True)
 
-        frame6 = Frame(self, relief=RAISED, borderwidth=1)
+        frame6 = Frame(self)
         frame6.pack(side=BOTTOM, fill=X, expand=False)
         okButton = ttk.Button(frame6, text="Calculate index", command=self._calculate_index)
         okButton.pack(side=LEFT, padx=px)
         self.label6 = Label(frame6, text="")
         #label6.pack(side=RIGHT, padx=2*px)
-        convert_button = ttk.Button(self, text="Convert spectrum", command=self._convert_spectra)
-        convert_button.pack()
+
 
     def _open_plot(self):
         """Opens a new window with a plot of the spectrum"""
@@ -169,21 +170,35 @@ class App(Tk):
 
     def _set_interval(self, *args):
         if self.clickedinterval.get() == "Other" and self.IntervalExists == False:
-            self.reference_label = Label(text="Reference peak")
-            self.reference_label.pack()
-            self.reflower = Entry(self, textvariable=self.manuallowerref)
-            self.reflower.pack()
-            self.refupper = Entry(self, textvariable=self.manualupperref)
-            self.refupper.pack()
-            self.peak_label = Label(text="Plastic peak")
-            self.peak_label.pack()
-            self.plastlower = Entry(self, textvariable=self.manuallowerplast)
-            self.plastlower.pack()
-            self.plastupper = Entry(self, textvariable=self.manualupperplast)
-            self.plastupper.pack()
+            frame_int = Frame(self, relief=RAISED, borderwidth=1)
+            frame_int.pack(pady=self.py, fill=X)
+            self.reference_label = Label(frame_int, text="Reference peak")
+            self.reference_label.pack(side=LEFT, padx=self.px)
+            ref_l = Label(frame_int, text="Lower")
+            ref_l.pack(side=LEFT)
+            self.reflower = Entry(frame_int, textvariable=self.manuallowerref)
+            self.reflower.pack(side=LEFT)
+            ref_u = Label(frame_int, text='Upper')
+            ref_u.pack(side=LEFT)
+            self.refupper = Entry(frame_int, textvariable=self.manualupperref)
+            self.refupper.pack(side=LEFT, padx=5)
 
-            ok_button = ttk.Button(self, text="OK", command=self._manual_interval)
-            ok_button.pack()
+            frame_p = Frame(self, relief=RAISED, borderwidth=1)
+            frame_p.pack(fill=X)
+
+            self.peak_label = Label(frame_p, text="Plastic peak      ")
+            self.peak_label.pack(side=LEFT, padx=self.px)
+            plast_l =Label(frame_p, text='Lower')
+            plast_l.pack(side=LEFT)
+            self.plastlower = Entry(frame_p, textvariable=self.manuallowerplast)
+            self.plastlower.pack(side=LEFT)
+            plast_u = Label(frame_p, text='Upper')
+            plast_u.pack(side=LEFT)
+            self.plastupper = Entry(frame_p, textvariable=self.manualupperplast)
+            self.plastupper.pack(side=LEFT, padx=5)
+
+            ok_button = ttk.Button(frame_p, text="OK", command=self._manual_interval)
+            ok_button.pack(side=RIGHT, padx=15)
             self.IntervalExists = True
         else:
             new_dict = plastic_dict.get(self.plastic)
@@ -200,13 +215,47 @@ class App(Tk):
         self._convert_spectra()
         Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
         Ind.calculate_index()
-        self.label6['text'] = 'Calculated index: '+ str(round(Ind.index, 5))
+        self.index = round(Ind.index, 5)
+        self.label6['text'] = 'Calculated index: '+ str(self.index)
         self.label6.pack()
+        self._plot_interesting_peaks()
+
 
     def _convert_spectra(self):
         self.values = self._absorbance_converter(self.values, self.transmittance, self.percent)
         self.transmittance = False
         self.percent = False
+
+    def _plot_interesting_peaks(self):
+        """Opens a new window with a plot of the spectrum"""
+        newWindow2 = Toplevel(self)
+        newWindow2.title('Calculated plot')
+        # newWindow.geometry('300x200')
+
+
+        y_label = 'Absorbance [a.u.]'
+        x_label = 'Wavenumber [cm-1]'
+        f = Figure(figsize=(10, 5), dpi=100)
+        a = f.add_subplot(111)
+        a.plot(self.wave, self.values)
+        m = max(self.values)
+        mi = min(self.values)
+        a.vlines(self.interval[0:2], mi, m, colors=['red', 'red'], label='Plastic Peak')
+        a.vlines(self.interval[2:5], mi, m, colors=['purple', 'purple'], label='Reference Peak')
+        a.set_ylabel(y_label)
+        a.set_xlabel(x_label)
+        a.set_title('Calculated index: ' + str(self.index))
+        a.invert_xaxis()
+        a.legend()
+
+        canvas = FigureCanvasTkAgg(f, newWindow2)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=BOTTOM, fill=BOTH, expand=True)
+
+        toolbar = NavigationToolbar2Tk(canvas, newWindow2, pack_toolbar=False)
+        toolbar.update()
+        toolbar.pack(side=BOTTOM, fill=X)
+        canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=True)
 
     def _user_format(self, file):
         wave = []
