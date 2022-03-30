@@ -32,6 +32,7 @@ class App(Tk):
         self.manualupperplast = StringVar()
         self.transmittance = True
         self.percent = True
+        self.IntervalExists = False
         self.chosenfilename_widget = 0
         self.px = 50
         self.py = 5
@@ -94,8 +95,8 @@ class App(Tk):
         frame6.pack(side=BOTTOM, fill=X, expand=False)
         okButton = ttk.Button(frame6, text="Calculate index", command=self._calculate_index)
         okButton.pack(side=LEFT, padx=px)
-        label6 = Label(frame6, text="Calculated index")
-        label6.pack(side=RIGHT, padx=2*px)
+        self.label6 = Label(frame6, text="")
+        #label6.pack(side=RIGHT, padx=2*px)
         convert_button = ttk.Button(self, text="Convert spectrum", command=self._convert_spectra)
         convert_button.pack()
 
@@ -167,7 +168,7 @@ class App(Tk):
             menu.add_command(label=elem, command=lambda interval=elem: self.clickedinterval.set(interval))
 
     def _set_interval(self, *args):
-        if self.clickedinterval.get() == "Other":
+        if self.clickedinterval.get() == "Other" and self.IntervalExists == False:
             self.reference_label = Label(text="Reference peak")
             self.reference_label.pack()
             self.reflower = Entry(self, textvariable=self.manuallowerref)
@@ -183,6 +184,7 @@ class App(Tk):
 
             ok_button = ttk.Button(self, text="OK", command=self._manual_interval)
             ok_button.pack()
+            self.IntervalExists = True
         else:
             new_dict = plastic_dict.get(self.plastic)
             self.interval = new_dict.get(self.clickedinterval.get())
@@ -200,7 +202,8 @@ class App(Tk):
         self._convert_spectra()
         Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
         Ind.calculate_index()
-        print(Ind.index)
+        self.label6['text'] = 'Calculated index: '+ str(round(Ind.index, 5))
+        self.label6.pack()
 
     def _convert_spectra(self):
         self.values = self._absorbance_converter(self.values, self.transmittance, self.percent)
