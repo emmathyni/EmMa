@@ -288,8 +288,6 @@ class App(Tk):
                     y_n = -y_n
                 x = float(x[:x_e]) * 10 ** x_n
                 y = float(y[:y_e]) * 10 ** y_n
-                print(signy)
-                #print(y)
                 wave.append(x)
                 values.append(y)
         # Check for zeroes

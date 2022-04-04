@@ -26,7 +26,12 @@ PVC_vinyl_dict = {"PVC_600_960": [550, 650, 900, 1000],
                   "PVC_1205_1330": [1200, 1225, 1286, 1398],
                   "PVC_1205_2721": [1200, 1225, 2700, 2750]}
 
+PP_carbonyl_dict = {"PP_1700_960": [1550, 1850, 900, 1000],
+                    "PP_1700_1330": [1550, 1850, 1286, 1398],
+                    "PP_1700_2721": [1550, 1850, 2700, 2750]}
+
 plastic_dict = {"test": test_integration_dict,
                 "correctness": correctness_dict,
                 "PVC_carbonyl": PVC_carbonyl_dict,
-                "PVC_vinyl": PVC_vinyl_dict}
+                "PVC_vinyl": PVC_vinyl_dict,
+                "PP_carbonyl": PP_carbonyl_dict}
