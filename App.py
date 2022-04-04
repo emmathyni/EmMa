@@ -104,7 +104,6 @@ class App(Tk):
         frame8 = Frame(self)
         frame8.pack(fill=X, expand=False)
         self.label8 = Label(frame7, text="")
-        #FWHMButton = ttk.Button(self, text="Show FWHM", command=self)
         #label6.pack(side=RIGHT, padx=2*px)
 
 
@@ -225,14 +224,14 @@ class App(Tk):
         Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
         #try:
         Ind.calculate_index()
-        fwhmplast,fwhmref=Ind.calculate_FWHM()
+        self.fwhmlist = Ind.calculate_FWHM()
         # except:
           #  self.label6['text'] = 'An error has occured somewhere. Please check your settings before continuing'
         self.index = round(Ind.index, 5)
         self.label6['text'] = 'Calculated index: '+ str(self.index)
         self.label6.pack()
-        self.label7['text'] = 'FWHM for plastic peak: '+str(fwhmplast)
-        self.label8['text'] = 'FWHM for reference peak: '+str(fwhmref)
+        self.label7['text'] = 'FWHM for plastic peak: '+str(self.fwhmlist[0])
+        self.label8['text'] = 'FWHM for reference peak: '+str(self.fwhmlist[1])
         self.label7.pack()
         self.label8.pack()
         self._plot_interesting_peaks()
@@ -252,6 +251,9 @@ class App(Tk):
 
         y_label = 'Absorbance [a.u.]'
         x_label = 'Wavenumbers [cm-1]'
+        textstr='\n'.join(('$FWHM plastic=%.2f$' % (self.fwhmlist[0], ),
+    '$FWHM reference=%.2f$' % (self.fwhmlist[1], )))
+        props = dict(boxstyle='round', facecolor='yellow', alpha=0.5)
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
         a.plot(self.wave, self.values)
@@ -262,6 +264,8 @@ class App(Tk):
         a.set_ylabel(y_label)
         a.set_xlabel(x_label)
         a.set_title('Calculated index: ' + str(self.index))
+        a.text(0.05, 0.95, textstr, transform=a.transAxes,
+                verticalalignment='top', bbox=props)
         a.invert_xaxis()
         a.legend()
 
