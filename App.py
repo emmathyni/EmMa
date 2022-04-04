@@ -265,12 +265,14 @@ class App(Tk):
         values = []
         for line in file:
             line.strip()
+            #newline = re.sub("-","",line)
             x = re.findall("^\d*,.*?,", line)
-            y = re.findall(",\d{1,2},.*?$", line)
+            y = re.findall(",-?\d{1,2},.*?$", line)
             x = x[0][:-1]
             y = y[0][1:]
             x = re.sub(",", ".", x)
             y = re.sub(",", ".", y)
+            y.lstrip("-")
             x_n = int(x[-1])
             y_n = int(y[-1])
             resx = re.search("e", x)
@@ -281,8 +283,13 @@ class App(Tk):
             else:
                 x_e = resx.start()
                 y_e = resy.start()
+                signy = y[y_e+1]
+                if signy == "-":
+                    y_n = -y_n
                 x = float(x[:x_e]) * 10 ** x_n
                 y = float(y[:y_e]) * 10 ** y_n
+                print(signy)
+                #print(y)
                 wave.append(x)
                 values.append(y)
         # Check for zeroes
