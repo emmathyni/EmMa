@@ -113,7 +113,7 @@ class App(Tk):
             y_label = 'Transmittance [a.u.]'
         else:
             y_label = 'Absorbance [a.u.]'
-        x_label = 'Wavenumber [cm-1]'
+        x_label = 'Wavenumbers [cm-1]'
 
         """TO ADD: reverse xaxis, add labels depending on datatype and perhaps show peaks used?"""
         f = Figure(figsize=(10, 5), dpi=100)
@@ -214,7 +214,10 @@ class App(Tk):
     def _calculate_index(self):
         self._convert_spectra()
         Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
+        #try:
         Ind.calculate_index()
+        # except:
+          #  self.label6['text'] = 'An error has occured somewhere. Please check your settings before continuing'
         self.index = round(Ind.index, 5)
         self.label6['text'] = 'Calculated index: '+ str(self.index)
         self.label6.pack()
@@ -234,7 +237,7 @@ class App(Tk):
 
 
         y_label = 'Absorbance [a.u.]'
-        x_label = 'Wavenumber [cm-1]'
+        x_label = 'Wavenumbers [cm-1]'
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
         a.plot(self.wave, self.values)
