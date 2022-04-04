@@ -98,6 +98,13 @@ class App(Tk):
         okButton = ttk.Button(frame6, text="Calculate index", command=self._calculate_index)
         okButton.pack(side=LEFT, padx=px)
         self.label6 = Label(frame6, text="")
+        frame7 = Frame(self)
+        frame7.pack(fill=X, expand=False)
+        self.label7 = Label(frame7, text="")
+        frame8 = Frame(self)
+        frame8.pack(fill=X, expand=False)
+        self.label8 = Label(frame7, text="")
+        #FWHMButton = ttk.Button(self, text="Show FWHM", command=self)
         #label6.pack(side=RIGHT, padx=2*px)
 
 
@@ -136,6 +143,8 @@ class App(Tk):
 
 
     def _get_lists(self, *args):
+        self.transmittance = True
+        self.percent = True
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
         [wave, values] = self._user_format(file)
         self.wave = wave
@@ -216,11 +225,16 @@ class App(Tk):
         Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
         #try:
         Ind.calculate_index()
+        fwhmplast,fwhmref=Ind.calculate_FWHM()
         # except:
           #  self.label6['text'] = 'An error has occured somewhere. Please check your settings before continuing'
         self.index = round(Ind.index, 5)
         self.label6['text'] = 'Calculated index: '+ str(self.index)
         self.label6.pack()
+        self.label7['text'] = 'FWHM for plastic peak: '+str(fwhmplast)
+        self.label8['text'] = 'FWHM for reference peak: '+str(fwhmref)
+        self.label7.pack()
+        self.label8.pack()
         self._plot_interesting_peaks()
 
 
