@@ -28,9 +28,12 @@ class PlasticIndex():
         new_wave2 = corrected_data[2]
         new_abso2 = corrected_data[3]
 
+        h = abs(new_wave1[1]-new_wave1[0])
+
         num_result = 0
         for i in range(len(new_abso1)-1):
-            num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * (new_wave1[i + 1] - new_wave1[i])
+            #num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * (new_wave1[i + 1] - new_wave1[i])
+            num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * h
         denom_result = 0
         for i in range(len(new_abso2)-1):
             denom_result += 0.5 * (new_abso2[i] + new_abso2[i + 1]) * (new_wave2[i + 1] - new_wave2[i])
@@ -125,9 +128,53 @@ def binsearch(number, list, high, low):
     elif number > list[mid]:
         return binsearch(number, list, high, mid+1)
 
+def test_function(x):
+    """Returns x + sin(x)"""
+    y = [elem + math.sin(elem) for elem in x]
+    return y
 
-#if __name__== "__main__":
-    #main()
+def error_known_func():
+    """Determine total error by determining 'index' from known function"""
+    x_val_1 = np.linspace(0, 20, 20)
+    x_val_01 = np.linspace(0, 20, 200)
+    x_val_001 = np.linspace(0, 20, 2000)
+    x_val_0001 = np.linspace(0, 20, 20000)
+    x_val_00001 = np.linspace(0, 20, 200000)
+    inter = [2*math.pi, 3*math.pi, 4*math.pi, 5*math.pi]
+    #calculate index, right answer should be 1
+    ind00001 = PlasticIndex(x_val_00001, test_function(x_val_00001), "test", inter)
+    ind00001.calculate_index()
+    ind0001 = PlasticIndex(x_val_0001, test_function(x_val_0001), "test", inter)
+    ind0001.calculate_index()
+    ind001 = PlasticIndex(x_val_001, test_function(x_val_001), "test", inter)
+    ind001.calculate_index()
+    ind01 = PlasticIndex(x_val_01, test_function(x_val_01), "test", inter)
+    ind01.calculate_index()
+    ind1 = PlasticIndex(x_val_1, test_function(x_val_1), "test", inter)
+    ind1.calculate_index()
+
+    err = [abs(ind1.index-1),  abs(ind01.index-1), abs(ind001.index-1), abs(ind0001.index-1), abs(ind00001.index-1)]
+    step = [1, 0.1, 0.01, 0.001, 0.0001]
+    plt.loglog(step, err)
+    plt.show()
+    print(ind1.index)
+
+
+
+
+
+
+
+
+
+
+
+
+def main():
+    error_known_func()
+
+if __name__== "__main__":
+    main()
 
 
 
