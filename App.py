@@ -88,7 +88,11 @@ class App(Tk):
 
         frame55 = Frame(self)
         frame55.pack(fill=BOTH, expand=True)
-        plasticmenu = OptionMenu(frame55, self.clickedplastic, *plastic_dict.keys(), command=self._set_plastic)
+        plasticelem=[]
+        for key in plastic_dict:
+            plasticelem.append(key)
+        plasticelem.append("Create own interval")
+        plasticmenu = OptionMenu(frame55, self.clickedplastic, *plasticelem)
         plasticmenu.pack(anchor='w', padx=px, pady=5, expand=True)
         self.intervalmenu = OptionMenu(frame55, self.clickedinterval, '')
         self.intervalmenu.pack(anchor='w', padx=px, expand=True)
@@ -166,18 +170,20 @@ class App(Tk):
 
     def _set_plastic(self, *args):
         self.plastic = self.clickedplastic.get()
-        new_dict = plastic_dict.get(self.plastic)
-        intervals = []
-        for key in new_dict:
-            intervals.append(key)
-        intervals.append("Other")
-        menu = self.intervalmenu['menu']
-        menu.delete(0, 'end')
-        for elem in intervals:
-            menu.add_command(label=elem, command=lambda interval=elem: self.clickedinterval.set(interval))
+        if self.plastic == "Create own interval":
+            self.clickedinterval.set("Create own interval")
+        else:
+            new_dict = plastic_dict.get(self.plastic)
+            intervals = []
+            for key in new_dict:
+                intervals.append(key)
+            menu = self.intervalmenu['menu']
+            menu.delete(0, 'end')
+            for elem in intervals:
+                menu.add_command(label=elem, command=lambda interval=elem: self.clickedinterval.set(interval))
 
     def _set_interval(self, *args):
-        if self.clickedinterval.get() == "Other" and self.IntervalExists == False:
+        if self.clickedinterval.get() == "Create own interval" and self.IntervalExists is False:
             frame_int = Frame(self, relief=RAISED, borderwidth=1)
             frame_int.pack(pady=self.py, fill=X)
             self.reference_label = Label(frame_int, text="Reference peak")
