@@ -14,7 +14,7 @@ def user_format(file):
     wave = []
     values = []
     for line in file:
-        #print(line)
+        print(line)
         line.strip()
         x = re.findall("^\d,.*?,", line)
         y = re.findall(",\d,.*?$", line)
@@ -119,9 +119,7 @@ def absorbance_converter(values, transmittance, percentage):
     # when T is percentage relation is A = log_10(100) - log_10(T)
     # taken from https://mmrc.caltech.edu/FTIR/Nicolet/Nicolet%20manuals/Omnic%20Users%20Manual%207.3.pdf page 253
     # check to determine type of data in values
-    print(values, "hej")
     if transmittance and percentage:
-        print("hej")
         for i in range(len(values)):
             values[i] = 2-math.log10(values[i])
         return values

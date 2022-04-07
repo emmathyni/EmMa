@@ -9,6 +9,7 @@ test_integration_dict = {"sin": [0, math.pi, math.pi, 2 * math.pi],
 
 
 correctness_dict = {"correct_960": [1286, 1398, 940, 980],
+                    "correct_960ny": [1286, 1398, 930, 990],
                     "correct_2721": [1286, 1398, 2700, 2750]}
 
 PVC_carbonyl_dict = {"PVC_1620_960": [1510, 1746, 900, 1000],
