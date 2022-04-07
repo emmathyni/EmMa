@@ -146,8 +146,8 @@ class App(Tk):
 
 
     def _get_lists(self, *args):
-        self.transmittance = True
-        self.percent = True
+        #self.transmittance = True
+        #self.percent = True
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
         [wave, values] = self._user_format(file)
         self.wave = wave
@@ -341,6 +341,7 @@ class App(Tk):
         # check to determine type of data in values
         if transmittance and percentage:
             for i in range(len(values)):
+                values[i]
                 values[i] = 2 - math.log10(values[i])
             return values
 
