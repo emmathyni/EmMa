@@ -2,6 +2,7 @@ import math
 import matplotlib.pyplot as plt
 from dict import*
 import numpy as np
+
 class PlasticIndex():
     def __init__(self, wave_list, abso_list, plastic, interval):
         self.wave = wave_list
@@ -28,15 +29,14 @@ class PlasticIndex():
         new_wave2 = corrected_data[2]
         new_abso2 = corrected_data[3]
 
-        h = abs(new_wave1[1]-new_wave1[0])
-
         num_result = 0
         for i in range(len(new_abso1)-1):
-            #num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * (new_wave1[i + 1] - new_wave1[i])
-            num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * h
+            num_result += 0.5 * (new_abso1[i] + new_abso1[i + 1]) * (new_wave1[i + 1] - new_wave1[i])
+
         denom_result = 0
         for i in range(len(new_abso2)-1):
             denom_result += 0.5 * (new_abso2[i] + new_abso2[i + 1]) * (new_wave2[i + 1] - new_wave2[i])
+
         return [num_result, denom_result]
 
     def calculate_FWHM(self):
