@@ -21,31 +21,9 @@ def t_binsearch():
     else:
         return True
 
-def test_integration():
-    """Try to integrate sin(x)^2 from 0 to pi and then from pi to 2*pi and divide those areas.
-    If result is close to one integration method works"""
-    x = [0.002*math.pi*i for i in range(-10, 1050)]
-    y = [(math.sin(elem))**2 for elem in x]
-    Carb = PlasticIndex(x, y, "test", "sin")
-    index = Carb._find_index()
-    corr_data = [x[index[0]:index[1]+1], y[index[0]:index[1]+1], x[index[2]:index[3]+1], y[index[2]:index[3]+1]]
-    c, d= Carb.uneven_integrator(corr_data)
-    if not c/d-1 < 0.0001:  # error is smaller than 0.0001
-        return False
-
-    y2 = [math.exp(elem) for elem in x]
-    C2 = PlasticIndex(x, y2, "test", "exp")
-    index2 = C2._find_index()
-    corr_data2 = [x[index2[0]:index2[1] + 1], y2[index2[0]:index2[1] + 1], x[index2[2]:index2[3] + 1], y2[index2[2]:index2[3] + 1]]
-    a, b = C2.uneven_integrator(corr_data2)
-    if not a/b -(np.e-1)/((np.e)**3-(np.e)**2) < 0.001: # error smaller than 0.001 but bigger than 0.0001
-        return False
-    else:
-        return True
-
-
-def test_integration_error():
-    """Test the error of the integration, works best for """
+def test_integration_error(p):
+    """Test the error of the integration by integration of sin x from 0 to pi
+    Returns True if it is a second order method"""
     inter = [0, math.pi]
     i = abs(inter[0]-inter[1])
     steps = [1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
@@ -63,27 +41,46 @@ def test_integration_error():
         res = index_dict[j].uneven_integrator(li)[0]
         int_res.append(abs(res-2))  # correct answer of integral of sinx from 0 to pi is 2
 
-    # print(int_res, 'int res')
-    plt.loglog(steps, int_res, label='Error trapezoidal method')
-    plt.loglog(steps, [10**(-5)*h**2 for h in steps], label=r'$h^2$')
-    #plt.loglog(steps, [10**(-7)*h for h in steps], label='h')
-    plt.title(r'Integration error of sin(x) from 0 to $\pi$', fontsize=14)
-    plt.ylabel('Error', fontsize=12)
-    plt.xlabel(r'Step size $h$', fontsize=12)
-    plt.legend()
+    if p:
+        # print(int_res, 'int res')
+        plt.loglog(steps, int_res, label='Error trapezoidal method')
+        plt.loglog(steps, [h**2 for h in steps], label=r'$h^2$')
+        #plt.loglog(steps, [10**(-7)*h for h in steps], label='h')
+        plt.title(r'Integration error of sin(x) from 0 to $\pi$', fontsize=14)
+        plt.ylabel('Error', fontsize=12)
+        plt.xlabel(r'Step size $h$', fontsize=12)
+        plt.legend()
+        plt.show()
+
+    res1 = int_res[2]
+    res2 = int_res[3]
+    # step size is 10 times smaller
+    # => if it is a second order method log10(res1/res2) should be approx 2
+    return abs(np.log10(res1/res2)-2) < 0.01
+
+
+def error_known_func():
+    """Test integration and baseline correction on known function to get error"""
+    inter = [0, 8*math.pi]
+    integration_int = [2*math.pi, 4*math.pi, 4*math.pi, 6*math.pi]
+    i = abs(inter[0] - inter[1])
+    steps = [1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
+
+    x_dict = {z: [] for z in steps}
+    index_dict = {z: [] for z in steps}
+    y_dict = {z: [] for z in steps}
+    index_ans = []
+
+    for j in steps:
+        x_dict[j] = np.linspace(inter[0], inter[1], int(i / j))
+        y_dict[j] = [math.sin(elem) + elem for elem in x_dict[j]]
+        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], "test", integration_int)
+        index_dict[j].calculate_index()
+        index_ans.append(abs(index_dict[j].index-1))  # answer should be 1
+
+    print(index_ans)
+    plt.loglog(steps, index_ans, label='Error')
     plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -137,12 +134,14 @@ def test_baseline_corr():
 
 
 def main():
-    assert t_binsearch() == True
-    # assert test_integration() == True, this fails bc cannot compare str and float in binsearch
+    # assert t_binsearch() == True
     # assert t_fwhm() == True
-    # assert test_baseline_corr() == True, also fails
+    assert test_baseline_corr() == True
 
-    test_integration_error()
+    # assert test_integration_error(False) == True
+
+    # error_known_func()
+    print('hello')
 
 
 
