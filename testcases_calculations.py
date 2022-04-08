@@ -108,40 +108,99 @@ def t_fwhm():
     if not C.FWHM(x, y) == expected_fw:
         print("hello")
         return False
-    elif not C.calculate_FWHM() == expected_fw: # testcase that does not work
+    elif not C.calculate_FWHM() == expected_fw:  # testcase that does not work
         print(C.calculate_FWHM())
         return False
     else:
         return True
 
 def test_baseline_corr():
-    x = [0.002 * math.pi * i for i in range(-10, 1050)]
-    y = [(math.sin(elem)) + elem for elem in x]
-    x2 = [0.002 * math.pi * i for i in range(0, 500+1)]
-    y2 = [(math.sin(elem)) for elem in x2]
-    C = PlasticIndex(x, y, "test", "sin")
-    indexes = C._find_index()
-    t = C.correct_baseline(indexes[0], indexes[1])
+    inter = [0, 8 * math.pi]
+    integration_int = [2 * math.pi, 6 * math.pi, 4 * math.pi, 6 * math.pi]
+    #inter = [0, 8]
+    #integration_int=[2, 5, 3, 7]
+    i = abs(inter[0] - inter[1])
+    steps = [1, 0.1, 0.01, 0.001, 0.0001, 0.00001]
 
-    for i in range(len(y2)):
-        #print(i)
-        #print(t[1][i], y2[i])
-        if abs(t[1][i]- y2[i]) < 0.001:
-            continue
-        else:
-            return False
-    return True
+    x_dict = {z: [] for z in steps}
+    index_dict = {z: [] for z in steps}
+    y_dict = {z: [] for z in steps}
+    y_dict_comp = {z: [] for z in steps}
+    comp_ans = []
+    di = 0
+    for j in steps:
+        x_dict[j] = np.linspace(inter[0], inter[1], int(i / j))
+        y_dict[j] = [math.sin(elem) + elem for elem in x_dict[j]]
+        #y_dict[j] = [4 - (x-4)**2 for x in x_dict[j]]
+        #y_dict_comp[j] = [-x**2 + 7*x -10 for x in x_dict[j]]
+
+        for k in range(len(x_dict[j])):
+             num = x_dict[j][k]
+             if math.sin(num) >= 0:
+                 #print(x_dict[j][k], math.sin(x_dict[j][k]), 'number')
+                 y_dict_comp[j].append(math.sin(num))
+             else:
+                 y_dict_comp[j].append(0)
+
+
+        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], "test", integration_int)
+        indexes = index_dict[j]._find_index()
+        corr = index_dict[j].correct_baseline(indexes[0], indexes[1])
+        diff = []
+        for k in range(len(corr[1])):
+            d = abs(corr[1][k]-y_dict_comp[j][indexes[0]+k])
+            # print(d)
+            diff.append(d)
+        if j == 1 or j == 0.1:
+            print(x_dict[j], 'x vektor')
+        comp_ans.append(np.mean(diff))
+
+
+    print(comp_ans, 'comp ans')
+    plt.figure()
+    plt.loglog(steps, comp_ans, label='mean error')
+
+
+
+    comp_ans = []
+    #x_dict[0.1] = np.linspace(inter[0], inter[1], int(i / 0.1))
+    #y_dict[0.1] = [math.sin(elem) + elem for elem in x_dict[0.1]]
+    #index_dict[0.1] = PlasticIndex(x_dict[0.1], y_dict[0.1], "test", integration_int)
+    indexes = index_dict[0.01]._find_index()
+    corr = index_dict[0.01].correct_baseline(indexes[0], indexes[1])
+
+    ind = index_dict[0.00001]._find_index()
+    #plt.figure()
+    #plt.plot(x_dict[0.00001][ind[0]:ind[1] + 1], di, 'o', label='diff')
+
+    plt.figure()
+
+    x = x_dict[0.01][indexes[0]:indexes[1]+1]
+    y = y_dict[0.01][indexes[0]:indexes[1]+1]
+    y_comp = y_dict_comp[0.01][indexes[0]:indexes[1]+1]
+    plt.plot(x, y_comp, label = 'Expected function')
+    plt.plot(x, corr[1], label='corrected')
+    plt.plot(x, y, label='original')
+    #plt.plot(x_dict[0.1], y_dict_comp[0.1], label='hela comp')
+    plt.legend()
+    plt.show()
+
+
+
+
+
 
 
 def main():
     # assert t_binsearch() == True
     # assert t_fwhm() == True
-    assert test_baseline_corr() == True
+    # assert test_baseline_corr() == True
+    test_baseline_corr()
 
     # assert test_integration_error(False) == True
 
     # error_known_func()
-    print('hello')
+
 
 
 

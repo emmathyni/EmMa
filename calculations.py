@@ -79,6 +79,7 @@ class PlasticIndex():
         #plt.plot(self.wave, self.abso, label="whole")
         k1 = (self.abso[index1]-self.abso[index2])/(self.wave[index1]-self.wave[index2])
         m1 = self.abso[index1]-k1*self.wave[index1]
+        print(k1, 'k1', m1, 'm1')
         new_abso = []
         for i in range(index1, index2+1):
             if self.abso[i]-k1*self.wave[i]-m1>0:
