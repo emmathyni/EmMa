@@ -123,14 +123,14 @@ class App(Tk):
             y_label = 'Transmittance [a.u.]'
         else:
             y_label = 'Absorbance [a.u.]'
-        x_label = 'Wavenumbers [cm-1]'
+        x_label = r'Wavenumbers [cm$^{-1}$]'
 
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
         a.plot(self.wave, self.values)
-        a.set_ylabel(y_label)
-        a.set_xlabel(x_label)
-        a.set_title('Spectrum')
+        a.set_ylabel(y_label, fontsize=12)
+        a.set_xlabel(x_label, fontsize=12)
+        a.set_title('FTIR spectra', fontsize=14)
         a.invert_xaxis()
 
 
@@ -259,7 +259,7 @@ class App(Tk):
 
 
         y_label = 'Absorbance [a.u.]'
-        x_label = 'Wavenumbers [cm-1]'
+        x_label = r'Wavenumbers [cm$^{-1}$]'
         textstr='\n'.join(('$FWHM plastic=%.2f$' % (self.fwhmlist[0], ),
     '$FWHM reference=%.2f$' % (self.fwhmlist[1], )))
         props = dict(boxstyle='round', facecolor='yellow', alpha=0.5)
