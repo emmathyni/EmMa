@@ -9,9 +9,10 @@ class PlasticIndex():
         self.abso = abso_list
         self.interval = interval
         self.plastic = plastic
-        # self.step = self.wave[1]-self.wave[0]
-        # areas = self.uneven_integrator()
         self.index = 0
+        self.num = 0
+        self.mean = 0
+        self.std = 0
 
 
     def calculate_index(self):
@@ -19,6 +20,7 @@ class PlasticIndex():
         indexes = self._find_index()
         corrected_data = self.correct_two_peaks(indexes)
         num, denom = self.uneven_integrator(corrected_data)
+        self.num = num
         self.index = num/denom
 
 
@@ -41,7 +43,7 @@ class PlasticIndex():
 
     def calculate_FWHM(self):
         """Function to try FWHM"""
-        indexes = self._find_index()
+        indexes = self._find_index(self.interval)
         [new_wave1, new_abso1, new_wave2, new_abso2] = self.correct_two_peaks(indexes)
         fwhm1 = self.FWHM(new_wave1, new_abso1)
         fwhm2 = self.FWHM(new_wave2, new_abso2)
@@ -101,13 +103,15 @@ class PlasticIndex():
     def _find_index(self):
         """Finds the index in the list of number using binary search. Returns the index of the n"""
         #dictionary = plastic_dict[self.plastic]
-        numbers = self.interval
+        numbers = interval
         num_first = binsearch(numbers[0], self.wave, len(self.wave), 0)
         num_last = binsearch(numbers[1], self.wave, len(self.wave), 0)
         denom_first = binsearch(numbers[2], self.wave, len(self.wave), 0)
         denom_last = binsearch(numbers[3], self.wave, len(self.wave), 0)
         indexes = [num_first, num_last, denom_first, denom_last]
         return indexes
+
+
 
 
 def binsearch(number, list, high, low):

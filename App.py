@@ -125,7 +125,6 @@ class App(Tk):
             y_label = 'Absorbance [a.u.]'
         x_label = 'Wavenumbers [cm-1]'
 
-        """TO ADD: reverse xaxis, add labels depending on datatype and perhaps show peaks used?"""
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
         a.plot(self.wave, self.values)

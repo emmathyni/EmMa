@@ -144,7 +144,7 @@ def test_baseline_corr():
 
 
         index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], "test", integration_int)
-        indexes = index_dict[j]._find_index()
+        indexes = index_dict[j]._find_index(index_dict[j].interval)
         corr = index_dict[j].correct_baseline(indexes[0], indexes[1])
         diff = []
         for k in range(len(corr[1])):
@@ -166,10 +166,10 @@ def test_baseline_corr():
     #x_dict[0.1] = np.linspace(inter[0], inter[1], int(i / 0.1))
     #y_dict[0.1] = [math.sin(elem) + elem for elem in x_dict[0.1]]
     #index_dict[0.1] = PlasticIndex(x_dict[0.1], y_dict[0.1], "test", integration_int)
-    indexes = index_dict[0.01]._find_index()
+    indexes = index_dict[0.01]._find_index(index_dict[0.01].interval)
     corr = index_dict[0.01].correct_baseline(indexes[0], indexes[1])
 
-    ind = index_dict[0.00001]._find_index()
+    ind = index_dict[0.00001]._find_index(index_dict[0.00001].interval)
     #plt.figure()
     #plt.plot(x_dict[0.00001][ind[0]:ind[1] + 1], di, 'o', label='diff')
 
@@ -185,6 +185,72 @@ def test_baseline_corr():
     plt.legend()
     plt.show()
 
+def test_binsearch_err():
+    """Function for determining how the error depends on binsearch algorithm"""
+    inter = [1, 8]
+    integration_int = [2, 5, 3, 7]
+    i = abs(inter[0] - inter[1])
+    steps = [1, 0.1, 0.01, 0.001, 0.0001, 0.00001]
+
+    x_dict = {z: [] for z in steps}
+    x_2 = {z: [] for z in steps}
+    y_2 = {z: [] for z in steps}
+    index_dict = {z: [] for z in steps}
+    y_dict = {z: [] for z in steps}
+    dist_err = {z: [] for z in steps}
+    num_list = []
+    int_dist = []
+    comp = [elem**2 for elem in steps]
+    just_int = []
+
+    for j in steps:
+
+        x_dict[j] = np.arange(inter[0]+j/2, inter[1], j)
+        y_dict[j] = [4 - (x-4)**2 for x in x_dict[j]]
+        x_2[j] = np.arange(integration_int[0], integration_int[1]+j, j)
+        y_2[j] = [-x**2 + 7*x - 10 for x in x_2[j]]
+
+        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], 'test', integration_int)
+        indexes = index_dict[j]._find_index(index_dict[j].interval)
+        index_dict[j].calculate_index()
+        num_list.append(abs(index_dict[j].num-4.5))
+
+        ind = PlasticIndex(x_2[j], y_2[j], 'test', integration_int)
+        integral = ind.uneven_integrator([x_2[j], y_2[j], [], []])
+        just_int.append(abs(integral[0]-4.5))
+
+
+
+        d0 = abs(x_dict[j][indexes[0]] - integration_int[0])
+        d1 = abs(x_dict[j][indexes[1]] - integration_int[1])
+        tot_dist = d0+d1
+        dist_err[j].append(d0)
+        dist_err[j].append(d1)
+        int_dist.append(tot_dist)
+
+
+    print(int_dist)
+    print(num_list)
+    print(just_int)
+    plt.figure()
+
+    plt.loglog(int_dist, num_list, 'o', label='Error')
+    plt.loglog(steps, comp,'ro', label='h^2')
+    plt.loglog(steps, just_int, 'go', label='Integration only')
+    plt.legend()
+    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -195,10 +261,10 @@ def main():
     # assert t_binsearch() == True
     # assert t_fwhm() == True
     # assert test_baseline_corr() == True
-    test_baseline_corr()
+    # test_baseline_corr()
 
     # assert test_integration_error(False) == True
-
+    test_binsearch_err()
     # error_known_func()
 
 
