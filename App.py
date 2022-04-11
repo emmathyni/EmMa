@@ -233,6 +233,10 @@ class App(Tk):
         # except:
           #  self.label6['text'] = 'An error has occured somewhere. Please check your settings before continuing'
         self.index = round(Ind.index, 5)
+        self.mean = Ind.mean
+        print(self.mean, 'mean')
+        self.std = Ind.std
+        print(self.std, 'std')
         self.label6['text'] = 'Calculated index: '+ str(self.index)
         self.label6.pack()
         self.label7['text'] = 'FWHM for plastic peak: '+str(self.fwhmlist[0])

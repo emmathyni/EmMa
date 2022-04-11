@@ -17,11 +17,29 @@ class PlasticIndex():
 
     def calculate_index(self):
         """Calculates the index and sets self.index to this"""
-        indexes = self._find_index()
+        indexes = self._find_index(self.interval)
         corrected_data = self.correct_two_peaks(indexes)
         num, denom = self.uneven_integrator(corrected_data)
         self.num = num
         self.index = num/denom
+        index_list = []
+        d = 7.5
+        vary_list = [(0, d), (0, -d), (d, 0), (-d, 0), (d, d), (-d, -d)]
+        for elem in vary_list:
+            index_list.append(self._vary_interval(elem))
+        index_list.append(self.index)
+        self.mean = np.mean(index_list)
+        self.std = np.std(index_list)
+
+    def _vary_interval(self, tup):
+        """Estimate the standard deviation of the index when distance d from given interval"""
+        d1, d2 = tup
+        print(d1, d2)
+        new_interval1 = [self.interval[0]+d1, self.interval[1] + d2, self.interval[2], self.interval[3]]
+        indexes = self._find_index(new_interval1)
+        corrected_data = self.correct_two_peaks(indexes)
+        num, denom = self.uneven_integrator(corrected_data)
+        return num/denom
 
 
     def uneven_integrator(self, corrected_data):
@@ -81,7 +99,6 @@ class PlasticIndex():
         #plt.plot(self.wave, self.abso, label="whole")
         k1 = (self.abso[index1]-self.abso[index2])/(self.wave[index1]-self.wave[index2])
         m1 = self.abso[index1]-k1*self.wave[index1]
-        print(k1, 'k1', m1, 'm1')
         new_abso = []
         for i in range(index1, index2+1):
             if self.abso[i]-k1*self.wave[i]-m1>0:
@@ -100,7 +117,7 @@ class PlasticIndex():
         return new_wave1, new_abso1, new_wave2, new_abso2
 
 
-    def _find_index(self):
+    def _find_index(self, interval):
         """Finds the index in the list of number using binary search. Returns the index of the n"""
         #dictionary = plastic_dict[self.plastic]
         numbers = interval
