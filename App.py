@@ -12,6 +12,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
+from matplotlib.offsetbox import AnchoredText
 
 class App(Tk):
 
@@ -260,8 +261,10 @@ class App(Tk):
 
         y_label = 'Absorbance [a.u.]'
         x_label = 'Wavenumbers [cm-1]'
-        textstr='\n'.join(('$FWHM plastic=%.2f$' % (self.fwhmlist[0], ),
-    '$FWHM reference=%.2f$' % (self.fwhmlist[1], )))
+        textstr='\n'.join(('FWHM plastic=%.2f' % (self.fwhmlist[0], ),
+    'FWHM reference=%.2f' % (self.fwhmlist[1], )))
+        textmean = str(self.mean)
+        textstd = str(self.std)
         props = dict(boxstyle='round', facecolor='yellow', alpha=0.5)
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
@@ -273,8 +276,13 @@ class App(Tk):
         a.set_ylabel(y_label)
         a.set_xlabel(x_label)
         a.set_title('Calculated index: ' + str(self.index))
-        a.text(0.05, 0.95, textstr, transform=a.transAxes,
-                verticalalignment='top', bbox=props)
+        a.text(0.05, 0.95, textstr, verticalalignment='top', fontsize=14, transform=a.transAxes)
+        #a.subplots_adjust(left=0.25)
+        #at = AnchoredText(textstr, prop=dict(size=15), frameon=True, loc='best')
+       # at.patch.set_boxstyle("round,pad=0.,rounding_size=0.2")
+        #a.add_artist(at)
+        #a.text(textstr, transform=a.transAxes,
+                #verticalalignment='top', bbox=props)
         a.invert_xaxis()
         a.legend()
 
@@ -286,6 +294,12 @@ class App(Tk):
         toolbar.update()
         toolbar.pack(side=BOTTOM, fill=X)
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=True)
+        label_FWHM = Label(newWindow2, text=textstr)
+        label_mean = Label(newWindow2, text=textmean)
+        label_std = Label(newWindow2, text=textstd)
+        label_FWHM.pack()
+        label_mean.pack()
+        label_std.pack()
 
     def _user_format(self, file):
         wave = []
