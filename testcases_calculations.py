@@ -36,7 +36,7 @@ def test_integration_error(p):
     for j in steps:
         x_dict[j] = np.linspace(inter[0], inter[1], int(i/j))
         y_dict[j] = [math.sin(elem) for elem in x_dict[j]]
-        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], "test", [0, 2*math.pi, 0, 2*math.pi])
+        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], [0, 2*math.pi, 0, 2*math.pi])
         li = [x_dict[j], y_dict[j], [], []]
         res = index_dict[j].uneven_integrator(li)[0]
         int_res.append(abs(res-2))  # correct answer of integral of sinx from 0 to pi is 2
@@ -74,7 +74,7 @@ def error_known_func():
     for j in steps:
         x_dict[j] = np.linspace(inter[0], inter[1], int(i / j))
         y_dict[j] = [math.sin(elem) + elem for elem in x_dict[j]]
-        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], "test", integration_int)
+        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], integration_int)
         index_dict[j].calculate_index()
         index_ans.append(abs(index_dict[j].index-1))  # answer should be 1
 
@@ -104,7 +104,7 @@ def t_fwhm():
     expected_fw = 7.5-2.5
     # plt.plot(x,y)
     # plt.show()
-    C =PlasticIndex(x, y, "test", "FWHM")
+    C =PlasticIndex(x, y, "FWHM")
     if not C.FWHM(x, y) == expected_fw:
         print("hello")
         return False
@@ -143,7 +143,7 @@ def test_baseline_corr():
                  y_dict_comp[j].append(0)
 
 
-        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], "test", integration_int)
+        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], integration_int)
         indexes = index_dict[j]._find_index(index_dict[j].interval)
         corr = index_dict[j].correct_baseline(indexes[0], indexes[1])
         diff = []
@@ -165,7 +165,7 @@ def test_baseline_corr():
     comp_ans = []
     #x_dict[0.1] = np.linspace(inter[0], inter[1], int(i / 0.1))
     #y_dict[0.1] = [math.sin(elem) + elem for elem in x_dict[0.1]]
-    #index_dict[0.1] = PlasticIndex(x_dict[0.1], y_dict[0.1], "test", integration_int)
+    #index_dict[0.1] = PlasticIndex(x_dict[0.1], y_dict[0.1], integration_int)
     indexes = index_dict[0.01]._find_index(index_dict[0.01].interval)
     corr = index_dict[0.01].correct_baseline(indexes[0], indexes[1])
 
@@ -210,12 +210,12 @@ def test_binsearch_err():
         x_2[j] = np.arange(integration_int[0], integration_int[1]+j, j)
         y_2[j] = [-x**2 + 7*x - 10 for x in x_2[j]]
 
-        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], 'test', integration_int)
+        index_dict[j] = PlasticIndex(x_dict[j], y_dict[j], integration_int)
         indexes = index_dict[j]._find_index(index_dict[j].interval)
         index_dict[j].calculate_index()
         num_list.append(abs(index_dict[j].num-4.5))
 
-        ind = PlasticIndex(x_2[j], y_2[j], 'test', integration_int)
+        ind = PlasticIndex(x_2[j], y_2[j], integration_int)
         integral = ind.uneven_integrator([x_2[j], y_2[j], [], []])
         just_int.append(abs(integral[0]-4.5))
 

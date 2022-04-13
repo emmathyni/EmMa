@@ -14,7 +14,7 @@ def test_user_interface():
         transmittance = True
         percentage = True
         transm = absorbance_converter(transm, transmittance, percentage)
-        Carbonyl_Index = PlasticIndex(wave, transm, "PVC_1718_1330", "PVC_carbonyl")
+        Carbonyl_Index = PlasticIndex(wave, transm, "PVC_1718_1330")
         print(Carbonyl_Index.CI)
         return wave, transm
 

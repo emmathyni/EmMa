@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from dict import*
 import numpy as np
 
+
 class PlasticIndex():
-    def __init__(self, wave_list, abso_list, plastic, interval):
+    def __init__(self, wave_list, abso_list, interval):
         self.wave = wave_list
         self.abso = abso_list
         self.interval = interval
-        self.plastic = plastic
         self.index = 0
         self.num = 0
         self.mean = 0
@@ -119,7 +119,6 @@ class PlasticIndex():
 
     def _find_index(self, interval):
         """Finds the index in the list of number using binary search. Returns the index of the n"""
-        #dictionary = plastic_dict[self.plastic]
         numbers = interval
         num_first = binsearch(numbers[0], self.wave, len(self.wave), 0)
         num_last = binsearch(numbers[1], self.wave, len(self.wave), 0)

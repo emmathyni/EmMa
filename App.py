@@ -227,7 +227,7 @@ class App(Tk):
 
     def _calculate_index(self):
         self._convert_spectra()
-        Ind = PlasticIndex(self.wave, self.values, self.plastic, self.interval)
+        Ind = PlasticIndex(self.wave, self.values, self.interval)
         #try:
         Ind.calculate_index()
         self.fwhmlist = Ind.calculate_FWHM()
