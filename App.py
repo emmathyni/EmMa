@@ -19,6 +19,7 @@ class App(Tk):
     def __init__(self):
         super().__init__()
         self.title('EmMa')
+        self['bg'] = '#f0ece3'
         #self.geometry("500x500")
         self.clickedtrans = StringVar()
         self.clickedperc = StringVar()
@@ -49,15 +50,22 @@ class App(Tk):
         px = 50
         py = 5
 
-        #frame1 = Frame(self, relief =RAISED, borderwidth=1)
-        #frame1.pack(fill=BOTH)
-        label = Label(self, text="Welcome to EmMa, choose a csv-file to calculate carbonyl-index", bg="#acf7f8", fg="black", font='Georgia 13')
+        colors = ['#a68dad', '#c7b198', '#dfd3c3', '#f0ece3']
+
+        f = open('info_text.txt', 'r')
+        info_txt = f.read()
+        f.close()
+
+        frame1 = Frame(self, bg=colors[2])
+        frame1.pack(fill=BOTH)
+        welcome_label = Label(frame1, text='Welcome to EmMa!', font='Georgia 14 bold italic', bg=colors[0])
+        welcome_label.pack(fill=X)
+        label = Label(frame1, text=info_txt, fg="black", bg=colors[1]) #"#acf7f8"
         label.pack(fill=X, side=TOP)
+        info_btn = ttk.Button(frame1, text='Info', command=self._info_window)
+        info_btn.pack(side=RIGHT, padx=2*px, pady=py)
 
-        #frame2 = Frame(self)
-        #frame2.pack(pady=10)
-
-        label2 = Label(self, text="Click the Button to browse the Files. Current data format accepted: (\d,\d*e(\+|-)\d*),(\d,\d*e(\+|-)\d*)")
+        label2 = Label(self, text="Click the Button to browse the Files.")
         label2.pack(anchor='w', padx=px, pady=py, side=TOP)
 
         frame3 = Frame(self)
@@ -110,6 +118,20 @@ class App(Tk):
         frame8.pack(fill=X, expand=False)
         self.label8 = Label(frame7, text="")
         #label6.pack(side=RIGHT, padx=2*px)
+
+    def _info_window(self):
+        """Info window with information"""
+        new_win = Toplevel(self)
+        new_win.title('Information')
+        # new_win.geometry('300x200')
+
+        f = open('info_window.txt', 'r')
+        text = f.read()
+        f.close()
+
+
+        lab = Label(new_win, text=text)
+        lab.pack()
 
 
     def _open_plot(self):
