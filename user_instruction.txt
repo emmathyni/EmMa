@@ -1,4 +1,3 @@
-User information
 EmMa is a program for facilitating kinetics calculations for FTIR spectra.
 The program uses data from a .csv file on the format (...................).To
 select a file please press the 'Browse' button and select your file. Then please
@@ -9,12 +8,10 @@ or 'Convert spectra to absorbance' and then pressing 'Plot spectra'.
 
 To calculate an index please select your plastic type or select 'Create own interval'
 to create a custom interval to consider. If plastic type is selected, a series of pre-
-chosen intervals are available for you to select. The interval is the band ranges for
-the interesting peak and the second interval is for the reference peak. If 'Create own
-interval' is selected
-
-How the calculations happen
-skdjfksjfksdjksjdkfjskfjksdjfksjkjskfjkdsjfksdjfksdjfkdsjfksdjfkdsjfksdjf
-sdkjfhsdjkfhjsdfjkshfjkdshfjksdhfkjsdhfjsdhfjshfjshfjkshjkshfjksdhfjsd
-skfjhskjfsjfhsdjkfhskjdhfskjfhsjkfhsjfhjsfhsjkfbjagnisjfajfaigjakgna
-skjdfhsidfhksjhfiosnfksdhgsdkjgklsdhgdjkfjfglkradgjoeirjgslikd jisjiwaset hosieh s
+chosen intervals are available for you to select. The first interval is the band ranges
+for the interesting peak and the second interval is for the reference peak. If 'Create
+own interval' is selected, you may enter your own intervals for the peak and reference
+peak. Please make sure to press 'OK' before continuing. After selecting your desired
+peaks press 'Calculate index'. This will prompt a plot of your data with the peaks
+marked in the plot. The calculated index with be printed at the top of the plot. The
+full width at half maximum (FWHM) for both peaks will be also be printed in the window.

@@ -126,13 +126,28 @@ class App(Tk):
         new_win['bg'] = self.colors[3]
         # new_win.geometry('300x200')
 
-        f = open('info_window.txt', 'r')
+        f = open('user_instruction.txt', 'r')
         text = f.read()
         f.close()
 
+        frame1 = Frame(new_win, bg=self.colors[1])
+        frame1.pack(fill=X)
+        title_l = Label(frame1, text='User instructions', font='bold 12', bg=self.colors[1])
+        title_l.pack(side=LEFT, padx=self.px)
+        lab = Label(new_win, text=text, bg=self.colors[3], justify=LEFT)
+        lab.pack(padx=self.px)
 
-        lab = Label(new_win, text=text, bg=self.colors[3])
-        lab.pack()
+        frame2 = Frame(new_win, bg=self.colors[1])
+        frame2.pack(fill=X)
+        title_2 = Label(frame2, text='Calculations', font='bold 12', bg=self.colors[1])
+        title_2.pack(side=LEFT, padx=self.px)
+
+        f = open('explain_calc.txt', 'r')
+        text = f.read()
+        f.close()
+        calc_exp = Label(new_win, text=text, bg=self.colors[3], justify=LEFT)
+        calc_exp.pack(side=LEFT, padx=self.px)
+
 
 
     def _open_plot(self):
