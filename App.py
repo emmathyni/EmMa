@@ -19,7 +19,8 @@ class App(Tk):
     def __init__(self):
         super().__init__()
         self.title('EmMa')
-        self['bg'] = '#f0ece3'
+        self.colors = ['#a68dad', '#c7b198', '#dfd3c3', '#f0ece3']
+        self['bg'] = self.colors[3]
         #self.geometry("500x500")
         self.clickedtrans = StringVar()
         self.clickedperc = StringVar()
@@ -36,66 +37,65 @@ class App(Tk):
         self.percent = True
         self.IntervalExists = False
         self.chosenfilename_widget = 0
+
         self.px = 50
         self.py = 5
         self.wave = []
         self.values = []
         self.create_widgets()
-        # self.widgets = tkinter.winfo_children()
-
-
-
 
     def create_widgets(self):
         px = 50
         py = 5
 
-        colors = ['#a68dad', '#c7b198', '#dfd3c3', '#f0ece3']
-
         f = open('info_text.txt', 'r')
         info_txt = f.read()
         f.close()
 
-        frame1 = Frame(self, bg=colors[2])
+        frame1 = Frame(self, bg=self.colors[3])
         frame1.pack(fill=BOTH)
-        welcome_label = Label(frame1, text='Welcome to EmMa!', font='Georgia 14 bold italic', bg=colors[0])
+        welcome_label = Label(frame1, text='Welcome to EmMa!', font='Georgia 14 bold italic', bg=self.colors[0])
         welcome_label.pack(fill=X)
-        label = Label(frame1, text=info_txt, fg="black", bg=colors[1]) #"#acf7f8"
+        label = Label(frame1, text=info_txt, fg="black", bg=self.colors[1])
         label.pack(fill=X, side=TOP)
+
+
         info_btn = ttk.Button(frame1, text='Info', command=self._info_window)
+
         info_btn.pack(side=RIGHT, padx=2*px, pady=py)
 
-        label2 = Label(self, text="Click the Button to browse the Files.")
+
+        label2 = Label(frame1, text="Click the Button to browse the Files.", bg=self.colors[3])
         label2.pack(anchor='w', padx=px, pady=py, side=TOP)
 
-        frame3 = Frame(self)
+        frame3 = Frame(self, bg=self.colors[3])
         frame3.pack(fill=BOTH, expand=False, pady=py, side=TOP)
         browse = ttk.Button(frame3, text="Browse", command=self._get_lists).pack(side=LEFT, padx=px)
-        label3 = Label(frame3, text="")
+        label3 = Label(frame3, text="", bg=self.colors[3])
         self.chosenfilename_widget = label3
 
-        frame4 = Frame(self)
+        frame4 = Frame(self, bg=self.colors[3])
         frame4.pack(fill=X, pady=py)
-        label4 = Label(frame4, text="Please choose the data types in your file")
+        label4 = Label(frame4, text="Please choose the data types in your file", bg=self.colors[3])
         label4.pack(padx=px, anchor='w', pady=5)
         transmenu = OptionMenu(frame4, self.clickedtrans, "Absorbance", "Transmittance", command=self._set_transmittance)
         transmenu.pack(side=LEFT, padx=px)
         convert_button = ttk.Button(frame4, text="Convert spectrum to absorbance", command=self._convert_spectra)
         convert_button.pack(side=RIGHT, padx=2*px)
 
-        frame45 = Frame(self)
+        frame45 = Frame(self, bg=self.colors[3])
         frame45.pack(pady=5, fill=X)
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Arbitrary Units", command=self._set_percent)
         percentmenu.pack(side=LEFT, padx=px)
         plotbutton = ttk.Button(frame45, text="Plot spectrum", command=self._open_plot)
         plotbutton.pack(side=RIGHT, padx=2*px)
 
-        frame5 = Frame(self)
+        frame5 = Frame(self, bg=self.colors[3])
         frame5.pack(fill=BOTH, pady=py)
-        label5 = Label(frame5, text="Please choose plastic type and desired peaks")
+        label5 = Label(frame5, text="Please choose plastic type and desired peaks", bg=self.colors[3])
         label5.pack(anchor='w', padx=px)
 
-        frame55 = Frame(self)
+        frame55 = Frame(self, bg=self.colors[3])
         frame55.pack(fill=BOTH, expand=True)
         plasticelem=[]
         for key in plastic_dict:
@@ -106,23 +106,24 @@ class App(Tk):
         self.intervalmenu = OptionMenu(frame55, self.clickedinterval, '')
         self.intervalmenu.pack(anchor='w', padx=px, expand=True)
 
-        frame6 = Frame(self)
+        frame6 = Frame(self, bg=self.colors[3])
         frame6.pack(side=BOTTOM, fill=X, expand=False)
         okButton = ttk.Button(frame6, text="Calculate index", command=self._calculate_index)
         okButton.pack(side=LEFT, padx=px)
-        self.label6 = Label(frame6, text="")
-        frame7 = Frame(self)
+        self.label6 = Label(frame6, text="", bg=self.colors[3])
+        frame7 = Frame(self, bg=self.colors[3])
         frame7.pack(fill=X, expand=False)
-        self.label7 = Label(frame7, text="")
-        frame8 = Frame(self)
+        self.label7 = Label(frame7, text="", bg=self.colors[3])
+        frame8 = Frame(self, bg=self.colors[3])
         frame8.pack(fill=X, expand=False)
-        self.label8 = Label(frame7, text="")
+        self.label8 = Label(frame7, text="", bg=self.colors[3])
         #label6.pack(side=RIGHT, padx=2*px)
 
     def _info_window(self):
         """Info window with information"""
         new_win = Toplevel(self)
         new_win.title('Information')
+        new_win['bg'] = self.colors[3]
         # new_win.geometry('300x200')
 
         f = open('info_window.txt', 'r')
@@ -130,7 +131,7 @@ class App(Tk):
         f.close()
 
 
-        lab = Label(new_win, text=text)
+        lab = Label(new_win, text=text, bg=self.colors[3])
         lab.pack()
 
 
@@ -206,29 +207,29 @@ class App(Tk):
 
     def _set_interval(self, *args):
         if self.clickedinterval.get() == "Create own interval" and self.IntervalExists is False:
-            frame_int = Frame(self, relief=RAISED, borderwidth=1)
+            frame_int = Frame(self, bg=self.colors[3])
             frame_int.pack(pady=self.py, fill=X)
-            self.reference_label = Label(frame_int, text="Reference peak")
+            self.reference_label = Label(frame_int, text="Reference peak", bg=self.colors[3])
             self.reference_label.pack(side=LEFT, padx=self.px)
-            ref_l = Label(frame_int, text="Lower")
+            ref_l = Label(frame_int, text="Lower", bg=self.colors[3])
             ref_l.pack(side=LEFT)
             self.reflower = Entry(frame_int, textvariable=self.manuallowerref)
             self.reflower.pack(side=LEFT)
-            ref_u = Label(frame_int, text='Upper')
+            ref_u = Label(frame_int, text='Upper', bg=self.colors[3])
             ref_u.pack(side=LEFT)
             self.refupper = Entry(frame_int, textvariable=self.manualupperref)
             self.refupper.pack(side=LEFT, padx=5)
 
-            frame_p = Frame(self, relief=RAISED, borderwidth=1)
+            frame_p = Frame(self, bg=self.colors[3])
             frame_p.pack(fill=X)
 
-            self.peak_label = Label(frame_p, text="Plastic peak      ")
+            self.peak_label = Label(frame_p, text="Plastic peak      ", bg=self.colors[3])
             self.peak_label.pack(side=LEFT, padx=self.px)
-            plast_l =Label(frame_p, text='Lower')
+            plast_l =Label(frame_p, text='Lower', bg=self.colors[3])
             plast_l.pack(side=LEFT)
             self.plastlower = Entry(frame_p, textvariable=self.manuallowerplast)
             self.plastlower.pack(side=LEFT)
-            plast_u = Label(frame_p, text='Upper')
+            plast_u = Label(frame_p, text='Upper', bg=self.colors[3])
             plast_u.pack(side=LEFT)
             self.plastupper = Entry(frame_p, textvariable=self.manualupperplast)
             self.plastupper.pack(side=LEFT, padx=5)
