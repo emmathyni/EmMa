@@ -301,8 +301,8 @@ class App(Tk):
         x_label = 'Wavenumbers [cm-1]'
         textstr='\n'.join(('FWHM plastic=%.2f' % (self.fwhmlist[0], ),
     'FWHM reference=%.2f' % (self.fwhmlist[1], )))
-        textmean = str(self.mean)
-        textstd = str(self.std)
+        textmean = 'mean= '+str(self.mean)
+        textstd = 'std= '+str(self.std)
         props = dict(boxstyle='round', facecolor='yellow', alpha=0.5)
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
