@@ -80,14 +80,14 @@ class App(Tk):
         label4.pack(padx=px, anchor='w', pady=5)
         transmenu = OptionMenu(frame4, self.clickedtrans, "Absorbance", "Transmittance", command=self._set_transmittance)
         transmenu.pack(side=LEFT, padx=px)
-        convert_button = ttk.Button(frame4, text="Convert spectrum to absorbance", command=self._convert_spectra)
+        convert_button = ttk.Button(frame4, text="Convert spectra to absorbance", command=self._convert_spectra)
         convert_button.pack(side=RIGHT, padx=2*px)
 
         frame45 = Frame(self, bg=self.colors[3])
         frame45.pack(pady=5, fill=X)
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Arbitrary Units", command=self._set_percent)
         percentmenu.pack(side=LEFT, padx=px)
-        plotbutton = ttk.Button(frame45, text="Plot spectrum", command=self._open_plot)
+        plotbutton = ttk.Button(frame45, text="Plot spectra", command=self._open_plot)
         plotbutton.pack(side=RIGHT, padx=2*px)
 
         frame5 = Frame(self, bg=self.colors[3])
@@ -151,7 +151,7 @@ class App(Tk):
 
 
     def _open_plot(self):
-        """Opens a new window with a plot of the spectrum"""
+        """Opens a new window with a plot of the spectra"""
         newWindow = Toplevel(self)
         newWindow.title('Plot')
         #newWindow.geometry('300x200')
