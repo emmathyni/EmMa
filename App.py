@@ -298,7 +298,7 @@ class App(Tk):
 
 
         y_label = 'Absorbance [a.u.]'
-        x_label = 'Wavenumbers [cm-1]'
+        x_label = r'Wavenumbers [cm$^{-1}$]'
         textstr='\n'.join(('FWHM plastic=%.2f' % (self.fwhmlist[0], ),
     'FWHM reference=%.2f' % (self.fwhmlist[1], )))
         textmean = 'mean= '+str(self.mean)
@@ -309,12 +309,16 @@ class App(Tk):
         a.plot(self.wave, self.values)
         m = max(self.values)
         mi = min(self.values)
-        a.vlines(self.interval[0:2], mi, m, colors=['red', 'red'], label='Plastic Peak')
-        a.vlines(self.interval[2:5], mi, m, colors=['purple', 'purple'], label='Reference Peak')
+        a.vlines(self.interval[0:2], mi, m, colors=['red', 'red'], linestyle='dashed', label='Functional Group Peak '+str(self.interval[1]) + '-' + str(self.interval[0]))
+        a.vlines(self.interval[2:5], mi, m, colors=['purple', 'purple'], linestyle='dashed', label='Reference Peak '+str(self.interval[3]) + '-' + str(self.interval[2]))
+        #a.annotate(str(self.interval[0]), xy=(self.interval[0], m), ha="left")
+        #a.annotate(str(self.interval[1]), xy=(self.interval[1], m), ha="right")
+        #a.annotate(str(self.interval[2]), xy=(self.interval[2], 0.9*m), ha="left")
+        #a.annotate(str(self.interval[3]), xy=(self.interval[3], 0.9*m), ha="right")
         a.set_ylabel(y_label)
         a.set_xlabel(x_label)
-        a.set_title('Calculated index: ' + str(self.index))
-        a.text(0.05, 0.95, textstr, verticalalignment='top', fontsize=14, transform=a.transAxes)
+        a.set_title('Calculated index=' + str(self.index))
+        #a.text(0.05, 0.95, textstr, verticalalignment='top', fontsize=14, transform=a.transAxes)
         #a.subplots_adjust(left=0.25)
         #at = AnchoredText(textstr, prop=dict(size=15), frameon=True, loc='best')
        # at.patch.set_boxstyle("round,pad=0.,rounding_size=0.2")
