@@ -3,6 +3,8 @@
 from calculations import *
 import numpy as np
 import matplotlib.pyplot as plt
+import main as m
+from matplotlib.figure import Figure
 
 def t_binsearch():
     """Test cases for binary search algorithm. Returns False if any testcases fail and True otherwise"""
@@ -240,6 +242,50 @@ def test_binsearch_err():
     plt.legend()
     plt.show()
 
+def sensitivity_of_model():
+    [wave, values] = m.format('pvc-fiber-2.CSV')
+    values = m.absorbance_converter(values, True, True)
+
+    h_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    std_list = []
+
+    rel_err_mean = []
+    rel_err_std = []
+
+    interval = [1700, 1770, 1400, 1480]
+
+    for elem in h_list:
+        Ind = PlasticIndex(wave, values, interval)
+        Ind.calculate_index(d=elem)
+        std_list.append(Ind.std)
+        rel_err = []
+        for i in range(6):
+            relative_error = abs(Ind.index_list[i]-Ind.index)/Ind.index
+            rel_err.append(relative_error*100)
+
+        rel_err_std.append(np.std(rel_err))
+        rel_err_mean.append(np.mean(rel_err))
+
+    plt.figure()
+    plt.plot(h_list, std_list, '*')
+    plt.title('Standard deviation of carbonyl index when ranges are varied', fontsize=14)
+    plt.xlabel(r'Varied distance from given peak [cm$^{-1}$]', fontsize=12)
+    plt.ylabel('Standard deviation', fontsize=12)
+    plt.figure()
+    plt.plot(h_list, rel_err_mean, '*')
+    plt.title('Relative error of carbonyl index when ranges are varied', fontsize=14)
+    plt.xlabel(r'Varied distance from given peak [cm$^{-1}$]', fontsize=12)
+    plt.ylabel('Relative error [%]', fontsize=12)
+    plt.figure()
+    plt.plot(h_list, rel_err_std, '*')
+    plt.title('Standard deviation of relative error when ranges are varied', fontsize=13)
+    plt.xlabel(r'Varied distance from given peak [cm$^{-1}$]', fontsize=12)
+    plt.ylabel('Relative standard deviation', fontsize=12)
+    plt.show()
+
+
+
+
 
 
 
@@ -264,7 +310,8 @@ def main():
     # test_baseline_corr()
 
     # assert test_integration_error(False) == True
-    test_binsearch_err()
+    sensitivity_of_model()
+    #test_binsearch_err()
     # error_known_func()
 
 

@@ -22,7 +22,7 @@ def error_analysis():
                 transmittance = True
                 percent = True
                 values = absorbance_converter(values, transmittance, percent)
-                Ind = PlasticIndex(wave, values, 'correctness', [1286, 1398, 930, 990])
+                Ind = PlasticIndex(wave, values, [1700, 1770, 1400, 1480])
                 Ind.calculate_index()
                 indexlist.append(Ind.index)
                 steplist.append(wave[1]-wave[0])
@@ -51,16 +51,21 @@ def error_analysis():
         std4 += (elem - mean4) ** 2
     std4 = math.sqrt(std4 / len(res4))
     stdlist = [std4, std8, std16]
-    print(stdlist)
-    print(res8)
-    print(mean8)
-    print(res4)
-    print(mean4)
     newstep = [0.4820999999999458, 0.9642999999999802, 1.9284999999999854]
-    plt.plot(newstep, stdlist)
+    newstep3 = [0.4820999999999458, 0.4820999999999458, 0.4820999999999458, 0.9642999999999802, 0.9642999999999802,
+                0.9642999999999802, 1.9284999999999854, 1.9284999999999854, 1.9284999999999854]
+    plt.plot(newstep, stdlist, '*')
     plt.title("Standard deviation of reference index for different resolutions", fontsize=14)
     plt.xlabel("Step size [cm\u207B\u00b9]", fontsize=12)
     plt.ylabel("Standard deviation [a.u]", fontsize=12)
+    plt.figure()
+    plt.title("Calculated reference index for different resolutions", fontsize=14)
+    plt.xlabel("Step size [cm\u207B\u00b9]", fontsize=12)
+    plt.ylabel("Reference index [a.u]", fontsize=12)
+    plt.plot(newstep3[0:3], res4, '*', label="resolution 4")
+    plt.plot(newstep3[3:6], res8, '*', label="resolution 8")
+    plt.plot(newstep3[6:], res16, '*', label="resolution 16")
+    plt.legend()
     plt.show()
 
 

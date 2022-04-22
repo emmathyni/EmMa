@@ -15,7 +15,7 @@ class PlasticIndex():
         self.std = 0
 
 
-    def calculate_index(self):
+    def calculate_index(self,d=5):
         """Calculates the index and sets self.index to this"""
         indexes = self._find_index(self.interval)
         corrected_data = self.correct_two_peaks(indexes)
