@@ -296,7 +296,6 @@ class App(Tk):
         newWindow2.title('Calculated plot')
         # newWindow.geometry('300x200')
 
-
         y_label = 'Absorbance [a.u.]'
         x_label = r'Wavenumbers [cm$^{-1}$]'
         textstr='\n'.join(('FWHM plastic=%.2f' % (self.fwhmlist[0], ),
