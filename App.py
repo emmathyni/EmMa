@@ -151,7 +151,7 @@ class App(Tk):
 
 
     def _open_plot(self):
-        """Opens a new window with a plot of the spectra"""
+        """Opens a new window with a plot of the spectrum"""
         newWindow = Toplevel(self)
         newWindow.title('Plot')
         #newWindow.geometry('300x200')
@@ -169,7 +169,7 @@ class App(Tk):
         a.plot(self.wave, self.values)
         a.set_ylabel(y_label, fontsize=12)
         a.set_xlabel(x_label, fontsize=12)
-        a.set_title('FTIR spectra', fontsize=14)
+        a.set_title('FTIR spectrum', fontsize=14)
         a.invert_xaxis()
 
 
