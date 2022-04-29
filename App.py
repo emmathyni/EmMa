@@ -294,6 +294,7 @@ class App(Tk):
         """Opens a new window with a plot of the spectrum"""
         newWindow2 = Toplevel(self)
         newWindow2.title('Calculated plot')
+        newWindow2.configure(bg='#ffffff')
         # newWindow.geometry('300x200')
 
         y_label = 'Absorbance [a.u.]'
@@ -333,14 +334,16 @@ class App(Tk):
 
         toolbar = NavigationToolbar2Tk(canvas, newWindow2, pack_toolbar=False)
         toolbar.update()
-        toolbar.pack(side=BOTTOM, fill=X)
+        toolbar.pack(fill=X)
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=True)
-        label_FWHM = Label(newWindow2, text=textstr)
-        label_mean = Label(newWindow2, text=textmean)
-        label_std = Label(newWindow2, text=textstd)
-        label_FWHM.pack()
-        label_mean.pack()
-        label_std.pack()
+
+
+        label_FWHM = Label(newWindow2, text=textstr, font=10, bg='white')
+        label_mean = Label(newWindow2, text=textmean, font=12)
+        label_std = Label(newWindow2, text=textstd, font=12)
+        label_FWHM.pack(side=LEFT)
+        #label_mean.pack()
+        #label_std.pack()
 
     def _user_format(self, file):
         wave = []

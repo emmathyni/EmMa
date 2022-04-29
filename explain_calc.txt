@@ -1,13 +1,7 @@
 To calculate an index the program uses the specified area under the band for both
 peaks and divides their areas to get an index. First a version of binary search has
 been implemented to look for the closest possible wavenumber data point to the
-received intervals. Then there is a baseline correction using a linear function.
+received intervals. Then a baseline correction using a linear function is performed.
 Finally, the integration is done with the trapezoidal method and an area for a peak
 is calculated.
 
-To estimate an error the following has been implemented:
-aksdjkajdklackdnvknadszk dskldjkldjkfbkjcfnbnc xklkf
-xklgvjxklvjklxjk fdjidhdjgh dhdhjxdhjxhjxc jxfx
-df kjxhvjkzjkb.zxcjbzcjzdvjbvnbvxjvsnjsdndsgnsdg
-djgvjmxncvnjkxvnkjdfgnjdfnjdfjkfknlfdfgknfdklfd
-dfmjnxfnxfvnkfdklfnkfnjkfnjfcnjkfcklcfvn,fnkfcn,cfnjcvncvkncgbkdfnm,kfbnjbnjvxfjnxf
