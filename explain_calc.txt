@@ -4,5 +4,14 @@ been implemented to look for the closest possible wavenumber data point to the
 received intervals. Then a baseline correction using a linear function is performed.
 The baseline correction is only performed on the desired peaks. Finally, the
 integration is done using the trapezoidal method and an area for a peak
-is calculated.
+is calculated. Using the areas of the peak of the functional group and the reference
+peak the index is calculated using the formula:
+
+Index=(area of functional peak)/(area of reference peak).
+
+The FWHM of the peaks is calculated after the baseline of the peaks has been corrected.
+It is calculated by finding all instances of a y-value within a peak going from lower
+than half of the maximum value within that peak to higher than half of the maximum
+value of the peak. The corresponding x-values are also noted. The FWHM is calculated
+by taking the distance between the outermost noted x-values.
 

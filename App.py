@@ -224,7 +224,7 @@ class App(Tk):
         if self.clickedinterval.get() == "Create own interval" and self.IntervalExists is False:
             frame_int = Frame(self, bg=self.colors[3])
             frame_int.pack(pady=self.py, fill=X)
-            self.reference_label = Label(frame_int, text="Reference peak", bg=self.colors[3])
+            self.reference_label = Label(frame_int, text="Reference peak           ", bg=self.colors[3])
             self.reference_label.pack(side=LEFT, padx=self.px)
             ref_l = Label(frame_int, text="Lower", bg=self.colors[3])
             ref_l.pack(side=LEFT)
@@ -238,7 +238,7 @@ class App(Tk):
             frame_p = Frame(self, bg=self.colors[3])
             frame_p.pack(fill=X)
 
-            self.peak_label = Label(frame_p, text="Plastic peak      ", bg=self.colors[3])
+            self.peak_label = Label(frame_p, text="Functional group peak", bg=self.colors[3])
             self.peak_label.pack(side=LEFT, padx=self.px)
             plast_l =Label(frame_p, text='Lower', bg=self.colors[3])
             plast_l.pack(side=LEFT)
@@ -278,7 +278,7 @@ class App(Tk):
         print(self.std, 'std')
         self.label6['text'] = 'Calculated index: '+ str(self.index)
         self.label6.pack()
-        self.label7['text'] = 'FWHM for plastic peak: '+str(self.fwhmlist[0])
+        self.label7['text'] = 'FWHM for functional group peak: '+str(self.fwhmlist[0])
         self.label8['text'] = 'FWHM for reference peak: '+str(self.fwhmlist[1])
         self.label7.pack()
         self.label8.pack()
@@ -299,7 +299,7 @@ class App(Tk):
 
         y_label = 'Absorbance [a.u.]'
         x_label = r'Wavenumbers [cm$^{-1}$]'
-        textstr='\n'.join(('FWHM plastic=%.2f' % (self.fwhmlist[0], ),
+        textstr='\n'.join(('FWHM functional group=%.2f' % (self.fwhmlist[0], ),
     'FWHM reference=%.2f' % (self.fwhmlist[1], )))
         textmean = 'mean= '+str(self.mean)
         textstd = 'std= '+str(self.std)
