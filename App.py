@@ -301,6 +301,8 @@ class App(Tk):
         x_label = r'Wavenumbers [cm$^{-1}$]'
         textstr='\n'.join(('FWHM functional group=%.2f' % (self.fwhmlist[0], ),
     'FWHM reference=%.2f' % (self.fwhmlist[1], )))
+        textstr='\n'.join(('FWHM plastic = %.2f' % (self.fwhmlist[0], ),
+    'FWHM reference = %.2f' % (self.fwhmlist[1], ), 'Index = ' + str(self.index)))
         textmean = 'mean= '+str(self.mean)
         textstd = 'std= '+str(self.std)
         props = dict(boxstyle='round', facecolor='yellow', alpha=0.5)
@@ -309,8 +311,8 @@ class App(Tk):
         a.plot(self.wave, self.values)
         m = max(self.values)
         mi = min(self.values)
-        a.vlines(self.interval[0:2], mi, m, colors=['black', 'black'], linestyle='dashed', label='Functional Group Peak '+str(self.interval[1]) + '-' + str(self.interval[0]))
-        a.vlines(self.interval[2:5], mi, m, colors=['red', 'red'], linestyle='dashed', label='Reference Peak '+str(self.interval[3]) + '-' + str(self.interval[2]))
+        a.vlines(self.interval[0:2], mi, m, colors=['black', 'black'], linestyle='dashed', label='Functional Group Peak '+str(self.interval[1]) + '-' + str(self.interval[0]) + r' cm$^{-1}$')
+        a.vlines(self.interval[2:5], mi, m, colors=['red', 'red'], linestyle='dashed', label='Reference Peak '+str(self.interval[3]) + '-' + str(self.interval[2])+ r' cm$^{-1}$')
         #a.annotate(str(self.interval[0]), xy=(self.interval[0], m), ha="left")
         #a.annotate(str(self.interval[1]), xy=(self.interval[1], m), ha="right")
         #a.annotate(str(self.interval[2]), xy=(self.interval[2], 0.9*m), ha="left")
@@ -337,11 +339,12 @@ class App(Tk):
         toolbar.pack(fill=X)
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=True)
 
-
-        label_FWHM = Label(newWindow2, text=textstr, font=10, bg='white')
+        f = Frame(newWindow2, relief=RAISED, borderwidth=1, bg=self.colors[0])
+        f.pack(pady=7.5)
+        label_FWHM = Label(f, text=textstr, font=12, bg=self.colors[0])
         label_mean = Label(newWindow2, text=textmean, font=12)
         label_std = Label(newWindow2, text=textstd, font=12)
-        label_FWHM.pack(side=LEFT)
+        label_FWHM.pack()
         #label_mean.pack()
         #label_std.pack()
 
