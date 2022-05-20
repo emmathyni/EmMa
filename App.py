@@ -22,6 +22,7 @@ class App(Tk):
         self.colors = ['#a68dad', '#c7b198', '#dfd3c3', '#f0ece3']
         self['bg'] = self.colors[3]
         #self.geometry("500x500")
+        self.plastic = None
         self.clickedtrans = StringVar()
         self.clickedperc = StringVar()
         self.clickedplastic = StringVar(self)
@@ -207,10 +208,15 @@ class App(Tk):
             self.percent = True
 
     def _set_plastic(self, *args):
+        prev = self.plastic
         self.plastic = self.clickedplastic.get()
         if self.plastic == "Create own interval":
             self.clickedinterval.set("Create own interval")
         else:
+            if prev == "Create own interval":
+                self.frame_int.destroy()
+                self.frame_p.destroy()
+                self.IntervalExists = False
             new_dict = plastic_dict.get(self.plastic)
             intervals = []
             for key in new_dict:
@@ -222,35 +228,35 @@ class App(Tk):
 
     def _set_interval(self, *args):
         if self.clickedinterval.get() == "Create own interval" and self.IntervalExists is False:
-            frame_int = Frame(self, bg=self.colors[3])
-            frame_int.pack(pady=self.py, fill=X)
-            self.reference_label = Label(frame_int, text="Reference peak           ", bg=self.colors[3])
+            self.frame_int = Frame(self, bg=self.colors[3])
+            self.frame_int.pack(pady=self.py, fill=X)
+            self.reference_label = Label(self.frame_int, text="Reference peak           ", bg=self.colors[3])
             self.reference_label.pack(side=LEFT, padx=self.px)
-            ref_l = Label(frame_int, text="Lower", bg=self.colors[3])
-            ref_l.pack(side=LEFT)
-            self.reflower = Entry(frame_int, textvariable=self.manuallowerref)
+            self.ref_l = Label(self.frame_int, text="Lower", bg=self.colors[3])
+            self.ref_l.pack(side=LEFT)
+            self.reflower = Entry(self.frame_int, textvariable=self.manuallowerref)
             self.reflower.pack(side=LEFT)
-            ref_u = Label(frame_int, text='Upper', bg=self.colors[3])
-            ref_u.pack(side=LEFT)
-            self.refupper = Entry(frame_int, textvariable=self.manualupperref)
+            self.ref_u = Label(self.frame_int, text='Upper', bg=self.colors[3])
+            self.ref_u.pack(side=LEFT)
+            self.refupper = Entry(self.frame_int, textvariable=self.manualupperref)
             self.refupper.pack(side=LEFT, padx=5)
 
-            frame_p = Frame(self, bg=self.colors[3])
-            frame_p.pack(fill=X)
+            self.frame_p = Frame(self, bg=self.colors[3])
+            self.frame_p.pack(fill=X)
 
-            self.peak_label = Label(frame_p, text="Functional group peak", bg=self.colors[3])
+            self.peak_label = Label(self.frame_p, text="Functional group peak", bg=self.colors[3])
             self.peak_label.pack(side=LEFT, padx=self.px)
-            plast_l =Label(frame_p, text='Lower', bg=self.colors[3])
-            plast_l.pack(side=LEFT)
-            self.plastlower = Entry(frame_p, textvariable=self.manuallowerplast)
+            self.plast_l =Label(self.frame_p, text='Lower', bg=self.colors[3])
+            self.plast_l.pack(side=LEFT)
+            self.plastlower = Entry(self.frame_p, textvariable=self.manuallowerplast)
             self.plastlower.pack(side=LEFT)
-            plast_u = Label(frame_p, text='Upper', bg=self.colors[3])
-            plast_u.pack(side=LEFT)
-            self.plastupper = Entry(frame_p, textvariable=self.manualupperplast)
+            self.plast_u = Label(self.frame_p, text='Upper', bg=self.colors[3])
+            self.plast_u.pack(side=LEFT)
+            self.plastupper = Entry(self.frame_p, textvariable=self.manualupperplast)
             self.plastupper.pack(side=LEFT, padx=5)
 
-            ok_button = ttk.Button(frame_p, text="OK", command=self._manual_interval)
-            ok_button.pack(side=RIGHT, padx=15)
+            self.ok_button = ttk.Button(self.frame_p, text="OK", command=self._manual_interval)
+            self.ok_button.pack(side=RIGHT, padx=15)
             self.IntervalExists = True
         else:
             new_dict = plastic_dict.get(self.plastic)
