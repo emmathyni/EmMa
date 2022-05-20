@@ -3,6 +3,5 @@ peaks and divides their areas to get an index. First a version of binary search 
 been implemented to look for the closest possible wavenumber data point to the
 received intervals. Then a baseline correction using a linear function is performed.
 The baseline correction is only performed on the desired peaks. Finally, the
-integration is done using the trapezoidal method and an area for a peak
-is calculated.
+integration is done using the trapezoidal method and an area for a peak is calculated.
 
