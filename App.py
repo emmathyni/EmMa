@@ -126,7 +126,7 @@ class App(Tk):
         new_win['bg'] = self.colors[3]
         # new_win.geometry('300x200')
 
-        f = open('user_instruction.txt', 'r')
+        f = open('user_instruction.txt', 'r', encoding='utf-8')
         text = f.read()
         f.close()
 
