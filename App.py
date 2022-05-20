@@ -111,14 +111,14 @@ class App(Tk):
         frame6.pack(side=BOTTOM, fill=X, expand=False)
         okButton = ttk.Button(frame6, text="Calculate index", command=self._calculate_index)
         okButton.pack(side=LEFT, padx=px)
-        self.label6 = Label(frame6, text="", bg=self.colors[3])
-        frame7 = Frame(self, bg=self.colors[3])
-        frame7.pack(fill=X, expand=False)
-        self.label7 = Label(frame7, text="", bg=self.colors[3])
-        frame8 = Frame(self, bg=self.colors[3])
-        frame8.pack(fill=X, expand=False)
-        self.label8 = Label(frame7, text="", bg=self.colors[3])
-        #label6.pack(side=RIGHT, padx=2*px)
+        #frame7 = Frame(self, bg=self.colors[3])
+        #frame7.pack(fill=X, expand=False)
+        self.label6 = Label(frame6, text="", bg=self.colors[0])
+        #self.label7 = Label(frame7, text="", bg=self.colors[3])
+        #frame8 = Frame(self, bg=self.colors[3])
+        #frame8.pack(fill=X, expand=False)
+        #self.label8 = Label(frame7, text="", bg=self.colors[3])
+
 
     def _info_window(self):
         """Info window with information"""
@@ -282,12 +282,18 @@ class App(Tk):
         print(self.mean, 'mean')
         self.std = Ind.std
         print(self.std, 'std')
-        self.label6['text'] = 'Calculated index: '+ str(self.index)
-        self.label6.pack()
-        self.label7['text'] = 'FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2)))
-        self.label8['text'] = 'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1], 2)))
-        self.label7.pack()
-        self.label8.pack()
+        strings = ['FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2))),
+                   'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1], 2))),
+                    'Calculated index = '+ str(self.index)]
+        #self.label6['text'] = 'Calculated index = '+ str(self.index)
+        self.label6['text'] = '\n'.join(strings)
+        self.label6.pack(side=RIGHT, padx=self.px, pady=self.py)
+        #self.label7['text'] = 'FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2)))
+        #self.label8['text'] = 'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1], 2)))
+        #self.label7.pack(side=RIGHT)
+        #self.label8.pack(side=RIGHT)
+
+
         self._plot_interesting_peaks()
 
 
