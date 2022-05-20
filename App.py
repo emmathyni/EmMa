@@ -80,14 +80,14 @@ class App(Tk):
         label4.pack(padx=px, anchor='w', pady=5)
         transmenu = OptionMenu(frame4, self.clickedtrans, "Absorbance", "Transmittance", command=self._set_transmittance)
         transmenu.pack(side=LEFT, padx=px)
-        convert_button = ttk.Button(frame4, text="Convert spectra to absorbance", command=self._convert_spectra)
+        convert_button = ttk.Button(frame4, text="Convert spectrum to absorbance", command=self._convert_spectra)
         convert_button.pack(side=RIGHT, padx=2*px)
 
         frame45 = Frame(self, bg=self.colors[3])
         frame45.pack(pady=5, fill=X)
         percentmenu = OptionMenu(frame45, self.clickedperc, "Percent", "Arbitrary Units", command=self._set_percent)
         percentmenu.pack(side=LEFT, padx=px)
-        plotbutton = ttk.Button(frame45, text="Plot spectra", command=self._open_plot)
+        plotbutton = ttk.Button(frame45, text="Plot spectrum", command=self._open_plot)
         plotbutton.pack(side=RIGHT, padx=2*px)
 
         frame5 = Frame(self, bg=self.colors[3])
@@ -151,7 +151,7 @@ class App(Tk):
 
 
     def _open_plot(self):
-        """Opens a new window with a plot of the spectra"""
+        """Opens a new window with a plot of the spectrum"""
         newWindow = Toplevel(self)
         newWindow.title('Plot')
         #newWindow.geometry('300x200')
@@ -169,7 +169,7 @@ class App(Tk):
         a.plot(self.wave, self.values)
         a.set_ylabel(y_label, fontsize=12)
         a.set_xlabel(x_label, fontsize=12)
-        a.set_title('FTIR spectra', fontsize=14)
+        a.set_title('FTIR spectrum', fontsize=14)
         a.invert_xaxis()
 
 
@@ -294,6 +294,7 @@ class App(Tk):
         """Opens a new window with a plot of the spectrum"""
         newWindow2 = Toplevel(self)
         newWindow2.title('Calculated plot')
+        newWindow2.configure(bg='#ffffff')
         # newWindow.geometry('300x200')
 
         y_label = 'Absorbance [a.u.]'
@@ -333,14 +334,16 @@ class App(Tk):
 
         toolbar = NavigationToolbar2Tk(canvas, newWindow2, pack_toolbar=False)
         toolbar.update()
-        toolbar.pack(side=BOTTOM, fill=X)
+        toolbar.pack(fill=X)
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=True)
-        label_FWHM = Label(newWindow2, text=textstr)
-        label_mean = Label(newWindow2, text=textmean)
-        label_std = Label(newWindow2, text=textstd)
-        label_FWHM.pack()
-        label_mean.pack()
-        label_std.pack()
+
+
+        label_FWHM = Label(newWindow2, text=textstr, font=10, bg='white')
+        label_mean = Label(newWindow2, text=textmean, font=12)
+        label_std = Label(newWindow2, text=textstd, font=12)
+        label_FWHM.pack(side=LEFT)
+        #label_mean.pack()
+        #label_std.pack()
 
     def _user_format(self, file):
         wave = []

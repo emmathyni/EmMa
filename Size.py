@@ -33,6 +33,14 @@ with open('Accumulated results size.csv') as csv_file:
             line_count+=1
         else:
             list_accu.append(float(row[ty]))
+
+# remove biggest elems in fiber bc it is too large?
+for i in range(len(list_fiber)):
+    if list_fiber[i] > 95:
+        print(i, list_fiber[i])
+# conclusion, element 30 is 140 so it is an outlier and will be removed
+
+list_fiber.pop(30)
 accu_max = max(list_accu)
 
 
@@ -86,7 +94,8 @@ explain_ell = {'a':0, 'fib': 0, 't0':0}
 
 
 
-
+ylim = 55
+xlim = 110
 
 
 major = 30
@@ -101,7 +110,9 @@ props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
 fig1.suptitle(ellipse_title['a'], fontsize=14)
 ax1.set_xlabel(xlab, fontsize=12)
 ax1.set_ylabel(ylab, fontsize=12)
-max_bin = max(bins1)
+ax1.set_xlim([10, xlim])
+#ax1.set_ylim([0, ylim])
+max_bin = max(bins1)+10
 max_h = max(n1)
 pos = (max_bin - major/2, max_h-minor/2)
 explain_ell['a'] = Ellipse(pos, major, minor, facecolor='orange', alpha=0.5)
@@ -126,8 +137,8 @@ ax1.text(0.05, 0.95, label_dict[len(list_accu)], transform=ax1.transAxes, fontsi
         verticalalignment='top', bbox=props)
 
 fig2, ax2 = plt.subplots()
-major = 50
-minor = 12.5
+major = 35
+minor = 10
 
 n2, bins2, _ = ax2.hist(list_fiber, 30, alpha=0.8)
 # these are matplotlib.patch.Patch properties
@@ -135,6 +146,8 @@ props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
 fig2.suptitle(ellipse_title['fib'], fontsize=14)
 ax2.set_xlabel(xlab, fontsize=12)
 ax2.set_ylabel(ylab, fontsize=12)
+ax2.set_xlim([10, xlim])
+#ax2.set_ylim([0, ylim])
 mu2, sigma2 = norm.fit(list_fiber)
 ax2.axvline(mu2, color='black')
 p2 = norm.pdf(bins2, mu2, sigma2)
@@ -158,7 +171,7 @@ ax2.text(0.05, 0.95, label_dict[len(list_fiber)], transform=ax2.transAxes, fonts
 
 fig3, ax3 = plt.subplots()
 
-major = 20
+major = 30
 minor = 5
 
 n3, bins3, _ = ax3.hist(list_t0, 30, alpha=0.8)
@@ -167,12 +180,14 @@ props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
 fig3.suptitle(ellipse_title['t0'], fontsize=14)
 ax3.set_xlabel(xlab, fontsize=12)
 ax3.set_ylabel(ylab, fontsize=12)
+ax3.set_xlim([10, xlim])
+#ax3.set_ylim([0, ylim])
 mu3, sigma3 = norm.fit(list_t0)
 ax3.axvline(mu3, color='black')
 p3 = norm.pdf(bins3, mu3, sigma3)
 plt.plot(bins3, p3/p3.sum()*len(list_t0))
 
-max_bin = max(bins3)
+max_bin = max(bins3)+10
 max_h = max(n3)
 pos = (max_bin - major/2, max_h-minor/2)
 explain_ell['t0'] = Ellipse(pos, major, minor, facecolor='orange', alpha=0.5)
@@ -181,7 +196,7 @@ line3_major = Lines.Line2D([max_bin-major, max_bin], [max_h - minor/2, max_h - m
 ax3.add_artist(line3_major)
 line3_minor = Lines.Line2D([max_bin - major/2, max_bin - major/2], [max_h, max_h - minor], color='black')
 ax3.add_artist(line3_minor)
-plt.annotate('a', (max_bin-major/2 -4, max_h-minor/2 -1))
+plt.annotate('a', (max_bin-major/2 -8, max_h-minor/2 -1))
 plt.annotate('b', (max_bin - major/2 + 1, max_h - minor/2+1))
 
 # place a text box in upper left in axes coords
