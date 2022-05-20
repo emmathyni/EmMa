@@ -16,13 +16,13 @@ def error_analysis():
         f = os.path.join(directory, filename)
         # checking if it is a file
         if os.path.isfile(f):
-            iscsv=re.search('CSV', filename)
+            iscsv = re.search('CSV', filename)
             if iscsv is not None:
                 [wave, values] = format(f)
                 transmittance = True
                 percent = True
                 values = absorbance_converter(values, transmittance, percent)
-                Ind = PlasticIndex(wave, values, [1700, 1770, 1400, 1480])
+                Ind = PlasticIndex(wave, values, [1400, 1480, 1287, 1347])
                 Ind.calculate_index()
                 indexlist.append(Ind.index)
                 steplist.append(wave[1]-wave[0])
@@ -54,6 +54,7 @@ def error_analysis():
     newstep = [0.4820999999999458, 0.9642999999999802, 1.9284999999999854]
     newstep3 = [0.4820999999999458, 0.4820999999999458, 0.4820999999999458, 0.9642999999999802, 0.9642999999999802,
                 0.9642999999999802, 1.9284999999999854, 1.9284999999999854, 1.9284999999999854]
+    print(stdlist)
     plt.plot(newstep, stdlist, '*')
     plt.title("Standard deviation of reference index for different resolutions", fontsize=14)
     plt.xlabel("Step size [cm\u207B\u00b9]", fontsize=12)
