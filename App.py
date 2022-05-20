@@ -278,8 +278,8 @@ class App(Tk):
         print(self.std, 'std')
         self.label6['text'] = 'Calculated index: '+ str(self.index)
         self.label6.pack()
-        self.label7['text'] = 'FWHM for functional group peak: '+str(self.fwhmlist[0])
-        self.label8['text'] = 'FWHM for reference peak: '+str(self.fwhmlist[1])
+        self.label7['text'] = 'FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2)))
+        self.label8['text'] = 'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1], 2)))
         self.label7.pack()
         self.label8.pack()
         self._plot_interesting_peaks()
@@ -299,13 +299,14 @@ class App(Tk):
 
         y_label = 'Absorbance [a.u.]'
         x_label = r'Wavenumbers [cm$^{-1}$]'
-        textstr='\n'.join(('FWHM functional group=%.2f' % (self.fwhmlist[0], ),
-    'FWHM reference=%.2f' % (self.fwhmlist[1], )))
-        textstr='\n'.join(('FWHM plastic = %.2f' % (self.fwhmlist[0], ),
-    'FWHM reference = %.2f' % (self.fwhmlist[1], ), 'Index = ' + str(self.index)))
+        unit = 'cm$^{-1}$'
+        print(self.fwhmlist)
+        strings = ['FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0],2))),
+                       'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1],2))),
+                       'Index = ' + str(self.index)]
+        textstr='\n'.join(strings)
         textmean = 'mean= '+str(self.mean)
         textstd = 'std= '+str(self.std)
-        props = dict(boxstyle='round', facecolor='yellow', alpha=0.5)
         f = Figure(figsize=(10, 5), dpi=100)
         a = f.add_subplot(111)
         a.plot(self.wave, self.values)
@@ -313,22 +314,11 @@ class App(Tk):
         mi = min(self.values)
         a.vlines(self.interval[0:2], mi, m, colors=['black', 'black'], linestyle='dashed', label='Functional Group Peak '+str(self.interval[1]) + '-' + str(self.interval[0]) + r' cm$^{-1}$')
         a.vlines(self.interval[2:5], mi, m, colors=['red', 'red'], linestyle='dashed', label='Reference Peak '+str(self.interval[3]) + '-' + str(self.interval[2])+ r' cm$^{-1}$')
-        #a.annotate(str(self.interval[0]), xy=(self.interval[0], m), ha="left")
-        #a.annotate(str(self.interval[1]), xy=(self.interval[1], m), ha="right")
-        #a.annotate(str(self.interval[2]), xy=(self.interval[2], 0.9*m), ha="left")
-        #a.annotate(str(self.interval[3]), xy=(self.interval[3], 0.9*m), ha="right")
         a.set_ylabel(y_label, fontsize=16)
         a.set_xlabel(x_label, fontsize=16)
-        a.set_title('Calculated index=' + str(self.index), fontsize=20)
-        #a.text(0.05, 0.95, textstr, verticalalignment='top', fontsize=14, transform=a.transAxes)
-        #a.subplots_adjust(left=0.25)
-        #at = AnchoredText(textstr, prop=dict(size=15), frameon=True, loc='best')
-       # at.patch.set_boxstyle("round,pad=0.,rounding_size=0.2")
-        #a.add_artist(at)
-        #a.text(textstr, transform=a.transAxes,
-                #verticalalignment='top', bbox=props)
+        a.set_title('Calculated index=' + str(self.index), fontsize=18)
         a.invert_xaxis()
-        a.legend(fontsize=16)
+        a.legend(fontsize=14)
 
         canvas = FigureCanvasTkAgg(f, newWindow2)
         canvas.draw()
