@@ -40,6 +40,7 @@ class App(Tk):
         self.percent = True
         self.IntervalExists = False
         self.chosenfilename_widget = 0
+        self.FrameExists = False
 
         self.px = 50
         self.py = 5
@@ -224,6 +225,7 @@ class App(Tk):
                 self.frame_int.destroy()
                 self.frame_p.destroy()
                 self.IntervalExists = False
+                self.FrameExists = False
             new_dict = plastic_dict.get(self.plastic)
             intervals = []
             for key in new_dict:
@@ -234,7 +236,7 @@ class App(Tk):
                 menu.add_command(label=elem, command=lambda interval=elem: self.clickedinterval.set(interval))
 
     def _set_interval(self, *args):
-        if self.clickedinterval.get() == "Create own interval" and self.IntervalExists is False:
+        if self.clickedinterval.get() == "Create own interval" and self.IntervalExists is False and self.FrameExists is False:
             self.frame_int = Frame(self, bg=self.colors[3])
             self.frame_int.pack(pady=self.py, fill=X)
             self.reference_label = Label(self.frame_int, text="Reference peak           ", bg=self.colors[3])
@@ -264,6 +266,7 @@ class App(Tk):
 
             self.ok_button = ttk.Button(self.frame_p, text="OK", command=self._manual_interval)
             self.ok_button.pack(side=RIGHT, padx=15)
+            self.FrameExists = True
         else:
             new_dict = plastic_dict.get(self.plastic)
             self.interval = new_dict.get(self.clickedinterval.get())
