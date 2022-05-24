@@ -276,8 +276,8 @@ class App(Tk):
         self.interval = [float(self.manuallowerplast), float(self.manualupperplast), float(self.manuallowerref), float(self.manualupperref)]
         if self.IntervalExists:
             self.intsetlabel.destroy()
-        self.intsetlabel = Label(self.frame_int, text='Ref: '+ str(self.manualupperref) + '-' + str(self.manuallowerref) +'\n' +
-                                                      'Func: '+str(self.manualupperplast) + '-' + str(self.manuallowerplast), bg=self.colors[0])
+        self.intsetlabel = Label(self.frame_int, text='Ref: '+ str(self.manualupperref) + '-' + str(self.manuallowerref)+' cm\u207b\u00b9' +'\n' +
+                                                      'Func: '+str(self.manualupperplast) + '-' + str(self.manuallowerplast)+ ' cm\u207b\u00b9', bg=self.colors[0])
         self.intsetlabel.pack()
         self.IntervalExists = True
 

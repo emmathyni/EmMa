@@ -133,7 +133,7 @@ def check_outer_points(number, list, high, low):
     if number == list[0]:
         return 0
     elif number == list[-1]:
-        return len(list)
+        return len(list)-1
     else:
         return binsearch(number, list, high, low)
 
