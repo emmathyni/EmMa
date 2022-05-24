@@ -5,6 +5,8 @@ import math
 from dict import*
 from tkinter import*
 from tkinter import ttk, filedialog, Frame
+import traceback
+from tkinter import messagebox
 from testcases_main import*
 #from main import*
 import ntpath
@@ -120,6 +122,7 @@ class App(Tk):
         #self.label8 = Label(frame7, text="", bg=self.colors[3])
 
 
+
     def _info_window(self):
         """Info window with information"""
         new_win = Toplevel(self)
@@ -149,6 +152,10 @@ class App(Tk):
         calc_exp = Label(new_win, text=text, bg=self.colors[3], justify=LEFT)
         calc_exp.pack(side=LEFT, padx=self.px)
 
+
+    def report_callback_exception(self, *args):
+        err = traceback.format_exception(*args)
+        messagebox.showerror('Exception', err)
 
 
     def _open_plot(self):
