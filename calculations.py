@@ -120,15 +120,22 @@ class PlasticIndex():
     def _find_index(self, interval):
         """Finds the index in the list of number using binary search. Returns the index of the n"""
         numbers = interval
-        num_first = binsearch(numbers[0], self.wave, len(self.wave), 0)
-        num_last = binsearch(numbers[1], self.wave, len(self.wave), 0)
-        denom_first = binsearch(numbers[2], self.wave, len(self.wave), 0)
-        denom_last = binsearch(numbers[3], self.wave, len(self.wave), 0)
+        num_first = check_outer_points(numbers[0], self.wave, len(self.wave), 0)
+        num_last = check_outer_points(numbers[1], self.wave, len(self.wave), 0)
+        denom_first = check_outer_points(numbers[2], self.wave, len(self.wave), 0)
+        denom_last = check_outer_points(numbers[3], self.wave, len(self.wave), 0)
         indexes = [num_first, num_last, denom_first, denom_last]
+        print(indexes)
         return indexes
 
 
-
+def check_outer_points(number, list, high, low):
+    if number == list[0]:
+        return 0
+    elif number == list[-1]:
+        return len(list)
+    else:
+        return binsearch(number, list, high, low)
 
 def binsearch(number, list, high, low):
     """Binary search of number in list. Returns index of element closest to number. Cannot find first
