@@ -264,7 +264,6 @@ class App(Tk):
 
             self.ok_button = ttk.Button(self.frame_p, text="OK", command=self._manual_interval)
             self.ok_button.pack(side=RIGHT, padx=15)
-            self.IntervalExists = True
         else:
             new_dict = plastic_dict.get(self.plastic)
             self.interval = new_dict.get(self.clickedinterval.get())
@@ -275,6 +274,12 @@ class App(Tk):
         self.manuallowerplast = self.plastlower.get()
         self.manualupperplast = self.plastupper.get()
         self.interval = [float(self.manuallowerplast), float(self.manualupperplast), float(self.manuallowerref), float(self.manualupperref)]
+        if self.IntervalExists:
+            self.intsetlabel.destroy()
+        self.intsetlabel = Label(self.frame_int, text='Ref: '+ str(self.manualupperref) + '-' + str(self.manuallowerref) +'\n' +
+                                                      'Func: '+str(self.manualupperplast) + '-' + str(self.manuallowerplast), bg=self.colors[0])
+        self.intsetlabel.pack()
+        self.IntervalExists = True
 
     def _calculate_index(self):
         self._convert_spectra()
