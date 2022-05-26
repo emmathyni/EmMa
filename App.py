@@ -430,7 +430,6 @@ class App(Tk):
         # check to determine type of data in values
         if transmittance and percentage:
             for i in range(len(values)):
-                values[i]
                 values[i] = 2 - math.log10(values[i])
             return values
 
