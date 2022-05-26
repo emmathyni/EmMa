@@ -161,6 +161,8 @@ class App(Tk):
 
     def _open_plot(self):
         """Opens a new window with a plot of the spectrum"""
+        if len(self.values) == 0 and len(self.wave) == 0:
+            messagebox.showerror('Error', 'There is no input data.')
         newWindow = Toplevel(self)
         newWindow.title('Plot')
         #newWindow.geometry('300x200')
@@ -181,7 +183,6 @@ class App(Tk):
         a.set_title('FTIR spectrum', fontsize=14)
         a.invert_xaxis()
 
-
         canvas = FigureCanvasTkAgg(f, newWindow)
         canvas.draw()
         canvas.get_tk_widget().pack(side=BOTTOM, fill=BOTH, expand=True)
@@ -191,16 +192,18 @@ class App(Tk):
         toolbar.pack(side=BOTTOM, fill=X)
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=True)
 
-
     def _get_lists(self, *args):
         #self.transmittance = True
         #self.percent = True
         file = filedialog.askopenfile(filetypes=[('CSV files', '*.csv')])
-        [wave, values] = self._user_format(file)
-        self.wave = wave
-        self.values = values
-        self.chosenfilename_widget['text'] = 'Chosen file: ' + ntpath.basename(file.name)
-        self.chosenfilename_widget.pack(side=RIGHT, padx=2*self.px)
+        if file is None:
+            messagebox.showwarning('Warning', 'You have not chosen a file.')
+        else:
+            [wave, values] = self._user_format(file)
+            self.wave = wave
+            self.values = values
+            self.chosenfilename_widget['text'] = 'Chosen file: ' + ntpath.basename(file.name)
+            self.chosenfilename_widget.pack(side=RIGHT, padx=2*self.px)
 
 
     def _set_transmittance(self, *args):
@@ -276,13 +279,18 @@ class App(Tk):
         self.manualupperref = self.refupper.get()
         self.manuallowerplast = self.plastlower.get()
         self.manualupperplast = self.plastupper.get()
-        self.interval = [float(self.manuallowerplast), float(self.manualupperplast), float(self.manuallowerref), float(self.manualupperref)]
-        if self.IntervalExists:
-            self.intsetlabel.destroy()
-        self.intsetlabel = Label(self.frame_int, text='Ref: '+ str(self.manualupperref) + '-' + str(self.manuallowerref)+' cm\u207b\u00b9' +'\n' +
+        try:
+            self.interval = [float(self.manuallowerplast), float(self.manualupperplast), float(self.manuallowerref), float(self.manualupperref)]
+
+            if self.IntervalExists:
+                self.intsetlabel.destroy()
+            self.intsetlabel = Label(self.frame_int, text='Ref: '+ str(self.manualupperref) + '-' + str(self.manuallowerref)+' cm\u207b\u00b9' +'\n' +
                                                       'Func: '+str(self.manualupperplast) + '-' + str(self.manuallowerplast)+ ' cm\u207b\u00b9', bg=self.colors[0])
-        self.intsetlabel.pack()
-        self.IntervalExists = True
+            self.intsetlabel.pack()
+            self.IntervalExists = True
+        except ValueError:
+            messagebox.showerror('Error', 'Please input only numbers.')
+
 
     def _calculate_index(self):
         try:
@@ -312,9 +320,12 @@ class App(Tk):
             messagebox.showerror('Error', message=msg)
 
     def _convert_spectra(self):
-        self.values = self._absorbance_converter(self.values, self.transmittance, self.percent)
-        self.transmittance = False
-        self.percent = False
+        if len(self.values) == 0:
+            messagebox.showerror('Error', 'There is no input data.')
+        else:
+            self.values = self._absorbance_converter(self.values, self.transmittance, self.percent)
+            self.transmittance = False
+            self.percent = False
 
     def _plot_interesting_peaks(self):
         """Opens a new window with a plot of the spectrum"""
