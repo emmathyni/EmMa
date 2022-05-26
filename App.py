@@ -154,9 +154,9 @@ class App(Tk):
         calc_exp.pack(side=LEFT, padx=self.px)
 
 
-    def report_callback_exception(self, *args):
-        err = traceback.format_exception(*args)
-        messagebox.showerror('Exception', err)
+    #def report_callback_exception(self, *args):
+    #    err = traceback.format_exception(*args)
+    #    messagebox.showerror('Exception', err)
 
 
     def _open_plot(self):
@@ -285,32 +285,33 @@ class App(Tk):
         self.IntervalExists = True
 
     def _calculate_index(self):
-        self._convert_spectra()
-        Ind = PlasticIndex(self.wave, self.values, self.interval)
-        #try:
-        Ind.calculate_index()
-        self.fwhmlist = Ind.calculate_FWHM()
-        # except:
-          #  self.label6['text'] = 'An error has occured somewhere. Please check your settings before continuing'
-        self.index = round(Ind.index, 5)
-        self.mean = Ind.mean
-        print(self.mean, 'mean')
-        self.std = Ind.std
-        print(self.std, 'std')
-        strings = ['FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2))),
+        try:
+            self._convert_spectra()
+            Ind = PlasticIndex(self.wave, self.values, self.interval)
+
+            Ind.calculate_index()
+            self.fwhmlist = Ind.calculate_FWHM()
+
+            self.index = round(Ind.index, 5)
+            self.mean = Ind.mean
+            #print(self.mean, 'mean')
+            self.std = Ind.std
+            #print(self.std, 'std')
+            strings = ['FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2))),
                    'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1], 2))),
                     'Calculated index = '+ str(self.index)]
-        #self.label6['text'] = 'Calculated index = '+ str(self.index)
-        self.label6['text'] = '\n'.join(strings)
-        self.label6.pack(side=RIGHT, padx=self.px, pady=self.py)
-        #self.label7['text'] = 'FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2)))
-        #self.label8['text'] = 'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1], 2)))
-        #self.label7.pack(side=RIGHT)
-        #self.label8.pack(side=RIGHT)
+            self.label6['text'] = '\n'.join(strings)
+            self.label6.pack(side=RIGHT, padx=self.px, pady=self.py)
+            #self.label7['text'] = 'FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0], 2)))
+            #self.label8['text'] = 'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1], 2)))
+            #self.label7.pack(side=RIGHT)
+            #self.label8.pack(side=RIGHT)
 
-
-        self._plot_interesting_peaks()
-
+            self._plot_interesting_peaks()
+        except Exception as e:
+            self.label6['text'] = e
+            msg = 'An error has occurred. Please check your settings and try again.'
+            messagebox.showerror('Error', message=msg)
 
     def _convert_spectra(self):
         self.values = self._absorbance_converter(self.values, self.transmittance, self.percent)
@@ -326,8 +327,6 @@ class App(Tk):
 
         y_label = 'Absorbance [a.u.]'
         x_label = r'Wavenumbers [cm$^{-1}$]'
-        unit = 'cm$^{-1}$'
-        print(self.fwhmlist)
         strings = ['FWHM functional group = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[0],2))),
                        'FWHM reference = {} cm\u207b\u00b9'.format(str(round(self.fwhmlist[1],2))),
                        'Index = ' + str(self.index)]
