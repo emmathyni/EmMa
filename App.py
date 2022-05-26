@@ -288,10 +288,8 @@ class App(Tk):
         try:
             self._convert_spectra()
             Ind = PlasticIndex(self.wave, self.values, self.interval)
-
             Ind.calculate_index()
             self.fwhmlist = Ind.calculate_FWHM()
-
             self.index = round(Ind.index, 5)
             self.mean = Ind.mean
             #print(self.mean, 'mean')
