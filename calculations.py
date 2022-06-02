@@ -13,6 +13,7 @@ class PlasticIndex():
         self.num = 0
         self.mean = 0
         self.std = 0
+        self.index_list = []
 
 
     def calculate_index(self,d=5):
@@ -22,19 +23,18 @@ class PlasticIndex():
         num, denom = self.uneven_integrator(corrected_data)
         self.num = num
         self.index = num/denom
-        index_list = []
-        d = 7.5
+        """index_list = []
         vary_list = [(0, d), (0, -d), (d, 0), (-d, 0), (d, d), (-d, -d)]
         for elem in vary_list:
             index_list.append(self._vary_interval(elem))
         index_list.append(self.index)
         self.mean = np.mean(index_list)
         self.std = np.std(index_list)
+        self.index_list = index_list"""
 
     def _vary_interval(self, tup):
         """Estimate the standard deviation of the index when distance d from given interval"""
         d1, d2 = tup
-        print(d1, d2)
         new_interval1 = [self.interval[0]+d1, self.interval[1] + d2, self.interval[2], self.interval[3]]
         indexes = self._find_index(new_interval1)
         corrected_data = self.correct_two_peaks(indexes)
