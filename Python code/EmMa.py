@@ -12,11 +12,6 @@ matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
 
-explain_str="To calculate an index the program uses the specified area under the band for both\n peaks and divides their areas to get an index. First a version of binary search has\n been implemented to look for the closest possible wavenumber data point to the\n received intervals. Then a baseline correction using a linear function is performed.\nThe baseline correction is only performed on the desired peaks. Finally, the\n integration is done using the trapezoidal method and an area for a peak is\n calculated. Using the areas of the peak of the functional group and the reference\n peak the index is calculated using the formula:\n\n Index=(area of functional peak)/(area of reference peak).\n\n The FWHM (full width at half maximum) of the peaks is calculated after the baseline\n of the peaks has been corrected. It is calculated by finding all instances of a\n y-value within a peak going from lower than half of the maximum value within that\n peak to higher than half of the maximum value of the peak. The corresponding\n x-values are also noted. The FWHM is calculated by taking the distance between the\n outermost noted x-values."
-
-info_str="EmMa is a program facilitating kinetics calculations for FTIR data. For more information about\n the program, parameters or calculations please press the Info button. This program was developed\n as a part of a bachelor thesis by Emma Kuttainen Thyni and Maja Walfridson at KTH 2022."
-
-user_str="EmMa is a program for facilitating kinetics calculations for FTIR spectra. The program\n uses data from a .csv file on the format 1,2345e+/-001,1,2345e+/-e001 or 123,45,123,45.\n To select a file please press the 'Browse' button and select your file. Then please\n select the data types for your specific file (eg. if the data is in transmittance or\n absorbance and if it is in percent or arbitrary units). There is a possibility to plot\n the given data in the given format or in absorbance by pressing 'Plot spectrum' or\n 'Convert spectrum to absorbance' and then pressing 'Plot spectrum'.\n\n To calculate an index please select your plastic type or select 'Create own interval'\n to create a custom interval to consider. If plastic type is selected, a series of pre-\n chosen intervals is available for you to select. The first interval is the band range\n for the functional group peak and the second interval is for the reference peak. If\n 'Create own interval' is selected, you may enter your own intervals for the functional\n group peak and reference peak. Please make sure to press 'OK' before continuing. After\n selecting your desired peaks press 'Calculate index'. This will prompt a plot of your\n data with the peaks marked in the plot. The calculated index with be printed at the\n top of the plot. The full width at half maximum (FWHM) for both peaks will also be\n printed in the window."
 
 correctness_dict = {"1398-1286, 1000-900": [1286, 1398, 900, 1000],
                     "1398-1286, 2750-2700": [1286, 1398, 2700, 2750]}
@@ -72,15 +67,15 @@ class App(Tk):
         px = 50
         py = 5
 
-        """f = open('info_text.txt', 'r')
+        f = open('info_text.txt', 'r')
         info_txt = f.read()
-        f.close()"""
+        f.close()
 
         frame1 = Frame(self, bg=self.colors[3])
         frame1.pack(fill=BOTH)
         welcome_label = Label(frame1, text='Welcome to EmMa!', font='Georgia 14 bold italic', bg=self.colors[0])
         welcome_label.pack(fill=X)
-        label = Label(frame1, text=info_str, fg="black", bg=self.colors[1])
+        label = Label(frame1, text=info_txt, fg="black", bg=self.colors[1])
         label.pack(fill=X, side=TOP)
 
 
@@ -151,15 +146,15 @@ class App(Tk):
         new_win['bg'] = self.colors[3]
         # new_win.geometry('300x200')
 
-        """f = open('user_instruction.txt', 'r', encoding='utf-8')
+        f = open('user_instruction.txt', 'r', encoding='utf-8')
         text = f.read()
-        f.close()"""
+        f.close()
 
         frame1 = Frame(new_win, bg=self.colors[1])
         frame1.pack(fill=X)
         title_l = Label(frame1, text='User instructions', font='bold 12', bg=self.colors[1])
         title_l.pack(side=LEFT, padx=self.px)
-        lab = Label(new_win, text=user_str, bg=self.colors[3], justify=LEFT)
+        lab = Label(new_win, text=text, bg=self.colors[3], justify=LEFT)
         lab.pack(padx=self.px)
 
         frame2 = Frame(new_win, bg=self.colors[1])
@@ -167,10 +162,10 @@ class App(Tk):
         title_2 = Label(frame2, text='Calculations', font='bold 12', bg=self.colors[1])
         title_2.pack(side=LEFT, padx=self.px)
 
-        """f = open('explain_calc.txt', 'r')
+        f = open('explain_calc.txt', 'r')
         text = f.read()
-        f.close()"""
-        calc_exp = Label(new_win, text=explain_str, bg=self.colors[3], justify=LEFT)
+        f.close()
+        calc_exp = Label(new_win, text=text, bg=self.colors[3], justify=LEFT)
         calc_exp.pack(side=LEFT, padx=self.px)
 
 
@@ -398,8 +393,8 @@ class App(Tk):
             y = re.findall(",-?\d{1,2},.*?$", line)
             x = x[0][:-1]
             y = y[0][1:]
-            x = re.sub(",", ".", x)
-            y = re.sub(",", ".", y)
+            x = re.sub(",", "..", x)
+            y = re.sub(",", "..", y)
             y.lstrip("-")
             x_n = int(x[-1])
             y_n = int(y[-1])
