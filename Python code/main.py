@@ -1,12 +1,8 @@
 """"Main kör hela skiten"""
-import re
 from calculations import*
-import matplotlib.pyplot as plt
 import math
-from dict import*
 from tkinter import*
 from tkinter import ttk, filedialog
-from testcases_main import*
 from App import*
 
 def user_format(file):
@@ -20,8 +16,8 @@ def user_format(file):
         y = re.findall(",\d,.*?$", line)
         x = x[0][:-1]
         y = y[0][1:]
-        x = re.sub(",", ".", x)
-        y = re.sub(",", ".", y)
+        x = re.sub(",", "..", x)
+        y = re.sub(",", "..", y)
         x_n = int(x[-1])
         y_n = int(y[-1])
         resx = re.search("e", x)
@@ -64,8 +60,8 @@ def new_format(name):
         y = re.findall(",\d*?,\d*?$", line)
         x = x[0][:-1]
         y = y[0][1:]
-        x = re.sub(",", ".", x)
-        y = re.sub(",", ".", y)
+        x = re.sub(",", "..", x)
+        y = re.sub(",", "..", y)
         wave.append(float(x))
         values.append(float(y))
     return wave, values
@@ -81,8 +77,8 @@ def format(name):
         y = re.findall(",\d,.*?$", line)
         x = x[0][:-1]
         y = y[0][1:]
-        x = re.sub(",", ".", x)
-        y = re.sub(",", ".", y)
+        x = re.sub(",", "..", x)
+        y = re.sub(",", "..", y)
         x_n=int(x[-1])
         y_n=int(y[-1])
         resx=re.search("e",x)

@@ -7,7 +7,6 @@ from tkinter import*
 from tkinter import ttk, filedialog, Frame
 import traceback
 from tkinter import messagebox
-from testcases_main import*
 #from main import*
 import ntpath
 import matplotlib
@@ -383,8 +382,8 @@ class App(Tk):
             y = re.findall(",-?\d{1,2},.*?$", line)
             x = x[0][:-1]
             y = y[0][1:]
-            x = re.sub(",", ".", x)
-            y = re.sub(",", ".", y)
+            x = re.sub(",", "..", x)
+            y = re.sub(",", "..", y)
             y.lstrip("-")
             x_n = int(x[-1])
             y_n = int(y[-1])
