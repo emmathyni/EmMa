@@ -28,7 +28,7 @@ outermost noted x-values.
 
 ## Instructions for download
 Please download the version suitable for your system. Click on the file. In
-![Screenshot](download_instructions.png)
+![Screenshot](Python code/download_instructions.png)
 
 ## User instructions
 EmMa is a program for facilitating kinetics calculations for FTIR spectra. The program
