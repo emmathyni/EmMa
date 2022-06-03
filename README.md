@@ -7,7 +7,7 @@ This is done for a functional group peak and a reference peak, both chosen by th
 
 Keywords: FTIR, microplastics degradation, carbonyl index, vinyl index
 
-## How the calculations are done
+## Calculations
 To calculate an index the program uses the specified area under the band for both
 peaks and divides their areas to get an index. First a version of binary search has
 been implemented to look for the closest possible wavenumber data point to the
