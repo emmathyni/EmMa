@@ -27,8 +27,8 @@ x-values are also noted. The FWHM is calculated by taking the distance between t
 outermost noted x-values.
 
 ## Instructions for download
-Please download the version suitable for your system. Click on the file. In
-![Screenshot](Python code/download_instructions.png)
+Please download the version suitable for your system. Click on the file. The image below has an arrow to the button to press for download.
+![Screenshot](download_instructions.png)
 
 ## User instructions
 EmMa is a program for facilitating kinetics calculations for FTIR spectra. The program
