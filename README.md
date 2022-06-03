@@ -27,7 +27,7 @@ x-values are also noted. The FWHM is calculated by taking the distance between t
 outermost noted x-values.
 
 ## Instructions for download
-Please download the version suitable for your system. Click on the file. The image below has an arrow to the button to press for download.
+Please download the version suitable for your system. Click on the file. There is an arrow in the image below indicating how to download the program.
 ![Screenshot](download_instructions.png)
 
 ## User instructions
